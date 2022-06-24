@@ -14,7 +14,6 @@ const expectedUsage = [
       '                    (defaults to "")\n'
       '\n'
       '\n'
-      '    --all           The flow gets generated for all enabled platforms.\n'
       '    --mobile        The flow gets generated for Android and iOS.\n'
       '    --desktop       The flow gets generated for Linux, macOS and Windows.\n'
       '    --android       The flow gets generated for the Android platform.\n'

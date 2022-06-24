@@ -14,7 +14,6 @@ const expectedUsage = [
       '                      (defaults to "")\n'
       '\n'
       '\n'
-      '    --all             The page gets generated for all enabled platforms.\n'
       '    --mobile          The page gets generated for Android and iOS.\n'
       '    --desktop         The page gets generated for Linux, macOS and Windows.\n'
       '    --android         The page gets generated for the Android platform.\n'
