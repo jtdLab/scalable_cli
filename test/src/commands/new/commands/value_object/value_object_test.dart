@@ -23,6 +23,11 @@ const expectedUsage = [
 
 void main() {
   group('valueObject', () {
+    test('vo is a valid alias', () {
+      final command = ValueObjectCommand();
+      expect(command.aliases, contains('vo'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {

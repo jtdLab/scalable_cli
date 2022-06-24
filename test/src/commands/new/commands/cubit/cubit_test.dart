@@ -18,6 +18,11 @@ const expectedUsage = [
 
 void main() {
   group('cubit', () {
+    test('c is a valid alias', () {
+      final command = CubitCommand();
+      expect(command.aliases, contains('c'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {

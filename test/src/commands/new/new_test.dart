@@ -34,6 +34,11 @@ const expectedUsage = [
 
 void main() {
   group('enable', () {
+    test('n is a valid alias', () {
+      final command = NewCommand();
+      expect(command.aliases, contains('n'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {

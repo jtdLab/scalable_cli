@@ -18,6 +18,11 @@ const expectedUsage = [
 
 void main() {
   group('android', () {
+    test('a is a valid alias', () {
+      final command = AndroidCommand();
+      expect(command.aliases, contains('a'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {

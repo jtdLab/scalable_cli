@@ -18,6 +18,16 @@ const expectedUsage = [
 
 void main() {
   group('linux', () {
+    test('l is a valid alias', () {
+      final command = LinuxCommand();
+      expect(command.aliases, contains('l'));
+    });
+
+    test('lin is a valid alias', () {
+      final command = LinuxCommand();
+      expect(command.aliases, contains('lin'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {

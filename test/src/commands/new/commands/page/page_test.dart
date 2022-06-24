@@ -32,6 +32,11 @@ const expectedUsage = [
 
 void main() {
   group('page', () {
+    test('p is a valid alias', () {
+      final command = PageCommand();
+      expect(command.aliases, contains('p'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {

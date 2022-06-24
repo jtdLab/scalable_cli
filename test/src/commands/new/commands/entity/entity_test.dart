@@ -18,6 +18,11 @@ const expectedUsage = [
 
 void main() {
   group('entity', () {
+    test('e is a valid alias', () {
+      final command = EntityCommand();
+      expect(command.aliases, contains('e'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {

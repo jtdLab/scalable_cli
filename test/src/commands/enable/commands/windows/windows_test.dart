@@ -18,6 +18,11 @@ const expectedUsage = [
 
 void main() {
   group('windows', () {
+    test('m is a valid alias', () {
+      final command = WindowsCommand();
+      expect(command.aliases, contains('win'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {

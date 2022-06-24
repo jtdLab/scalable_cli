@@ -12,6 +12,7 @@ class MockLogger extends Mock implements Logger {}
 
 class MockPubUpdater extends Mock implements PubUpdater {}
 
+
 const expectedUsage = [
   // ignore: no_adjacent_strings_in_list
   'Scalable Command Line Interface\n'

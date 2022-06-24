@@ -18,6 +18,11 @@ const expectedUsage = [
 
 void main() {
   group('ios', () {
+    test('i is a valid alias', () {
+      final command = IosCommand();
+      expect(command.aliases, contains('i'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {

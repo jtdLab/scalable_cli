@@ -28,6 +28,11 @@ const expectedUsage = [
 
 void main() {
   group('flow', () {
+    test('f is a valid alias', () {
+      final command = FlowCommand();
+      expect(command.aliases, contains('f'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {

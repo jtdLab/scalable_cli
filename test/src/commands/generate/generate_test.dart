@@ -24,6 +24,16 @@ const expectedUsage = [
 
 void main() {
   group('generate', () {
+    test('gen is a valid alias', () {
+      final command = GenerateCommand();
+      expect(command.aliases, contains('gen'));
+    });
+
+    test('g is a valid alias', () {
+      final command = GenerateCommand();
+      expect(command.aliases, contains('g'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {

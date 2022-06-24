@@ -21,6 +21,11 @@ const expectedUsage = [
 
 void main() {
   group('dto', () {
+    test('d is a valid alias', () {
+      final command = DtoCommand();
+      expect(command.aliases, contains('d'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {

@@ -18,6 +18,16 @@ const expectedUsage = [
 
 void main() {
   group('macos', () {
+    test('m is a valid alias', () {
+      final command = MacosCommand();
+      expect(command.aliases, contains('m'));
+    });
+
+    test('mac is a valid alias', () {
+      final command = MacosCommand();
+      expect(command.aliases, contains('mac'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {

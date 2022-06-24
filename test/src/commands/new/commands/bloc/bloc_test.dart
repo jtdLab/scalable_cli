@@ -18,6 +18,11 @@ const expectedUsage = [
 
 void main() {
   group('bloc', () {
+    test('b is a valid alias', () {
+      final command = BlocCommand();
+      expect(command.aliases, contains('b'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {

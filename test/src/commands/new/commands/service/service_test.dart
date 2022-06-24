@@ -18,6 +18,11 @@ const expectedUsage = [
 
 void main() {
   group('service', () {
+    test('s is a valid alias', () {
+      final command = ServiceCommand();
+      expect(command.aliases, contains('s'));
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {
