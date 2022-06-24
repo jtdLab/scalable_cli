@@ -29,7 +29,7 @@ mixin PlatformGenerator on ComponentCommand, PlatformGetters {
 
           final name = _name;
 
-          final runDone = logger.progress(
+          final runProgress = logger.progress(
             '''Generating ${lightYellow.wrap('$name${_component.name.pascalCase}')}''',
           );
           final androidFiles = await _generate(Platform.android, android);
@@ -38,7 +38,7 @@ mixin PlatformGenerator on ComponentCommand, PlatformGetters {
           final linuxFiles = await _generate(Platform.linux, linux);
           final macosFiles = await _generate(Platform.macos, macos);
           final windowsFiles = await _generate(Platform.windows, windows);
-          runDone(
+          runProgress.complete(
             '''Generated ${lightYellow.wrap('$name${_component.name.pascalCase}')}''',
           );
 

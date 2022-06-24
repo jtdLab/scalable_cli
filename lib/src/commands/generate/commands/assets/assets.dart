@@ -25,11 +25,11 @@ class AssetsCommand extends TargetCommand {
   @override
   Future<int> run() => cwdContainsPubspec(
         onContainsPubspec: () async {
-          final runDone = logger.progress('Generating assets');
+          final runProgress = logger.progress('Generating assets');
           _pubspec.updateFlutterAssets();
           _pubspec.updateFlutterFonts();
           _assets.generate();
-          runDone('Generated assets');
+          runProgress.complete('Generated assets');
 
           return ExitCode.success.code;
         },

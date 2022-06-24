@@ -22,11 +22,11 @@ class LocalizationCommand extends TargetCommand {
   @override
   Future<int> run() => cwdContainsPubspec(
         onContainsPubspec: () async {
-          final runDone = logger.progress(
+          final runProgress = logger.progress(
             'Generating ${lightYellow.wrap('localization')}',
           );
           _flutterGenl10n();
-          runDone('Generated ${lightYellow.wrap('localization')}');
+          runProgress.complete('Generated ${lightYellow.wrap('localization')}');
 
           return ExitCode.success.code;
         },

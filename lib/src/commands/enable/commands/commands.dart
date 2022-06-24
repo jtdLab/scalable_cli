@@ -90,15 +90,16 @@ abstract class PlatformCommand extends Command<int>
   @override
   Future<int> run() => cwdContainsPubspec(
         onContainsPubspec: () async {
-          final runDone = logger.progress(
-            '''Enabling ${lightYellow.wrap(_platform.prettyName)}''',
+          final runProgress = logger.progress(
+            'Enabling ${lightYellow.wrap(_platform.prettyName)}',
           );
 
           await _flutterConfigEnablePlatform();
 
           if (_isEnabledInProject(_platform)) {
-            runDone(
-                '${lightYellow.wrap(_platform.prettyName)} already enabled.');
+            runProgress.complete(
+              '${lightYellow.wrap(_platform.prettyName)} already enabled.',
+            );
 
             return ExitCode.success.code;
           }
@@ -123,7 +124,9 @@ abstract class PlatformCommand extends Command<int>
 
           await _flutterFormatFixCommand();
 
-          runDone('''Enabled ${lightYellow.wrap(_platform.prettyName)}''');
+          runProgress.complete(
+            'Enabled ${lightYellow.wrap(_platform.prettyName)}',
+          );
           // TODO remove ??
           // logger.info('');
           // logger.info('Register here:');
@@ -149,5 +152,6 @@ abstract class PlatformCommand extends Command<int>
   /// Gets the project name.
   String get _projectName => _pubspec.name;
 
+  /// Hook that runs before files from mason templates get generated
   Future<void> preGenerateHook() async => {};
 }

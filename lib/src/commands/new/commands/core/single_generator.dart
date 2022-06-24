@@ -5,7 +5,7 @@ mixin SingleGenerator on ComponentCommand {
   @override
   Future<int> run() => cwdContainsPubspec(
         onContainsPubspec: () async {
-          final generateDone = logger.progress(
+          final generateProgress = logger.progress(
             'Generating ${lightYellow.wrap('$name${_component.name.pascalCase}')}',
           );
           final generator = await _generator(_bundle);
@@ -18,7 +18,7 @@ mixin SingleGenerator on ComponentCommand {
             },
             logger: logger,
           );
-          generateDone(
+          generateProgress.complete(
             'Generated ${lightYellow.wrap('$name${_component.name.pascalCase}')}',
           );
           logger.info('');

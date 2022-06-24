@@ -32,7 +32,7 @@ class CodeCommand extends TargetCommand {
   @override
   Future<int> run() => cwdContainsPubspec(
         onContainsPubspec: () async {
-          final runDone =
+          final runProgress =
               logger.progress('Generating ${lightYellow.wrap('code')}');
           await _flutterPubRunBuildRunnerBuildDeleteConflictingOutputs();
 
@@ -40,7 +40,7 @@ class CodeCommand extends TargetCommand {
           for (final routerGr in _routerGrs) {
             routerGr.addCoverageIgnoreFile();
           }
-          runDone('Generated ${lightYellow.wrap('code')}');
+          runProgress.complete('Generated ${lightYellow.wrap('code')}');
 
           return ExitCode.success.code;
         },
