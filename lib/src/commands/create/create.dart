@@ -83,7 +83,7 @@ class CreateCommand extends ScalableCommand
       ..addSeparator('')
       ..addPlatformFlags(
         platformGroupHelp: (platformGroup) =>
-            'Wheter this new project supports the ${platformGroup.platforms.prettyEnumeration} platform.',
+            'Wheter this new project supports the ${platformGroup.platforms.prettyEnumeration} platform.', // TODO why no plural?
         platformHelp: (platform) =>
             'Wheter this new project supports the ${platform.prettyName} platform.',
       );
@@ -113,8 +113,6 @@ class CreateCommand extends ScalableCommand
 
   @override
   Future<int> run() async {
-    //final orgName = super.orgName; // TODO remove
-
     final isFlutterInstalled = await _flutterInstalledCommand();
     if (!isFlutterInstalled) {
       logger.err('Flutter not installed.');
@@ -122,7 +120,8 @@ class CreateCommand extends ScalableCommand
       return ExitCode.unavailable.code;
     }
 
-    // TODO cleaner
+    final outputDirectory = _outputDirectory;
+
     bool android = super.android;
     bool ios = super.ios;
     bool web = super.web;
@@ -137,8 +136,6 @@ class CreateCommand extends ScalableCommand
       macos = true;
       windows = true;
     }
-
-    final outputDirectory = _outputDirectory;
 
     if (android) {
       final enableAndroidProgress = logger.progress(

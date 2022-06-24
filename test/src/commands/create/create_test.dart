@@ -5,7 +5,6 @@ import 'package:mason/mason.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:path/path.dart' as p;
 import 'package:pub_updater/pub_updater.dart';
-import 'package:scalable_cli/src/cli/cli.dart';
 import 'package:scalable_cli/src/commands/create/create.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
@@ -29,7 +28,6 @@ const expectedUsage = [
       '                      (defaults to on)\n'
       '\n'
       '\n'
-      '    --all             Wheter this new project supports the Android, iOS, Web, Linux, macOS and Windows platform.\n'
       '    --mobile          Wheter this new project supports the Android and iOS platform.\n'
       '    --desktop         Wheter this new project supports the Linux, macOS and Windows platform.\n'
       '    --android         Wheter this new project supports the Android platform.\n'
@@ -41,12 +39,6 @@ const expectedUsage = [
       '\n'
       'Run "scalable help" to see global options.'
 ];
-
-const pubspec = '''
-name: example
-environment:
-  sdk: ">=2.13.0 <3.0.0"
-''';
 
 /// The current version of cupertino icons.
 ///
@@ -141,16 +133,16 @@ class MockFlutterConfigEnableIosCommand extends Mock
     implements FlutterConfigEnableIosCommand {}
 
 class MockFlutterConfigEnableWebCommand extends Mock
-    implements FlutterConfigEnableAndroidCommand {}
+    implements FlutterConfigEnableWebCommand {}
 
 class MockFlutterConfigEnableLinuxCommand extends Mock
-    implements FlutterConfigEnableIosCommand {}
+    implements FlutterConfigEnableLinuxCommand {}
 
 class MockFlutterConfigEnableMacosCommand extends Mock
-    implements FlutterConfigEnableAndroidCommand {}
+    implements FlutterConfigEnableMacosCommand {}
 
 class MockFlutterConfigEnableWindowsCommand extends Mock
-    implements FlutterConfigEnableIosCommand {}
+    implements FlutterConfigEnableWindowsCommand {}
 
 class MockFlutterGenL10nCommand extends Mock implements FlutterGenL10nCommand {}
 
@@ -162,6 +154,17 @@ void main() {
     late List<String> progressLogs;
     late Logger logger;
     late Progress progress;
+
+    late FlutterInstalledCommand flutterInstalledCommand;
+    late FlutterPubGetCommand flutterPubGetCommand;
+    late FlutterConfigEnableAndroidCommand flutterConfigEnableAndroidCommand;
+    late FlutterConfigEnableIosCommand flutterConfigEnableIosCommand;
+    late FlutterConfigEnableWebCommand flutterConfigEnableWebCommand;
+    late FlutterConfigEnableLinuxCommand flutterConfigEnableLinuxCommand;
+    late FlutterConfigEnableMacosCommand flutterConfigEnableMacosCommand;
+    late FlutterConfigEnableWindowsCommand flutterConfigEnableWindowsCommand;
+    late FlutterGenL10nCommand flutterGenL10nCommand;
+    late FlutterFormatFixCommand flutterFormatFixCommand;
 
     final generatedFiles = List.filled(
       62,
@@ -183,11 +186,37 @@ void main() {
         if (message != null) progressLogs.add(message);
       });
       when(() => logger.progress(any())).thenReturn(progress);
+
+      flutterInstalledCommand = MockFlutterInstalledCommand();
+      when(() => flutterInstalledCommand()).thenAnswer((_) async => true);
+      flutterPubGetCommand = MockFlutterPubGetCommand();
+      when(() => flutterPubGetCommand(cwd: any(named: 'cwd')))
+          .thenAnswer((_) async {});
+      flutterConfigEnableAndroidCommand =
+          MockFlutterConfigEnableAndroidCommand();
+      when(() => flutterConfigEnableAndroidCommand()).thenAnswer((_) async {});
+      flutterConfigEnableIosCommand = MockFlutterConfigEnableIosCommand();
+      when(() => flutterConfigEnableIosCommand()).thenAnswer((_) async {});
+      flutterConfigEnableWebCommand = MockFlutterConfigEnableWebCommand();
+      when(() => flutterConfigEnableWebCommand()).thenAnswer((_) async {});
+      flutterConfigEnableLinuxCommand = MockFlutterConfigEnableLinuxCommand();
+      when(() => flutterConfigEnableLinuxCommand()).thenAnswer((_) async {});
+      flutterConfigEnableMacosCommand = MockFlutterConfigEnableMacosCommand();
+      when(() => flutterConfigEnableMacosCommand()).thenAnswer((_) async {});
+      flutterConfigEnableWindowsCommand =
+          MockFlutterConfigEnableWindowsCommand();
+      when(() => flutterConfigEnableWindowsCommand()).thenAnswer((_) async {});
+      flutterGenL10nCommand = MockFlutterGenL10nCommand();
+      when(() => flutterGenL10nCommand(cwd: any(named: 'cwd')))
+          .thenAnswer((_) async {});
+      flutterFormatFixCommand = MockFlutterFormatFixCommand();
+      when(() => flutterFormatFixCommand(cwd: any(named: 'cwd')))
+          .thenAnswer((_) async {});
     });
 
-    test('has alias c', () {
+    test('c is a valid alias', () {
       final command = CreateCommand();
-      expect(command.aliases, ['c']);
+      expect(command.aliases, contains('c'));
     });
 
     test(
@@ -258,20 +287,6 @@ void main() {
 
     test('completes successfully with correct output', () async {
       final argResults = MockArgResults();
-      final flutterInstalledCommand = MockFlutterInstalledCommand();
-      final flutterPubGetCommand = MockFlutterPubGetCommand();
-      final flutterConfigEnableAndroidCommand =
-          MockFlutterConfigEnableAndroidCommand();
-      final flutterConfigEnableIosCommand = MockFlutterConfigEnableIosCommand();
-      final flutterConfigEnableWebCommand = MockFlutterConfigEnableWebCommand();
-      final flutterConfigEnableLinuxCommand =
-          MockFlutterConfigEnableLinuxCommand();
-      final flutterConfigEnableMacosCommand =
-          MockFlutterConfigEnableMacosCommand();
-      final flutterConfigEnableWindowsCommand =
-          MockFlutterConfigEnableWindowsCommand();
-      final flutterGenL10nCommand = MockFlutterGenL10nCommand();
-      final flutterFormatFixCommand = MockFlutterFormatFixCommand();
       final generator = MockMasonGenerator();
       final command = CreateCommand(
         logger: logger,
@@ -287,21 +302,8 @@ void main() {
         flutterFormatFixCommand: flutterFormatFixCommand,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
-      when(() => argResults['project-name'] as String?).thenReturn('my_app');
+      when(() => argResults['project-name']).thenReturn('my_app');
       when(() => argResults.rest).thenReturn(['.tmp']);
-      when(() => flutterInstalledCommand()).thenAnswer((_) async => true);
-      when(() => flutterPubGetCommand(cwd: any(named: 'cwd')))
-          .thenAnswer((_) async {});
-      when(() => flutterConfigEnableAndroidCommand()).thenAnswer((_) async {});
-      when(() => flutterConfigEnableIosCommand()).thenAnswer((_) async {});
-      when(() => flutterConfigEnableWebCommand()).thenAnswer((_) async {});
-      when(() => flutterConfigEnableLinuxCommand()).thenAnswer((_) async {});
-      when(() => flutterConfigEnableMacosCommand()).thenAnswer((_) async {});
-      when(() => flutterConfigEnableWindowsCommand()).thenAnswer((_) async {});
-      when(() => flutterGenL10nCommand(cwd: any(named: 'cwd')))
-          .thenAnswer((_) async {});
-      when(() => flutterFormatFixCommand(cwd: any(named: 'cwd')))
-          .thenAnswer((_) async {});
       when(() => generator.id).thenReturn('generator_id');
       when(() => generator.description).thenReturn('generator description');
       when(
@@ -310,21 +312,28 @@ void main() {
           vars: any(named: 'vars'),
           logger: any(named: 'logger'),
         ),
-      ).thenAnswer((_) async {
-        File(p.join('.tmp', 'pubspec.yaml')).writeAsStringSync(pubspec);
-        return generatedFiles;
-      });
+      ).thenAnswer((_) async => generatedFiles);
       final result = await command.run();
-      expect(result, equals(ExitCode.success.code));
+      verify(() => flutterInstalledCommand()).called(1);
+      verify(() => logger.progress('Running "flutter config --enable-android"'))
+          .called(1);
+      verify(() => flutterConfigEnableAndroidCommand()).called(1);
+      verify(() => logger.progress('Running "flutter config --enable-ios"'))
+          .called(1);
+      verify(() => flutterConfigEnableIosCommand()).called(1);
+      verify(() => logger.progress('Running "flutter config --enable-web"'))
+          .called(1);
+      verify(() => flutterConfigEnableWebCommand()).called(1);
+      verify(() => logger.progress(
+          'Running "flutter config --enable-linux-desktop"')).called(1);
+      verify(() => flutterConfigEnableLinuxCommand()).called(1);
+      verify(() => logger.progress(
+          'Running "flutter config --enable-macos-desktop"')).called(1);
+      verify(() => flutterConfigEnableMacosCommand()).called(1);
+      verify(() => logger.progress(
+          'Running "flutter config --enable-windows-desktop"')).called(1);
+      verify(() => flutterConfigEnableWindowsCommand()).called(1);
       verify(() => logger.progress('Bootstrapping')).called(1);
-      expect(
-        progressLogs,
-        equals(['Generated ${generatedFiles.length} file(s)']),
-      );
-      verify(
-        () => logger.progress('Running "flutter pub get" in .tmp'),
-      ).called(1);
-      verify(() => logger.alert('Created a Scalable App!')).called(1);
       verify(
         () => generator.generate(
           any(
@@ -354,51 +363,59 @@ void main() {
           logger: logger,
         ),
       ).called(1);
+      expect(
+        progressLogs,
+        equals(['Generated ${generatedFiles.length} file(s)']),
+      );
+      verify(() => logger.progress('Running "flutter pub get" in .tmp'))
+          .called(1);
+      verify(() => flutterPubGetCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter gen-l10n" in .tmp'))
+          .called(1);
+      verify(() => flutterGenL10nCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter format . --fix" in .tmp'))
+          .called(1);
+      verify(() => flutterFormatFixCommand(cwd: '.tmp')).called(1);
+      verify(() => progress.complete()).called(9);
+      verify(() => logger.alert('Created a Scalable App!')).called(1);
+      expect(result, equals(ExitCode.success.code));
+    });
+
+    test('exits with 69 when flutter is not installed', () async {
+      final command = CreateCommand(
+        logger: logger,
+        flutterInstalledCommand: flutterInstalledCommand,
+      );
+      when(() => logger.err(any())).thenReturn(null);
+      when(() => flutterInstalledCommand()).thenAnswer((_) async => false);
+      final result = await command.run();
+      verify(() => logger.err('Flutter not installed.')).called(1);
+      expect(result, ExitCode.unavailable.code);
     });
 
     test(
         'completes successfully with correct output when --mobile, --desktop and --web is selected.',
-        () async {});
-
-    test(
-        'completes successfully with correct output when --mobile is selected.',
-        () async {});
-
-    test(
-        'completes successfully with correct output when --desktop is selected.',
-        () async {});
-
-    test(
-        'completes successfully with correct output when --android is selected.',
-        () async {});
-
-    test('completes successfully with correct output when --ios is selected.',
-        () async {});
-
-    test('completes successfully with correct output when --web is selected.',
-        () async {});
-
-    test('completes successfully with correct output when --linux is selected.',
-        () async {});
-
-    test('completes successfully with correct output when --macos is selected.',
-        () async {});
-
-    test(
-        'completes successfully with correct output when --windows is selected.',
-        () async {});
-
-    test('completes successfully w/ custom description', () async {
+        () async {
       final argResults = MockArgResults();
       final generator = MockMasonGenerator();
       final command = CreateCommand(
         logger: logger,
+        flutterInstalledCommand: flutterInstalledCommand,
+        flutterPubGetCommand: flutterPubGetCommand,
+        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroidCommand,
+        flutterConfigEnableIosCommand: flutterConfigEnableIosCommand,
+        flutterConfigEnableWebCommand: flutterConfigEnableWebCommand,
+        flutterConfigEnableLinuxCommand: flutterConfigEnableLinuxCommand,
+        flutterConfigEnableMacosCommand: flutterConfigEnableMacosCommand,
+        flutterConfigEnableWindowsCommand: flutterConfigEnableWindowsCommand,
+        flutterGenL10nCommand: flutterGenL10nCommand,
+        flutterFormatFixCommand: flutterFormatFixCommand,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
-      when(() => argResults['project-name'] as String?).thenReturn('my_app');
-      when(
-        () => argResults['desc'] as String?,
-      ).thenReturn('some description');
+      when(() => argResults['project-name']).thenReturn('my_app');
+      when(() => argResults['mobile']).thenReturn(true);
+      when(() => argResults['desktop']).thenReturn(true);
+      when(() => argResults['web']).thenReturn(true);
       when(() => argResults.rest).thenReturn(['.tmp']);
       when(() => generator.id).thenReturn('generator_id');
       when(() => generator.description).thenReturn('generator description');
@@ -408,10 +425,892 @@ void main() {
           vars: any(named: 'vars'),
           logger: any(named: 'logger'),
         ),
-      ).thenAnswer((_) async {
-        File(p.join('.tmp', 'pubspec.yaml')).writeAsStringSync(pubspec);
-        return generatedFiles;
-      });
+      ).thenAnswer((_) async => generatedFiles);
+      final result = await command.run();
+      verify(() => flutterInstalledCommand()).called(1);
+      verify(() => logger.progress('Running "flutter config --enable-android"'))
+          .called(1);
+      verify(() => flutterConfigEnableAndroidCommand()).called(1);
+      verify(() => logger.progress('Running "flutter config --enable-ios"'))
+          .called(1);
+      verify(() => flutterConfigEnableIosCommand()).called(1);
+      verify(() => logger.progress('Running "flutter config --enable-web"'))
+          .called(1);
+      verify(() => flutterConfigEnableWebCommand()).called(1);
+      verify(() => logger.progress(
+          'Running "flutter config --enable-linux-desktop"')).called(1);
+      verify(() => flutterConfigEnableLinuxCommand()).called(1);
+      verify(() => logger.progress(
+          'Running "flutter config --enable-macos-desktop"')).called(1);
+      verify(() => flutterConfigEnableMacosCommand()).called(1);
+      verify(() => logger.progress(
+          'Running "flutter config --enable-windows-desktop"')).called(1);
+      verify(() => flutterConfigEnableWindowsCommand()).called(1);
+      verify(() => logger.progress('Bootstrapping')).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              '.tmp',
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'org_name': 'com.example',
+            'description': 'A Scalable app.',
+            'cupertino_icons_version': cupertinoIconsVersion,
+            'macos_ui_version': macosUiVersion,
+            'fluent_ui_version': fluentUiVersion,
+            'yaru_version': yaruVersion,
+            'yaru_icons_version': yaruIconsVersion,
+            'example': true,
+            'android': true,
+            'ios': true,
+            'web': true,
+            'linux': true,
+            'macos': true,
+            'windows': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(
+        progressLogs,
+        equals(['Generated ${generatedFiles.length} file(s)']),
+      );
+      verify(() => logger.progress('Running "flutter pub get" in .tmp'))
+          .called(1);
+      verify(() => flutterPubGetCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter gen-l10n" in .tmp'))
+          .called(1);
+      verify(() => flutterGenL10nCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter format . --fix" in .tmp'))
+          .called(1);
+      verify(() => flutterFormatFixCommand(cwd: '.tmp')).called(1);
+      verify(() => progress.complete()).called(9);
+      verify(() => logger.alert('Created a Scalable App!')).called(1);
+      expect(result, equals(ExitCode.success.code));
+    });
+
+    test(
+        'completes successfully with correct output when --mobile is selected.',
+        () async {
+      final argResults = MockArgResults();
+      final generator = MockMasonGenerator();
+      final command = CreateCommand(
+        logger: logger,
+        flutterInstalledCommand: flutterInstalledCommand,
+        flutterPubGetCommand: flutterPubGetCommand,
+        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroidCommand,
+        flutterConfigEnableIosCommand: flutterConfigEnableIosCommand,
+        flutterConfigEnableWebCommand: flutterConfigEnableWebCommand,
+        flutterConfigEnableLinuxCommand: flutterConfigEnableLinuxCommand,
+        flutterConfigEnableMacosCommand: flutterConfigEnableMacosCommand,
+        flutterConfigEnableWindowsCommand: flutterConfigEnableWindowsCommand,
+        flutterGenL10nCommand: flutterGenL10nCommand,
+        flutterFormatFixCommand: flutterFormatFixCommand,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['project-name']).thenReturn('my_app');
+      when(() => argResults['mobile']).thenReturn(true);
+      when(() => argResults.rest).thenReturn(['.tmp']);
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles);
+      final result = await command.run();
+      verify(() => flutterInstalledCommand()).called(1);
+      verify(() => logger.progress('Running "flutter config --enable-android"'))
+          .called(1);
+      verify(() => flutterConfigEnableAndroidCommand()).called(1);
+      verify(() => logger.progress('Running "flutter config --enable-ios"'))
+          .called(1);
+      verify(() => flutterConfigEnableIosCommand()).called(1);
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-web"'));
+      verifyNever(() => flutterConfigEnableWebCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-linux-desktop"'));
+      verifyNever(() => flutterConfigEnableLinuxCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-macos-desktop"'));
+      verifyNever(() => flutterConfigEnableMacosCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-windows-desktop"'));
+      verifyNever(() => flutterConfigEnableWindowsCommand());
+      verify(() => logger.progress('Bootstrapping')).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              '.tmp',
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'org_name': 'com.example',
+            'description': 'A Scalable app.',
+            'cupertino_icons_version': cupertinoIconsVersion,
+            'macos_ui_version': macosUiVersion,
+            'fluent_ui_version': fluentUiVersion,
+            'yaru_version': yaruVersion,
+            'yaru_icons_version': yaruIconsVersion,
+            'example': true,
+            'android': true,
+            'ios': true,
+            'web': false,
+            'linux': false,
+            'macos': false,
+            'windows': false,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(
+        progressLogs,
+        equals(['Generated ${generatedFiles.length} file(s)']),
+      );
+      verify(() => logger.progress('Running "flutter pub get" in .tmp'))
+          .called(1);
+      verify(() => flutterPubGetCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter gen-l10n" in .tmp'))
+          .called(1);
+      verify(() => flutterGenL10nCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter format . --fix" in .tmp'))
+          .called(1);
+      verify(() => flutterFormatFixCommand(cwd: '.tmp')).called(1);
+      verify(() => progress.complete()).called(5);
+      verify(() => logger.alert('Created a Scalable App!')).called(1);
+      expect(result, equals(ExitCode.success.code));
+    });
+
+    test(
+        'completes successfully with correct output when --desktop is selected.',
+        () async {
+      final argResults = MockArgResults();
+      final generator = MockMasonGenerator();
+      final command = CreateCommand(
+        logger: logger,
+        flutterInstalledCommand: flutterInstalledCommand,
+        flutterPubGetCommand: flutterPubGetCommand,
+        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroidCommand,
+        flutterConfigEnableIosCommand: flutterConfigEnableIosCommand,
+        flutterConfigEnableWebCommand: flutterConfigEnableWebCommand,
+        flutterConfigEnableLinuxCommand: flutterConfigEnableLinuxCommand,
+        flutterConfigEnableMacosCommand: flutterConfigEnableMacosCommand,
+        flutterConfigEnableWindowsCommand: flutterConfigEnableWindowsCommand,
+        flutterGenL10nCommand: flutterGenL10nCommand,
+        flutterFormatFixCommand: flutterFormatFixCommand,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['project-name']).thenReturn('my_app');
+      when(() => argResults['desktop']).thenReturn(true);
+      when(() => argResults.rest).thenReturn(['.tmp']);
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles);
+      final result = await command.run();
+      verify(() => flutterInstalledCommand()).called(1);
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-android"'));
+      verifyNever(() => flutterConfigEnableAndroidCommand());
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-ios"'));
+      verifyNever(() => flutterConfigEnableIosCommand());
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-web"'));
+      verifyNever(() => flutterConfigEnableWebCommand());
+      verify(() => logger.progress(
+          'Running "flutter config --enable-linux-desktop"')).called(1);
+      verify(() => flutterConfigEnableLinuxCommand()).called(1);
+      verify(() => logger.progress(
+          'Running "flutter config --enable-macos-desktop"')).called(1);
+      verify(() => flutterConfigEnableMacosCommand()).called(1);
+      verify(() => logger.progress(
+          'Running "flutter config --enable-windows-desktop"')).called(1);
+      verify(() => flutterConfigEnableWindowsCommand()).called(1);
+      verify(() => logger.progress('Bootstrapping')).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              '.tmp',
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'org_name': 'com.example',
+            'description': 'A Scalable app.',
+            'cupertino_icons_version': cupertinoIconsVersion,
+            'macos_ui_version': macosUiVersion,
+            'fluent_ui_version': fluentUiVersion,
+            'yaru_version': yaruVersion,
+            'yaru_icons_version': yaruIconsVersion,
+            'example': true,
+            'android': false,
+            'ios': false,
+            'web': false,
+            'linux': true,
+            'macos': true,
+            'windows': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(
+        progressLogs,
+        equals(['Generated ${generatedFiles.length} file(s)']),
+      );
+      verify(() => logger.progress('Running "flutter pub get" in .tmp'))
+          .called(1);
+      verify(() => flutterPubGetCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter gen-l10n" in .tmp'))
+          .called(1);
+      verify(() => flutterGenL10nCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter format . --fix" in .tmp'))
+          .called(1);
+      verify(() => flutterFormatFixCommand(cwd: '.tmp')).called(1);
+      verify(() => progress.complete()).called(6);
+      verify(() => logger.alert('Created a Scalable App!')).called(1);
+      expect(result, equals(ExitCode.success.code));
+    });
+
+    test(
+        'completes successfully with correct output when --android is selected.',
+        () async {
+      final argResults = MockArgResults();
+      final generator = MockMasonGenerator();
+      final command = CreateCommand(
+        logger: logger,
+        flutterInstalledCommand: flutterInstalledCommand,
+        flutterPubGetCommand: flutterPubGetCommand,
+        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroidCommand,
+        flutterConfigEnableIosCommand: flutterConfigEnableIosCommand,
+        flutterConfigEnableWebCommand: flutterConfigEnableWebCommand,
+        flutterConfigEnableLinuxCommand: flutterConfigEnableLinuxCommand,
+        flutterConfigEnableMacosCommand: flutterConfigEnableMacosCommand,
+        flutterConfigEnableWindowsCommand: flutterConfigEnableWindowsCommand,
+        flutterGenL10nCommand: flutterGenL10nCommand,
+        flutterFormatFixCommand: flutterFormatFixCommand,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['project-name']).thenReturn('my_app');
+      when(() => argResults['android']).thenReturn(true);
+      when(() => argResults.rest).thenReturn(['.tmp']);
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles);
+      final result = await command.run();
+      verify(() => flutterInstalledCommand()).called(1);
+      verify(() => logger.progress('Running "flutter config --enable-android"'))
+          .called(1);
+      verify(() => flutterConfigEnableAndroidCommand()).called(1);
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-ios"'));
+      verifyNever(() => flutterConfigEnableIosCommand());
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-web"'));
+      verifyNever(() => flutterConfigEnableWebCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-linux-desktop"'));
+      verifyNever(() => flutterConfigEnableLinuxCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-macos-desktop"'));
+      verifyNever(() => flutterConfigEnableMacosCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-windows-desktop"'));
+      verifyNever(() => flutterConfigEnableWindowsCommand());
+      verify(() => logger.progress('Bootstrapping')).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              '.tmp',
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'org_name': 'com.example',
+            'description': 'A Scalable app.',
+            'cupertino_icons_version': cupertinoIconsVersion,
+            'macos_ui_version': macosUiVersion,
+            'fluent_ui_version': fluentUiVersion,
+            'yaru_version': yaruVersion,
+            'yaru_icons_version': yaruIconsVersion,
+            'example': true,
+            'android': true,
+            'ios': false,
+            'web': false,
+            'linux': false,
+            'macos': false,
+            'windows': false,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(
+        progressLogs,
+        equals(['Generated ${generatedFiles.length} file(s)']),
+      );
+      verify(() => logger.progress('Running "flutter pub get" in .tmp'))
+          .called(1);
+      verify(() => flutterPubGetCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter gen-l10n" in .tmp'))
+          .called(1);
+      verify(() => flutterGenL10nCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter format . --fix" in .tmp'))
+          .called(1);
+      verify(() => flutterFormatFixCommand(cwd: '.tmp')).called(1);
+      verify(() => progress.complete()).called(4);
+      verify(() => logger.alert('Created a Scalable App!')).called(1);
+      expect(result, equals(ExitCode.success.code));
+    });
+
+    test('completes successfully with correct output when --ios is selected.',
+        () async {
+      final argResults = MockArgResults();
+      final generator = MockMasonGenerator();
+      final command = CreateCommand(
+        logger: logger,
+        flutterInstalledCommand: flutterInstalledCommand,
+        flutterPubGetCommand: flutterPubGetCommand,
+        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroidCommand,
+        flutterConfigEnableIosCommand: flutterConfigEnableIosCommand,
+        flutterConfigEnableWebCommand: flutterConfigEnableWebCommand,
+        flutterConfigEnableLinuxCommand: flutterConfigEnableLinuxCommand,
+        flutterConfigEnableMacosCommand: flutterConfigEnableMacosCommand,
+        flutterConfigEnableWindowsCommand: flutterConfigEnableWindowsCommand,
+        flutterGenL10nCommand: flutterGenL10nCommand,
+        flutterFormatFixCommand: flutterFormatFixCommand,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['project-name']).thenReturn('my_app');
+      when(() => argResults['ios']).thenReturn(true);
+      when(() => argResults.rest).thenReturn(['.tmp']);
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles);
+      final result = await command.run();
+      verify(() => flutterInstalledCommand()).called(1);
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-android"'));
+      verifyNever(() => flutterConfigEnableAndroidCommand());
+      verify(() => logger.progress('Running "flutter config --enable-ios"'))
+          .called(1);
+      verify(() => flutterConfigEnableIosCommand()).called(1);
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-web"'));
+      verifyNever(() => flutterConfigEnableWebCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-linux-desktop"'));
+      verifyNever(() => flutterConfigEnableLinuxCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-macos-desktop"'));
+      verifyNever(() => flutterConfigEnableMacosCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-windows-desktop"'));
+      verifyNever(() => flutterConfigEnableWindowsCommand());
+      verify(() => logger.progress('Bootstrapping')).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              '.tmp',
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'org_name': 'com.example',
+            'description': 'A Scalable app.',
+            'cupertino_icons_version': cupertinoIconsVersion,
+            'macos_ui_version': macosUiVersion,
+            'fluent_ui_version': fluentUiVersion,
+            'yaru_version': yaruVersion,
+            'yaru_icons_version': yaruIconsVersion,
+            'example': true,
+            'android': false,
+            'ios': true,
+            'web': false,
+            'linux': false,
+            'macos': false,
+            'windows': false,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(
+        progressLogs,
+        equals(['Generated ${generatedFiles.length} file(s)']),
+      );
+      verify(() => logger.progress('Running "flutter pub get" in .tmp'))
+          .called(1);
+      verify(() => flutterPubGetCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter gen-l10n" in .tmp'))
+          .called(1);
+      verify(() => flutterGenL10nCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter format . --fix" in .tmp'))
+          .called(1);
+      verify(() => flutterFormatFixCommand(cwd: '.tmp')).called(1);
+      verify(() => progress.complete()).called(4);
+      verify(() => logger.alert('Created a Scalable App!')).called(1);
+      expect(result, equals(ExitCode.success.code));
+    });
+
+    test('completes successfully with correct output when --web is selected.',
+        () async {
+      final argResults = MockArgResults();
+      final generator = MockMasonGenerator();
+      final command = CreateCommand(
+        logger: logger,
+        flutterInstalledCommand: flutterInstalledCommand,
+        flutterPubGetCommand: flutterPubGetCommand,
+        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroidCommand,
+        flutterConfigEnableIosCommand: flutterConfigEnableIosCommand,
+        flutterConfigEnableWebCommand: flutterConfigEnableWebCommand,
+        flutterConfigEnableLinuxCommand: flutterConfigEnableLinuxCommand,
+        flutterConfigEnableMacosCommand: flutterConfigEnableMacosCommand,
+        flutterConfigEnableWindowsCommand: flutterConfigEnableWindowsCommand,
+        flutterGenL10nCommand: flutterGenL10nCommand,
+        flutterFormatFixCommand: flutterFormatFixCommand,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['project-name']).thenReturn('my_app');
+      when(() => argResults['web']).thenReturn(true);
+      when(() => argResults.rest).thenReturn(['.tmp']);
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles);
+      final result = await command.run();
+      verify(() => flutterInstalledCommand()).called(1);
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-android"'));
+      verifyNever(() => flutterConfigEnableAndroidCommand());
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-ios"'));
+      verifyNever(() => flutterConfigEnableIosCommand());
+      verify(() => logger.progress('Running "flutter config --enable-web"'))
+          .called(1);
+      verify(() => flutterConfigEnableWebCommand()).called(1);
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-linux-desktop"'));
+      verifyNever(() => flutterConfigEnableLinuxCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-macos-desktop"'));
+      verifyNever(() => flutterConfigEnableMacosCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-windows-desktop"'));
+      verifyNever(() => flutterConfigEnableWindowsCommand());
+      verify(() => logger.progress('Bootstrapping')).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              '.tmp',
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'org_name': 'com.example',
+            'description': 'A Scalable app.',
+            'cupertino_icons_version': cupertinoIconsVersion,
+            'macos_ui_version': macosUiVersion,
+            'fluent_ui_version': fluentUiVersion,
+            'yaru_version': yaruVersion,
+            'yaru_icons_version': yaruIconsVersion,
+            'example': true,
+            'android': false,
+            'ios': false,
+            'web': true,
+            'linux': false,
+            'macos': false,
+            'windows': false,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(
+        progressLogs,
+        equals(['Generated ${generatedFiles.length} file(s)']),
+      );
+      verify(() => logger.progress('Running "flutter pub get" in .tmp'))
+          .called(1);
+      verify(() => flutterPubGetCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter gen-l10n" in .tmp'))
+          .called(1);
+      verify(() => flutterGenL10nCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter format . --fix" in .tmp'))
+          .called(1);
+      verify(() => flutterFormatFixCommand(cwd: '.tmp')).called(1);
+      verify(() => progress.complete()).called(4);
+      verify(() => logger.alert('Created a Scalable App!')).called(1);
+      expect(result, equals(ExitCode.success.code));
+    });
+
+    test('completes successfully with correct output when --linux is selected.',
+        () async {
+      final argResults = MockArgResults();
+      final generator = MockMasonGenerator();
+      final command = CreateCommand(
+        logger: logger,
+        flutterInstalledCommand: flutterInstalledCommand,
+        flutterPubGetCommand: flutterPubGetCommand,
+        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroidCommand,
+        flutterConfigEnableIosCommand: flutterConfigEnableIosCommand,
+        flutterConfigEnableWebCommand: flutterConfigEnableWebCommand,
+        flutterConfigEnableLinuxCommand: flutterConfigEnableLinuxCommand,
+        flutterConfigEnableMacosCommand: flutterConfigEnableMacosCommand,
+        flutterConfigEnableWindowsCommand: flutterConfigEnableWindowsCommand,
+        flutterGenL10nCommand: flutterGenL10nCommand,
+        flutterFormatFixCommand: flutterFormatFixCommand,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['project-name']).thenReturn('my_app');
+      when(() => argResults['linux']).thenReturn(true);
+      when(() => argResults.rest).thenReturn(['.tmp']);
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles);
+      final result = await command.run();
+      verify(() => flutterInstalledCommand()).called(1);
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-android"'));
+      verifyNever(() => flutterConfigEnableAndroidCommand());
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-ios"'));
+      verifyNever(() => flutterConfigEnableIosCommand());
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-web"'));
+      verifyNever(() => flutterConfigEnableWebCommand());
+      verify(() => logger.progress(
+          'Running "flutter config --enable-linux-desktop"')).called(1);
+      verify(() => flutterConfigEnableLinuxCommand()).called(1);
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-macos-desktop"'));
+      verifyNever(() => flutterConfigEnableMacosCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-windows-desktop"'));
+      verifyNever(() => flutterConfigEnableWindowsCommand());
+      verify(() => logger.progress('Bootstrapping')).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              '.tmp',
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'org_name': 'com.example',
+            'description': 'A Scalable app.',
+            'cupertino_icons_version': cupertinoIconsVersion,
+            'macos_ui_version': macosUiVersion,
+            'fluent_ui_version': fluentUiVersion,
+            'yaru_version': yaruVersion,
+            'yaru_icons_version': yaruIconsVersion,
+            'example': true,
+            'android': false,
+            'ios': false,
+            'web': false,
+            'linux': true,
+            'macos': false,
+            'windows': false,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(
+        progressLogs,
+        equals(['Generated ${generatedFiles.length} file(s)']),
+      );
+      verify(() => logger.progress('Running "flutter pub get" in .tmp'))
+          .called(1);
+      verify(() => flutterPubGetCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter gen-l10n" in .tmp'))
+          .called(1);
+      verify(() => flutterGenL10nCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter format . --fix" in .tmp'))
+          .called(1);
+      verify(() => flutterFormatFixCommand(cwd: '.tmp')).called(1);
+      verify(() => progress.complete()).called(4);
+      verify(() => logger.alert('Created a Scalable App!')).called(1);
+      expect(result, equals(ExitCode.success.code));
+    });
+
+    test('completes successfully with correct output when --macos is selected.',
+        () async {
+      final argResults = MockArgResults();
+      final generator = MockMasonGenerator();
+      final command = CreateCommand(
+        logger: logger,
+        flutterInstalledCommand: flutterInstalledCommand,
+        flutterPubGetCommand: flutterPubGetCommand,
+        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroidCommand,
+        flutterConfigEnableIosCommand: flutterConfigEnableIosCommand,
+        flutterConfigEnableWebCommand: flutterConfigEnableWebCommand,
+        flutterConfigEnableLinuxCommand: flutterConfigEnableLinuxCommand,
+        flutterConfigEnableMacosCommand: flutterConfigEnableMacosCommand,
+        flutterConfigEnableWindowsCommand: flutterConfigEnableWindowsCommand,
+        flutterGenL10nCommand: flutterGenL10nCommand,
+        flutterFormatFixCommand: flutterFormatFixCommand,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['project-name']).thenReturn('my_app');
+      when(() => argResults['macos']).thenReturn(true);
+      when(() => argResults.rest).thenReturn(['.tmp']);
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles);
+      final result = await command.run();
+      verify(() => flutterInstalledCommand()).called(1);
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-android"'));
+      verifyNever(() => flutterConfigEnableAndroidCommand());
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-ios"'));
+      verifyNever(() => flutterConfigEnableIosCommand());
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-web"'));
+      verifyNever(() => flutterConfigEnableWebCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-linux-desktop"'));
+      verifyNever(() => flutterConfigEnableLinuxCommand());
+      verify(() => logger.progress(
+          'Running "flutter config --enable-macos-desktop"')).called(1);
+      verify(() => flutterConfigEnableMacosCommand()).called(1);
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-windows-desktop"'));
+      verifyNever(() => flutterConfigEnableWindowsCommand());
+      verify(() => logger.progress('Bootstrapping')).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              '.tmp',
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'org_name': 'com.example',
+            'description': 'A Scalable app.',
+            'cupertino_icons_version': cupertinoIconsVersion,
+            'macos_ui_version': macosUiVersion,
+            'fluent_ui_version': fluentUiVersion,
+            'yaru_version': yaruVersion,
+            'yaru_icons_version': yaruIconsVersion,
+            'example': true,
+            'android': false,
+            'ios': false,
+            'web': false,
+            'linux': false,
+            'macos': true,
+            'windows': false,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(
+        progressLogs,
+        equals(['Generated ${generatedFiles.length} file(s)']),
+      );
+      verify(() => logger.progress('Running "flutter pub get" in .tmp'))
+          .called(1);
+      verify(() => flutterPubGetCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter gen-l10n" in .tmp'))
+          .called(1);
+      verify(() => flutterGenL10nCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter format . --fix" in .tmp'))
+          .called(1);
+      verify(() => flutterFormatFixCommand(cwd: '.tmp')).called(1);
+      verify(() => progress.complete()).called(4);
+      verify(() => logger.alert('Created a Scalable App!')).called(1);
+      expect(result, equals(ExitCode.success.code));
+    });
+
+    test(
+        'completes successfully with correct output when --windows is selected.',
+        () async {
+      final argResults = MockArgResults();
+      final generator = MockMasonGenerator();
+      final command = CreateCommand(
+        logger: logger,
+        flutterInstalledCommand: flutterInstalledCommand,
+        flutterPubGetCommand: flutterPubGetCommand,
+        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroidCommand,
+        flutterConfigEnableIosCommand: flutterConfigEnableIosCommand,
+        flutterConfigEnableWebCommand: flutterConfigEnableWebCommand,
+        flutterConfigEnableLinuxCommand: flutterConfigEnableLinuxCommand,
+        flutterConfigEnableMacosCommand: flutterConfigEnableMacosCommand,
+        flutterConfigEnableWindowsCommand: flutterConfigEnableWindowsCommand,
+        flutterGenL10nCommand: flutterGenL10nCommand,
+        flutterFormatFixCommand: flutterFormatFixCommand,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['project-name']).thenReturn('my_app');
+      when(() => argResults['windows']).thenReturn(true);
+      when(() => argResults.rest).thenReturn(['.tmp']);
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles);
+      final result = await command.run();
+      verify(() => flutterInstalledCommand()).called(1);
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-android"'));
+      verifyNever(() => flutterConfigEnableAndroidCommand());
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-ios"'));
+      verifyNever(() => flutterConfigEnableIosCommand());
+      verifyNever(
+          () => logger.progress('Running "flutter config --enable-web"'));
+      verifyNever(() => flutterConfigEnableWebCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-linux-desktop"'));
+      verifyNever(() => flutterConfigEnableLinuxCommand());
+      verifyNever(() =>
+          logger.progress('Running "flutter config --enable-macos-desktop"'));
+      verifyNever(() => flutterConfigEnableMacosCommand());
+      verify(() => logger.progress(
+          'Running "flutter config --enable-windows-desktop"')).called(1);
+      verify(() => flutterConfigEnableWindowsCommand()).called(1);
+      verify(() => logger.progress('Bootstrapping')).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              '.tmp',
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'org_name': 'com.example',
+            'description': 'A Scalable app.',
+            'cupertino_icons_version': cupertinoIconsVersion,
+            'macos_ui_version': macosUiVersion,
+            'fluent_ui_version': fluentUiVersion,
+            'yaru_version': yaruVersion,
+            'yaru_icons_version': yaruIconsVersion,
+            'example': true,
+            'android': false,
+            'ios': false,
+            'web': false,
+            'linux': false,
+            'macos': false,
+            'windows': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(
+        progressLogs,
+        equals(['Generated ${generatedFiles.length} file(s)']),
+      );
+      verify(() => logger.progress('Running "flutter pub get" in .tmp'))
+          .called(1);
+      verify(() => flutterPubGetCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter gen-l10n" in .tmp'))
+          .called(1);
+      verify(() => flutterGenL10nCommand(cwd: '.tmp')).called(1);
+      verify(() => logger.progress('Running "flutter format . --fix" in .tmp'))
+          .called(1);
+      verify(() => flutterFormatFixCommand(cwd: '.tmp')).called(1);
+      verify(() => progress.complete()).called(4);
+      verify(() => logger.alert('Created a Scalable App!')).called(1);
+      expect(result, equals(ExitCode.success.code));
+    });
+
+    test('completes successfully w/ custom description', () async {
+      final argResults = MockArgResults();
+      final generator = MockMasonGenerator();
+      final command = CreateCommand(
+        logger: logger,
+        flutterInstalledCommand: flutterInstalledCommand,
+        flutterPubGetCommand: flutterPubGetCommand,
+        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroidCommand,
+        flutterConfigEnableIosCommand: flutterConfigEnableIosCommand,
+        flutterConfigEnableWebCommand: flutterConfigEnableWebCommand,
+        flutterConfigEnableLinuxCommand: flutterConfigEnableLinuxCommand,
+        flutterConfigEnableMacosCommand: flutterConfigEnableMacosCommand,
+        flutterConfigEnableWindowsCommand: flutterConfigEnableWindowsCommand,
+        flutterGenL10nCommand: flutterGenL10nCommand,
+        flutterFormatFixCommand: flutterFormatFixCommand,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['project-name']).thenReturn('my_app');
+      when(() => argResults['desc']).thenReturn('some description');
+      when(() => argResults.rest).thenReturn(['.tmp']);
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles);
       final result = await command.run();
       expect(result, equals(ExitCode.success.code));
       verify(
@@ -600,10 +1499,7 @@ void main() {
               vars: any(named: 'vars'),
               logger: any(named: 'logger'),
             ),
-          ).thenAnswer((_) async {
-            File(p.join('.tmp', 'pubspec.yaml')).writeAsStringSync(pubspec);
-            return generatedFiles;
-          });
+          ).thenAnswer((_) async => generatedFiles);
           final result = await command.run();
           expect(result, equals(ExitCode.success.code));
           verify(

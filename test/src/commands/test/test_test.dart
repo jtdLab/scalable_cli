@@ -157,7 +157,7 @@ void main() {
       ).called(1);
     });
 
-    test('exits with 70 when tests do not pass', () async {
+    test('exits with 69 when tests do not pass', () async {
       when(
         () => flutterTest(
           cwd: any(named: 'cwd'),

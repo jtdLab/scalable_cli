@@ -1,14 +1,11 @@
 /// Represents a group of [Platform]s.
 enum PlatformGroup {
-  all,
   mobile,
   desktop;
 
   /// Returns the [Platform]s that belong to this.
   List<Platform> get platforms {
     switch (this) {
-      case PlatformGroup.all:
-        return Platform.values;
       case PlatformGroup.mobile:
         return [Platform.android, Platform.ios];
       case PlatformGroup.desktop:

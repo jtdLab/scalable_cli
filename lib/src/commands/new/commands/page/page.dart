@@ -30,8 +30,8 @@ class PageCommand extends ComponentCommand
       )
       ..addSeparator('')
       ..addPlatformFlags(
-        platformGroupHelp: (platformGroup) => 'The page gets generated for '
-            '${platformGroup == PlatformGroup.all ? 'all enabled platforms' : platformGroup.platforms.prettyEnumeration}.',
+        platformGroupHelp: (platformGroup) =>
+            'The page gets generated for ${platformGroup.platforms.prettyEnumeration}.',
         platformHelp: (platform) =>
             'The page gets generated for the ${platform.prettyName} platform.',
       )

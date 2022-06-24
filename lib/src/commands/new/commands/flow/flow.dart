@@ -28,8 +28,8 @@ class FlowCommand extends ComponentCommand
       )
       ..addSeparator('')
       ..addPlatformFlags(
-        platformGroupHelp: (platformGroup) => 'The flow gets generated for '
-            '${platformGroup == PlatformGroup.all ? 'all enabled platforms' : platformGroup.platforms.prettyEnumeration}.',
+        platformGroupHelp: (platformGroup) =>
+            'The flow gets generated for ${platformGroup.platforms.prettyEnumeration}.',
         platformHelp: (platform) =>
             'The flow gets generated for the ${platform.prettyName} platform.',
       );
