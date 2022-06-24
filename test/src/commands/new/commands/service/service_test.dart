@@ -42,5 +42,9 @@ void main() {
       final command = ServiceCommand();
       expect(command, isNotNull);
     });
+
+    test('completes successfully with correct output', () async {
+      // TODO
+    });
   });
 }

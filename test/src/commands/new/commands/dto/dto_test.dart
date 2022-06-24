@@ -45,5 +45,9 @@ void main() {
       final command = DtoCommand();
       expect(command, isNotNull);
     });
+
+    test('completes successfully with correct output', () async {
+      // TODO
+    });
   });
 }

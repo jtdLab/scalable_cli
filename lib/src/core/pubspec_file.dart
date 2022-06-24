@@ -56,6 +56,9 @@ class PubspecFile extends ProjectFile {
     }
   }
 
+  /// Wheter this exists.
+  bool get exists => file.existsSync();
+
   // TODO better name
   void updateFlutterAssets() {
     final rootDir = _rootDir.directory;

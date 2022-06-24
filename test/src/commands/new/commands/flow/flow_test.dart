@@ -52,5 +52,9 @@ void main() {
       final command = FlowCommand();
       expect(command, isNotNull);
     });
+
+    test('completes successfully with correct output', () async {
+      // TODO
+    });
   });
 }

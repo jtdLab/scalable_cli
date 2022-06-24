@@ -101,7 +101,7 @@ abstract class PlatformCommand extends Command<int>
               '${lightYellow.wrap(_platform.prettyName)} already enabled.',
             );
 
-            return ExitCode.success.code;
+            return ExitCode.config.code;
           }
 
           await preGenerateHook();

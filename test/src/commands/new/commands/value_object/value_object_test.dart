@@ -49,5 +49,9 @@ void main() {
       final command = ValueObjectCommand();
       expect(command, isNotNull);
     });
+
+    test('completes successfully with correct output', () async {
+      // TODO
+    });
   });
 }

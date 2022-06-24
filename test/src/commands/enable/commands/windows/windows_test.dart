@@ -1,6 +1,8 @@
 import 'package:mason/mason.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:scalable_cli/src/commands/enable/commands/commands.dart';
 import 'package:test/test.dart';
+import 'package:universal_io/io.dart';
 
 import '../../../../../helpers/helpers.dart';
 
@@ -18,7 +20,7 @@ const expectedUsage = [
 
 void main() {
   group('windows', () {
-    test('m is a valid alias', () {
+    test('win is a valid alias', () {
       final command = WindowsCommand();
       expect(command.aliases, contains('win'));
     });
@@ -41,6 +43,28 @@ void main() {
     test('can be instantiated without explicit logger', () {
       final command = WindowsCommand();
       expect(command, isNotNull);
+    });
+
+    test(
+      'throws pubspec not found exception '
+      'when no pubspec.yaml exists',
+      withRunner((commandRunner, logger, printLogs) async {
+        final directory = Directory.systemTemp.createTempSync();
+        Directory.current = directory.path;
+        final result = await commandRunner.run(['enable', 'windows']);
+        expect(result, equals(ExitCode.noInput.code));
+        verify(() {
+          logger.err(any(that: contains('Could not find a pubspec.yaml in')));
+        }).called(1);
+      }),
+    );
+
+    test('completes successfully with correct output', () {
+      // TODO
+    });
+
+    test('exits with 78 when windows is already enabled', () {
+      // TODO
     });
   });
 }

@@ -25,6 +25,7 @@ class AssetsCommand extends TargetCommand {
   @override
   Future<int> run() => cwdContainsPubspec(
         onContainsPubspec: () async {
+          // TODO cwd pubspec and _pubspec must not be pointing to the same file thats a problem
           final runProgress = logger.progress('Generating assets');
           _pubspec.updateFlutterAssets();
           _pubspec.updateFlutterFonts();

@@ -42,5 +42,9 @@ void main() {
       final command = BlocCommand();
       expect(command, isNotNull);
     });
+
+    test('completes successfully with correct output', () async {
+      // TODO
+    });
   });
 }

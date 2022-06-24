@@ -1,6 +1,8 @@
 import 'package:mason/mason.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:scalable_cli/src/commands/enable/commands/commands.dart';
 import 'package:test/test.dart';
+import 'package:universal_io/io.dart';
 
 import '../../../../../helpers/helpers.dart';
 
@@ -18,6 +20,12 @@ const expectedUsage = [
 
 void main() {
   group('android', () {
+    final cwd = Directory.current;
+
+    setUp(() {
+      Directory.current = cwd;
+    });
+
     test('a is a valid alias', () {
       final command = AndroidCommand();
       expect(command.aliases, contains('a'));
@@ -41,6 +49,28 @@ void main() {
     test('can be instantiated without explicit logger', () {
       final command = AndroidCommand();
       expect(command, isNotNull);
+    });
+
+    test(
+      'throws pubspec not found exception '
+      'when no pubspec.yaml exists',
+      withRunner((commandRunner, logger, printLogs) async {
+        final directory = Directory.systemTemp.createTempSync();
+        Directory.current = directory.path;
+        final result = await commandRunner.run(['enable', 'android']);
+        expect(result, equals(ExitCode.noInput.code));
+        verify(() {
+          logger.err(any(that: contains('Could not find a pubspec.yaml in')));
+        }).called(1);
+      }),
+    );
+
+    test('completes successfully with correct output', () {
+      // TODO
+    });
+
+    test('exits with 78 when android is already enabled', () {
+      // TODO
     });
   });
 }
