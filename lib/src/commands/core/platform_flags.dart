@@ -40,7 +40,7 @@ mixin PlatformGetters on TestableArgResults {
   // TODO doc of getters is not correct
 
   /// Wheter the project supports Android, iOS, Web, Linux, macOS and Windows.
-  bool get _all => argResults['all'] ?? false;
+  //bool get _all => argResults['all'] ?? false;
 
   /// Wheter the project supports Android and iOS.
   bool get _mobile => argResults['mobile'] ?? false;
@@ -49,20 +49,20 @@ mixin PlatformGetters on TestableArgResults {
   bool get _desktop => argResults['desktop'] ?? false;
 
   /// Wheter the project supports Android.
-  bool get android => (argResults['android'] ?? false) || _mobile || _all;
+  bool get android => (argResults['android'] ?? false) || _mobile;
 
   /// Wheter the project supports iOS.
-  bool get ios => (argResults['ios'] ?? false) || _mobile || _all;
+  bool get ios => (argResults['ios'] ?? false) || _mobile;
 
   /// Wheter the project supports Web.
-  bool get web => (argResults['web'] ?? false) || _all;
+  bool get web => (argResults['web'] ?? false);
 
   /// Wheter the project supports Linux.
-  bool get linux => (argResults['linux']) ?? false || _desktop || _all;
+  bool get linux => (argResults['linux']) ?? false || _desktop;
 
   /// Wheter the project supports macOS.
-  bool get macos => (argResults['macos']) ?? false || _desktop || _all;
+  bool get macos => (argResults['macos']) ?? false || _desktop;
 
   /// Wheter the project supports Windows.
-  bool get windows => (argResults['windows']) ?? false || _desktop || _all;
+  bool get windows => (argResults['windows']) ?? false || _desktop;
 }

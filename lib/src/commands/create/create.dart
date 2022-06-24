@@ -16,6 +16,7 @@ import 'package:universal_io/io.dart';
 
 const _defaultDescription = 'A Scalable app.';
 const _defaultExample = true;
+
 // A valid Dart identifier that can be used for a package, i.e. no
 // capital letters.
 // https://dart.dev/guides/language/language-tour#important-concepts
@@ -112,7 +113,7 @@ class CreateCommand extends ScalableCommand
 
   @override
   Future<int> run() async {
-    //final orgName = super.orgName;
+    //final orgName = super.orgName; // TODO remove
 
     final isFlutterInstalled = await _flutterInstalledCommand();
     if (!isFlutterInstalled) {
@@ -121,56 +122,68 @@ class CreateCommand extends ScalableCommand
       return ExitCode.unavailable.code;
     }
 
+    // TODO cleaner
+    bool android = super.android;
+    bool ios = super.ios;
+    bool web = super.web;
+    bool linux = super.linux;
+    bool macos = super.macos;
+    bool windows = super.windows;
     if (!(android || ios || web || linux || macos || windows)) {
-      throw UsageException('No platform chosen.', usage);
+      android = true;
+      ios = true;
+      web = true;
+      linux = true;
+      macos = true;
+      windows = true;
     }
 
     final outputDirectory = _outputDirectory;
 
     if (android) {
-      final enableAndroidDone = logger.progress(
+      final enableAndroidProgress = logger.progress(
         'Running "flutter config --enable-android"',
       );
       await _flutterConfigEnableAndroidCommand();
-      enableAndroidDone();
+      enableAndroidProgress.complete();
     }
     if (ios) {
-      final enableIosDone = logger.progress(
+      final enableIosProgress = logger.progress(
         'Running "flutter config --enable-ios"',
       );
       await _flutterConfigEnableIosCommand();
-      enableIosDone();
+      enableIosProgress.complete();
     }
     if (web) {
-      final enableWebDone = logger.progress(
+      final enableWebProgress = logger.progress(
         'Running "flutter config --enable-web"',
       );
       await _flutterConfigEnableWebCommand();
-      enableWebDone();
+      enableWebProgress.complete();
     }
     if (linux) {
-      final enableLinuxDone = logger.progress(
+      final enableLinuxProgress = logger.progress(
         'Running "flutter config --enable-linux-desktop"',
       );
       await _flutterConfigEnableLinuxCommand();
-      enableLinuxDone();
+      enableLinuxProgress.complete();
     }
     if (macos) {
-      final enableMacosDone = logger.progress(
+      final enableMacosProgress = logger.progress(
         'Running "flutter config --enable-macos-desktop"',
       );
       await _flutterConfigEnableMacosCommand();
-      enableMacosDone();
+      enableMacosProgress.complete();
     }
     if (windows) {
-      final enableWindowsDone = logger.progress(
+      final enableWindowsProgress = logger.progress(
         'Running "flutter config --enable-windows-desktop"',
       );
       await _flutterConfigEnableWindowsCommand();
-      enableWindowsDone();
+      enableWindowsProgress.complete();
     }
 
-    final generateDone = logger.progress('Bootstrapping');
+    final generateProgress = logger.progress('Bootstrapping');
     final generator = await _generator(scalableCoreBundle);
     final files = await generator.generate(
       DirectoryGeneratorTarget(outputDirectory),
@@ -193,25 +206,25 @@ class CreateCommand extends ScalableCommand
       },
       logger: logger,
     );
-    generateDone('Generated ${files.length} file(s)');
+    generateProgress.complete('Generated ${files.length} file(s)');
 
-    final installDependenciesDone = logger.progress(
+    final installDependenciesProgress = logger.progress(
       'Running "flutter pub get" in ${outputDirectory.path}',
     );
     await _flutterPubGetCommand(cwd: outputDirectory.path);
-    installDependenciesDone();
+    installDependenciesProgress.complete();
 
-    final generateLocalizationsDone = logger.progress(
+    final generateLocalizationsProgress = logger.progress(
       'Running "flutter gen-l10n" in ${outputDirectory.path}',
     );
     await _flutterGenL10nCommand(cwd: outputDirectory.path);
-    generateLocalizationsDone();
+    generateLocalizationsProgress.complete();
 
-    final formatDone = logger.progress(
+    final formatProgress = logger.progress(
       'Running "flutter format . --fix" in ${outputDirectory.path}',
     );
     await _flutterFormatFixCommand(cwd: outputDirectory.path);
-    formatDone();
+    formatProgress.complete();
 
     logger
       ..info('\n')
