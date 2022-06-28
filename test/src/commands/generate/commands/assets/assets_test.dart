@@ -1,6 +1,8 @@
 import 'package:mason/mason.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:scalable_cli/src/commands/generate/commands/commands.dart';
+import 'package:scalable_cli/src/core/assets_file.dart';
+import 'package:scalable_cli/src/core/pubspec_file.dart';
 
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
@@ -17,8 +19,32 @@ const expectedUsage = [
       'Run "scalable help" to see global options.'
 ];
 
+class MockLogger extends Mock implements Logger {}
+
+class MockProgress extends Mock implements Progress {}
+
+class MockPubspecFile extends Mock implements PubspecFile {}
+
+class MockAssetsFile extends Mock implements AssetsFile {}
+
 void main() {
   group('assets', () {
+    late List<String> progressLogs;
+    late Logger logger;
+    late Progress progress;
+
+    setUp(() {
+      progressLogs = <String>[];
+
+      logger = MockLogger();
+      progress = MockProgress();
+      when(() => progress.complete(any())).thenAnswer((_) {
+        final message = _.positionalArguments.elementAt(0) as String?;
+        if (message != null) progressLogs.add(message);
+      });
+      when(() => logger.progress(any())).thenReturn(progress);
+    });
+
     test(
       'help',
       withRunner((commandRunner, logger, printLogs) async {
@@ -56,7 +82,24 @@ void main() {
     );
 
     test('completes successfully with correct output', () async {
-      // TODO
+      final pubspec = MockPubspecFile();
+      final assetsFile = MockAssetsFile();
+      final command = AssetsCommand(
+        logger: logger,
+        pubspec: pubspec,
+        assets: assetsFile,
+      );
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.updateFlutterAssets()).thenReturn(null);
+      when(() => pubspec.updateFlutterFonts()).thenReturn(null);
+      when(() => assetsFile.generate()).thenReturn(null);
+      final result = await command.run();
+      verify(() => logger.progress('Generating assets'));
+      verify(() => pubspec.updateFlutterAssets()).called(1);
+      verify(() => pubspec.updateFlutterFonts()).called(1);
+      verify(() => assetsFile.generate()).called(1);
+      expect(progressLogs, ['Generated assets']);
+      expect(result, ExitCode.success.code);
     });
   });
 }

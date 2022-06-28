@@ -48,8 +48,8 @@ class LinuxCommand extends PlatformCommand
 
   @override
   Future<void> preGenerateHook() async {
-    _pubspec.addDependency('yaru', yaruVersion);
-    _pubspec.addDependency('yaru_icons', yaruIconsVersion);
+    pubspec.addDependency('yaru', yaruVersion);
+    pubspec.addDependency('yaru_icons', yaruIconsVersion);
     await _flutterPubGet(cwd: _root.path);
   }
 }

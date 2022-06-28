@@ -48,7 +48,7 @@ class IosCommand extends PlatformCommand
 
   @override
   Future<void> preGenerateHook() async {
-    _pubspec.addDependency('cupertino_icons', cupertinoIconsVersion);
+    pubspec.addDependency('cupertino_icons', cupertinoIconsVersion);
     await _flutterPubGet(cwd: _root.path);
   }
 }

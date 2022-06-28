@@ -7,11 +7,13 @@ class CodeCommand extends TargetCommand {
   /// {@macro generate_code_command}
   CodeCommand({
     Logger? logger,
+    PubspecFile? pubspec,
     FlutterPubRunBuildRunnerBuildDeleteConflictingOutputsCommand?
         flutterPubRunBuildRunnerBuildDeleteConflictingOutputs,
     InjectionConfigFile? injectionConfig,
     Set<RouterGrFile>? routerGrs,
-  })  : _flutterPubRunBuildRunnerBuildDeleteConflictingOutputs =
+  })  : pubspec = pubspec ?? Project.pubspec,
+        _flutterPubRunBuildRunnerBuildDeleteConflictingOutputs =
             flutterPubRunBuildRunnerBuildDeleteConflictingOutputs ??
                 Flutter.pubRunBuildRunnerBuildDeleteConflictingOutputs,
         _injectionConfig = injectionConfig ?? Project.injectionConfig,
@@ -21,6 +23,8 @@ class CodeCommand extends TargetCommand {
           target: Target.code,
         );
 
+  @override
+  final PubspecFile pubspec;
   final FlutterPubRunBuildRunnerBuildDeleteConflictingOutputsCommand
       _flutterPubRunBuildRunnerBuildDeleteConflictingOutputs;
   final InjectionConfigFile _injectionConfig;
@@ -30,19 +34,18 @@ class CodeCommand extends TargetCommand {
   String get description => '(Re-)Generates the code of this project.';
 
   @override
-  Future<int> run() => cwdContainsPubspec(
-        onContainsPubspec: () async {
-          final runProgress =
-              logger.progress('Generating ${lightYellow.wrap('code')}');
-          await _flutterPubRunBuildRunnerBuildDeleteConflictingOutputs();
+  Future<int> run() => runWhenPubspecExists(() async {
+        final runProgress =
+            logger.progress('Generating ${lightYellow.wrap('code')}');
+        await _flutterPubRunBuildRunnerBuildDeleteConflictingOutputs();
 
-          _injectionConfig.addCoverageIgnoreFile();
-          for (final routerGr in _routerGrs) {
-            routerGr.addCoverageIgnoreFile();
-          }
-          runProgress.complete('Generated ${lightYellow.wrap('code')}');
+        _injectionConfig.addCoverageIgnoreFile();
+        for (final routerGr in _routerGrs) {
+          routerGr.addCoverageIgnoreFile();
+        }
+        runProgress.complete('Generated ${lightYellow.wrap('code')}');
 
-          return ExitCode.success.code;
-        },
-      );
+        return ExitCode.success.code;
+        
+      });
 }

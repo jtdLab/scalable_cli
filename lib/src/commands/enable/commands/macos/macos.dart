@@ -48,8 +48,8 @@ class MacosCommand extends PlatformCommand
 
   @override
   Future<void> preGenerateHook() async {
-    _pubspec.addDependency('cupertino_icons', cupertinoIconsVersion);
-    _pubspec.addDependency('macos_ui', macosUiVersion);
+    pubspec.addDependency('cupertino_icons', cupertinoIconsVersion);
+    pubspec.addDependency('macos_ui', macosUiVersion);
     await _flutterPubGet(cwd: _root.path);
   }
 }

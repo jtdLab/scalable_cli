@@ -9,30 +9,28 @@ class AssetsCommand extends TargetCommand {
     Logger? logger,
     PubspecFile? pubspec,
     AssetsFile? assets,
-  })  : _pubspec = pubspec ?? Project.pubspec,
+  })  : pubspec = pubspec ?? Project.pubspec,
         _assets = assets ?? Project.assets,
         super(
           logger: logger ?? Logger(),
           target: Target.assets,
         );
 
-  final PubspecFile _pubspec;
+  @override
+  final PubspecFile pubspec;
   final AssetsFile _assets;
 
   @override
   String get description => '(Re-)Generates the assets of this project.';
 
   @override
-  Future<int> run() => cwdContainsPubspec(
-        onContainsPubspec: () async {
-          // TODO cwd pubspec and _pubspec must not be pointing to the same file thats a problem
-          final runProgress = logger.progress('Generating assets');
-          _pubspec.updateFlutterAssets();
-          _pubspec.updateFlutterFonts();
-          _assets.generate();
-          runProgress.complete('Generated assets');
+  Future<int> run() => runWhenPubspecExists(() async {
+        final runProgress = logger.progress('Generating assets');
+        pubspec.updateFlutterAssets();
+        pubspec.updateFlutterFonts();
+        _assets.generate();
+        runProgress.complete('Generated assets');
 
-          return ExitCode.success.code;
-        },
-      );
+        return ExitCode.success.code;
+      });
 }

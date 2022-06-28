@@ -9,50 +9,48 @@ mixin PlatformGenerator on ComponentCommand, PlatformGetters {
   // TODO mobile and desktop deosnt work yet is not location sensitive doest care what platforms are enabled
 
   @override
-  Future<int> run() => cwdContainsPubspec(
-        onContainsPubspec: () async {
-          // TODO cleaner
-          bool android = super.android;
-          bool ios = super.ios;
-          bool web = super.web;
-          bool linux = super.linux;
-          bool macos = super.macos;
-          bool windows = super.windows;
-          if (!(android || ios || web || linux || macos || windows)) {
-            android = true;
-            ios = true;
-            web = true;
-            linux = true;
-            macos = true;
-            windows = true;
-          }
+  Future<int> run() => runWhenPubspecExists(() async {
+        // TODO cleaner
+        bool android = super.android;
+        bool ios = super.ios;
+        bool web = super.web;
+        bool linux = super.linux;
+        bool macos = super.macos;
+        bool windows = super.windows;
+        if (!(android || ios || web || linux || macos || windows)) {
+          android = true;
+          ios = true;
+          web = true;
+          linux = true;
+          macos = true;
+          windows = true;
+        }
 
-          final name = _name;
+        final name = _name;
 
-          final runProgress = logger.progress(
-            '''Generating ${lightYellow.wrap('$name${_component.name.pascalCase}')}''',
-          );
-          final androidFiles = await _generate(Platform.android, android);
-          final iosFiles = await _generate(Platform.ios, ios);
-          final webFiles = await _generate(Platform.web, web);
-          final linuxFiles = await _generate(Platform.linux, linux);
-          final macosFiles = await _generate(Platform.macos, macos);
-          final windowsFiles = await _generate(Platform.windows, windows);
-          runProgress.complete(
-            '''Generated ${lightYellow.wrap('$name${_component.name.pascalCase}')}''',
-          );
+        final runProgress = logger.progress(
+          '''Generating ${lightYellow.wrap('$name${_component.name.pascalCase}')}''',
+        );
+        final androidFiles = await _generate(Platform.android, android);
+        final iosFiles = await _generate(Platform.ios, ios);
+        final webFiles = await _generate(Platform.web, web);
+        final linuxFiles = await _generate(Platform.linux, linux);
+        final macosFiles = await _generate(Platform.macos, macos);
+        final windowsFiles = await _generate(Platform.windows, windows);
+        runProgress.complete(
+          '''Generated ${lightYellow.wrap('$name${_component.name.pascalCase}')}''',
+        );
 
-          logger.info('');
-          _logGenerateResults(androidFiles, 'Android:', 'android');
-          _logGenerateResults(iosFiles, 'iOS:', 'ios');
-          _logGenerateResults(webFiles, 'Web:', 'web');
-          _logGenerateResults(linuxFiles, 'Linux:', 'linux');
-          _logGenerateResults(macosFiles, 'macOS:', 'macos');
-          _logGenerateResults(windowsFiles, 'Windows:', 'windows');
+        logger.info('');
+        _logGenerateResults(androidFiles, 'Android:', 'android');
+        _logGenerateResults(iosFiles, 'iOS:', 'ios');
+        _logGenerateResults(webFiles, 'Web:', 'web');
+        _logGenerateResults(linuxFiles, 'Linux:', 'linux');
+        _logGenerateResults(macosFiles, 'macOS:', 'macos');
+        _logGenerateResults(windowsFiles, 'Windows:', 'windows');
 
-          return ExitCode.success.code;
-        },
-      );
+        return ExitCode.success.code;
+      });
 
   IsEnabledInProject get _isEnabledInProject;
 

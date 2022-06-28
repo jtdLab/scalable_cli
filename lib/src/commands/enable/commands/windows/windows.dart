@@ -48,7 +48,7 @@ class WindowsCommand extends PlatformCommand
 
   @override
   Future<void> preGenerateHook() async {
-    _pubspec.addDependency('fluent_ui', fluentUiVersion);
+    pubspec.addDependency('fluent_ui', fluentUiVersion);
     await _flutterPubGet(cwd: _root.path);
   }
 }

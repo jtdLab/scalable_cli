@@ -3,7 +3,7 @@ import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as p;
 import 'package:recase/recase.dart';
-import 'package:scalable_cli/src/commands/core/cwd_contains_pubspec.dart';
+import 'package:scalable_cli/src/commands/core/pubspec_required.dart';
 import 'package:scalable_cli/src/commands/core/generator_builder.dart';
 import 'package:scalable_cli/src/commands/core/is_enabled_in_project.dart';
 import 'package:scalable_cli/src/commands/core/logging.dart';
@@ -73,18 +73,17 @@ const _defaultName = 'My';
 /// Base class for all new sub commands.
 /// {@endtemplate}
 abstract class ComponentCommand extends Command<int>
-    with Logging, TestableArgResults, CwdContainsPubspec {
+    with Logging, TestableArgResults, PubspecRequired {
   // TODO output dir getters should be part of this class componentcommand and not mixin
   /// {@macro component_command}
   ComponentCommand({
     required this.logger,
     required RootDir root,
-    required PubspecFile pubspec,
+    required this.pubspec,
     required Component component,
     required MasonBundle bundle,
     required GeneratorBuilder generator,
   })  : _root = root,
-        _pubspec = pubspec,
         _component = component,
         _bundle = bundle,
         _generator = generator;
@@ -92,7 +91,8 @@ abstract class ComponentCommand extends Command<int>
   @override
   final Logger logger;
   final RootDir _root;
-  final PubspecFile _pubspec;
+  @override
+  final PubspecFile pubspec;
   final Component _component;
   final MasonBundle _bundle;
   final GeneratorBuilder _generator;
@@ -111,7 +111,7 @@ abstract class ComponentCommand extends Command<int>
   String get invocation => 'scalable new $name';
 
   /// Gets the project name
-  String get _projectName => _pubspec.name;
+  String get _projectName => pubspec.name;
 
   /// Gets the output dir.
   String get _outputDir => argResults['output-dir'];
