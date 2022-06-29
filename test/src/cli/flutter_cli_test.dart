@@ -229,6 +229,10 @@ void main() {
   final cwd = Directory.current;
 
   group('Flutter', () {
+    group('.installed', () {
+      // TODO implement
+    });
+
     group('.pubGet', () {
       test('throws when there is no pubspec.yaml', () {
         expectLater(
@@ -273,6 +277,42 @@ void main() {
           completes,
         );
       });
+    });
+
+    group('.genl10n', () {
+      // TODO implement
+    });
+
+    group('.formatFix', () {
+      // TODO implement
+    });
+
+    group('.configEnableAndroid', () {
+      // TODO implement
+    });
+
+    group('.configEnableIos', () {
+      // TODO implement
+    });
+
+    group('.configEnableWeb', () {
+      // TODO implement
+    });
+
+    group('.configEnableLinux', () {
+      // TODO implement
+    });
+
+    group('.configEnableMacos', () {
+      // TODO implement
+    });
+
+    group('.configEnableWindows', () {
+      // TODO implement
+    });
+
+    group('.pubRunBuildRunnerBuildDeleteConflictingOutputs', () {
+      // TODO implement
     });
 
     group('.test', () {
