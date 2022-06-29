@@ -15,7 +15,7 @@ class WindowsCommand extends PlatformCommand
     IsEnabledInProject? isEnabledInProject,
     FlutterConfigEnablePlatformCommand? flutterConfigEnableWindows,
     FlutterPubGetCommand? flutterPubGet,
-    FlutterFormatFixCommand? flutterFormatFixCommand,
+    FlutterFormatFixCommand? flutterFormatFix,
     GeneratorBuilder? generator,
   })  : _flutterPubGet = flutterPubGet ?? Flutter.pubGet,
         super(
@@ -28,7 +28,7 @@ class WindowsCommand extends PlatformCommand
           isEnabledInProject: isEnabledInProject ?? Project.isEnabled,
           flutterConfigEnablePlatform:
               flutterConfigEnableWindows ?? Flutter.configEnableWindows,
-          flutterFormatFixCommand: flutterFormatFixCommand ?? Flutter.formatFix,
+          flutterFormatFixCommand: flutterFormatFix ?? Flutter.formatFix,
           platform: Platform.windows,
           bundle: windowsBundle,
           generator: generator ?? MasonGenerator.fromBundle,

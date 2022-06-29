@@ -14,7 +14,7 @@ class AndroidCommand extends PlatformCommand
     InjectionTestFile? injectableTest,
     IsEnabledInProject? isEnabledInProject,
     FlutterConfigEnablePlatformCommand? flutterConfigEnableAndroid,
-    FlutterFormatFixCommand? flutterFormatFixCommand,
+    FlutterFormatFixCommand? flutterFormatFix,
     GeneratorBuilder? generator,
   }) : super(
           logger: logger ?? Logger(),
@@ -26,7 +26,7 @@ class AndroidCommand extends PlatformCommand
           isEnabledInProject: isEnabledInProject ?? Project.isEnabled,
           flutterConfigEnablePlatform:
               flutterConfigEnableAndroid ?? Flutter.configEnableAndroid,
-          flutterFormatFixCommand: flutterFormatFixCommand ?? Flutter.formatFix,
+          flutterFormatFixCommand: flutterFormatFix ?? Flutter.formatFix,
           platform: Platform.android,
           bundle: androidBundle,
           generator: generator ?? MasonGenerator.fromBundle,

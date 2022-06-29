@@ -85,23 +85,22 @@ abstract class PlatformCommand extends Command<int>
   String get name => _platform.name;
 
   @override
-  String get invocation => 'scalable enable $name';
+  String get invocation =>
+      'scalable enable $name'; // TODO needed or is the framwork doing it itselfe
 
   @override
   Future<int> run() => runWhenPubspecExists(() async {
-        final runProgress = logger.progress(
-          'Enabling ${lightYellow.wrap(_platform.prettyName)}',
-        );
-
-        await _flutterConfigEnablePlatform();
-
         if (_isEnabledInProject(_platform)) {
-          runProgress.complete(
-            '${lightYellow.wrap(_platform.prettyName)} already enabled.',
-          );
+          logger.err('${_platform.prettyName} already enabled.');
 
           return ExitCode.config.code;
         }
+
+        await _flutterConfigEnablePlatform();
+
+        final runProgress = logger.progress(
+          'Enabling ${lightYellow.wrap(_platform.prettyName)}',
+        );
 
         await preGenerateHook();
 
@@ -109,7 +108,7 @@ abstract class PlatformCommand extends Command<int>
         await generator.generate(
           DirectoryGeneratorTarget(_root.directory),
           vars: {
-            'projectName': _projectName,
+            'projectName': _projectName, // TODO with underscore
             ...vars,
           },
           logger: logger,

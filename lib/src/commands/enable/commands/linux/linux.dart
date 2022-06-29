@@ -15,7 +15,7 @@ class LinuxCommand extends PlatformCommand
     IsEnabledInProject? isEnabledInProject,
     FlutterConfigEnablePlatformCommand? flutterConfigEnableLinux,
     FlutterPubGetCommand? flutterPubGet,
-    FlutterFormatFixCommand? flutterFormatFixCommand,
+    FlutterFormatFixCommand? flutterFormatFix,
     GeneratorBuilder? generator,
   })  : _flutterPubGet = flutterPubGet ?? Flutter.pubGet,
         super(
@@ -28,7 +28,7 @@ class LinuxCommand extends PlatformCommand
           isEnabledInProject: isEnabledInProject ?? Project.isEnabled,
           flutterConfigEnablePlatform:
               flutterConfigEnableLinux ?? Flutter.configEnableLinux,
-          flutterFormatFixCommand: flutterFormatFixCommand ?? Flutter.formatFix,
+          flutterFormatFixCommand: flutterFormatFix ?? Flutter.formatFix,
           platform: Platform.linux,
           bundle: linuxBundle,
           generator: generator ?? MasonGenerator.fromBundle,

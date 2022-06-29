@@ -46,6 +46,5 @@ class CodeCommand extends TargetCommand {
         runProgress.complete('Generated ${lightYellow.wrap('code')}');
 
         return ExitCode.success.code;
-        
       });
 }

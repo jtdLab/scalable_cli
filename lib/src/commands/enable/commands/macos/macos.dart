@@ -15,7 +15,7 @@ class MacosCommand extends PlatformCommand
     IsEnabledInProject? isEnabledInProject,
     FlutterConfigEnablePlatformCommand? flutterConfigEnableMacos,
     FlutterPubGetCommand? flutterPubGet,
-    FlutterFormatFixCommand? flutterFormatFixCommand,
+    FlutterFormatFixCommand? flutterFormatFix,
     GeneratorBuilder? generator,
   })  : _flutterPubGet = flutterPubGet ?? Flutter.pubGet,
         super(
@@ -28,7 +28,7 @@ class MacosCommand extends PlatformCommand
           isEnabledInProject: isEnabledInProject ?? Project.isEnabled,
           flutterConfigEnablePlatform:
               flutterConfigEnableMacos ?? Flutter.configEnableMacos,
-          flutterFormatFixCommand: flutterFormatFixCommand ?? Flutter.formatFix,
+          flutterFormatFixCommand: flutterFormatFix ?? Flutter.formatFix,
           platform: Platform.macos,
           bundle: macosBundle,
           generator: generator ?? MasonGenerator.fromBundle,

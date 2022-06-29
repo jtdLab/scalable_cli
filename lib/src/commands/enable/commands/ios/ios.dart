@@ -15,7 +15,7 @@ class IosCommand extends PlatformCommand
     IsEnabledInProject? isEnabledInProject,
     FlutterConfigEnablePlatformCommand? flutterConfigEnableIos,
     FlutterPubGetCommand? flutterPubGet,
-    FlutterFormatFixCommand? flutterFormatFixCommand,
+    FlutterFormatFixCommand? flutterFormatFix,
     GeneratorBuilder? generator,
   })  : _flutterPubGet = flutterPubGet ?? Flutter.pubGet,
         super(
@@ -28,7 +28,7 @@ class IosCommand extends PlatformCommand
           isEnabledInProject: isEnabledInProject ?? Project.isEnabled,
           flutterConfigEnablePlatform:
               flutterConfigEnableIos ?? Flutter.configEnableIos,
-          flutterFormatFixCommand: flutterFormatFixCommand ?? Flutter.formatFix,
+          flutterFormatFixCommand: flutterFormatFix ?? Flutter.formatFix,
           platform: Platform.ios,
           bundle: iosBundle,
           generator: generator ?? MasonGenerator.fromBundle,

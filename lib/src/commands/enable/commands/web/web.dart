@@ -13,7 +13,7 @@ class WebCommand extends PlatformCommand {
     InjectionTestFile? injectableTest,
     IsEnabledInProject? isEnabledInProject,
     FlutterConfigEnablePlatformCommand? flutterConfigEnableWeb,
-    FlutterFormatFixCommand? flutterFormatFixCommand,
+    FlutterFormatFixCommand? flutterFormatFix,
     GeneratorBuilder? generator,
   }) : super(
           logger: logger ?? Logger(),
@@ -25,7 +25,7 @@ class WebCommand extends PlatformCommand {
           isEnabledInProject: isEnabledInProject ?? Project.isEnabled,
           flutterConfigEnablePlatform:
               flutterConfigEnableWeb ?? Flutter.configEnableWeb,
-          flutterFormatFixCommand: flutterFormatFixCommand ?? Flutter.formatFix,
+          flutterFormatFixCommand: flutterFormatFix ?? Flutter.formatFix,
           platform: Platform.web,
           bundle: webBundle,
           generator: generator ?? MasonGenerator.fromBundle,
@@ -37,7 +37,7 @@ class WebCommand extends PlatformCommand {
   // TODO should this be nullable is mason output fine then when null?
 
   /// Gets the description.
-  String? get _description => Project.pubspec.description;
+  String? get _description => pubspec.description;
 }
 
 // TODO remove
