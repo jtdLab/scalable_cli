@@ -48,7 +48,7 @@ const cupertinoIconsVersion = '^1.0.5';
 /// The current version of macos ui.
 ///
 /// Visit https://pub.dev/packages/macos_ui
-const macosUiVersion = '^1.4.1+1';
+const macosUiVersion = '^1.5.0';
 
 /// The current version of fluent ui.
 ///
