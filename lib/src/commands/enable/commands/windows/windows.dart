@@ -4,7 +4,7 @@ part of '../commands.dart';
 /// `scalable enable windows` command adds support for Windows to this project.
 /// {@endtemplate}
 class WindowsCommand extends PlatformCommand
-    with TestableArgResults, OrgNameGetters {
+    with OverridableArgResults, OrgNameGetters {
   WindowsCommand({
     Logger? logger,
     RootDir? root,

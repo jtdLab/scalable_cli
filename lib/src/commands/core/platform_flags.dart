@@ -1,16 +1,22 @@
 import 'package:args/args.dart';
-import 'package:scalable_cli/src/commands/core/testable_arg_results.dart';
+import 'package:scalable_cli/src/commands/core/overridable_arg_results.dart';
 import 'package:scalable_cli/src/core/platform.dart';
 
-// TODO doc
+const _defaultPlatformGroup = false;
+
+const _defaultPlatform = false;
+
+/// Signature for method that returns a help string depending on [platformGroup].
 typedef PlatformGroupHelpBuilder = String Function(PlatformGroup platformGroup);
 
-// TODO doc
+/// Signature for method that returns a help string depending on [platform].
 typedef PlatformHelpBuilder = String Function(Platform platform);
 
-// TODO doc
+/// Adds flags for each platform group and platform.
 extension PlatformFlags on ArgParser {
-  // TODO doc
+  /// Adds `--mobile`, `--desktop`, `--android`, `--ios`, `--web`,
+  ///
+  /// `--linux`, `--macos` and `--windows` flags.
   void addPlatformFlags({
     required PlatformGroupHelpBuilder platformGroupHelp,
     required PlatformHelpBuilder platformHelp,
@@ -20,7 +26,7 @@ extension PlatformFlags on ArgParser {
         platformGroup.name,
         help: platformGroupHelp(platformGroup),
         negatable: false,
-        defaultsTo: false,
+        defaultsTo: _defaultPlatformGroup,
       );
     }
 
@@ -29,40 +35,35 @@ extension PlatformFlags on ArgParser {
         platform.name,
         help: platformHelp(platform),
         negatable: false,
-        defaultsTo: false,
+        defaultsTo: _defaultPlatform,
       );
     }
   }
 }
 
-// TODO doc
-mixin PlatformGetters on TestableArgResults {
-  // TODO doc of getters is not correct
+/// Adds getters for each platform group and platform.
+mixin PlatformGetters on OverridableArgResults {
+  /// Whether the user specified that the project supports Android and iOS.
+  bool get _mobile => argResults['mobile'] ?? _defaultPlatformGroup;
 
-  /// Wheter the project supports Android, iOS, Web, Linux, macOS and Windows.
-  //bool get _all => argResults['all'] ?? false;
+  /// Whether the user specified that the project supports Linux, macOS and Windows.
+  bool get _desktop => argResults['desktop'] ?? _defaultPlatformGroup;
 
-  /// Wheter the project supports Android and iOS.
-  bool get _mobile => argResults['mobile'] ?? false;
+  /// Whether the user specified that the project supports Android.
+  bool get android => (argResults['android'] ?? _defaultPlatform) || _mobile;
 
-  /// Wheter the project supports Linux, macOS and Windows.
-  bool get _desktop => argResults['desktop'] ?? false;
+  /// Whether the user specified that the project supports iOS.
+  bool get ios => (argResults['ios'] ?? _defaultPlatform) || _mobile;
 
-  /// Wheter the project supports Android.
-  bool get android => (argResults['android'] ?? false) || _mobile;
+  /// Whether the user specified that the project supports Web.
+  bool get web => (argResults['web'] ?? _defaultPlatform);
 
-  /// Wheter the project supports iOS.
-  bool get ios => (argResults['ios'] ?? false) || _mobile;
+  /// Whether the user specified that the project supports Linux.
+  bool get linux => (argResults['linux'] ?? _defaultPlatform) || _desktop;
 
-  /// Wheter the project supports Web.
-  bool get web => (argResults['web'] ?? false);
+  /// Whether the user specified that the project supports macOS.
+  bool get macos => (argResults['macos'] ?? _defaultPlatform) || _desktop;
 
-  /// Wheter the project supports Linux.
-  bool get linux => (argResults['linux']) ?? false || _desktop;
-
-  /// Wheter the project supports macOS.
-  bool get macos => (argResults['macos']) ?? false || _desktop;
-
-  /// Wheter the project supports Windows.
-  bool get windows => (argResults['windows']) ?? false || _desktop;
+  /// Whether the user specified that the project supports Windows.
+  bool get windows => (argResults['windows'] ?? _defaultPlatform) || _desktop;
 }

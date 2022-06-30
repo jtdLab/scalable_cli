@@ -7,7 +7,7 @@ import 'package:scalable_cli/src/commands/core/generator_builder.dart';
 import 'package:scalable_cli/src/commands/core/is_enabled_in_project.dart';
 import 'package:scalable_cli/src/commands/core/logging.dart';
 import 'package:scalable_cli/src/commands/core/org_name_option.dart';
-import 'package:scalable_cli/src/commands/core/testable_arg_results.dart';
+import 'package:scalable_cli/src/commands/core/overridable_arg_results.dart';
 import 'package:scalable_cli/src/commands/enable/commands/android/android_bundle.dart';
 import 'package:scalable_cli/src/commands/enable/commands/ios/ios_bundle.dart';
 import 'package:scalable_cli/src/commands/enable/commands/linux/linux_bundle.dart';

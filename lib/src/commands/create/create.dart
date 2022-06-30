@@ -9,7 +9,7 @@ import 'package:scalable_cli/src/commands/core/dependency_versions.dart';
 import 'package:scalable_cli/src/commands/core/generator_builder.dart';
 import 'package:scalable_cli/src/commands/core/org_name_option.dart';
 import 'package:scalable_cli/src/commands/core/platform_flags.dart';
-import 'package:scalable_cli/src/commands/core/testable_arg_results.dart';
+import 'package:scalable_cli/src/commands/core/overridable_arg_results.dart';
 import 'package:scalable_cli/src/commands/create/scalable_core_bundle.dart';
 import 'package:scalable_cli/src/core/platform.dart';
 import 'package:universal_io/io.dart';
@@ -26,7 +26,7 @@ final _identifierRegExp = RegExp('[a-z_][a-z0-9_]*');
 /// `scalable create` command creates a new Scalable project in the specified directory.
 /// {@endtemplate}
 class CreateCommand extends ScalableCommand
-    with TestableArgResults, OrgNameGetters, PlatformGetters {
+    with OverridableArgResults, OrgNameGetters, PlatformGetters {
   /// {@macro create_command}
   CreateCommand({
     Logger? logger,

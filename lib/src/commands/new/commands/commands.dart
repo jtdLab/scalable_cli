@@ -8,7 +8,7 @@ import 'package:scalable_cli/src/commands/core/is_enabled_in_project.dart';
 import 'package:scalable_cli/src/commands/core/logging.dart';
 import 'package:scalable_cli/src/commands/core/platform_flags.dart';
 import 'package:scalable_cli/src/commands/core/pubspec_required.dart';
-import 'package:scalable_cli/src/commands/core/testable_arg_results.dart';
+import 'package:scalable_cli/src/commands/core/overridable_arg_results.dart';
 import 'package:scalable_cli/src/commands/new/commands/bloc/bloc_bundle.dart';
 import 'package:scalable_cli/src/commands/new/commands/cubit/cubit_bundle.dart';
 import 'package:scalable_cli/src/commands/new/commands/dto/dto_bundle.dart';
@@ -73,7 +73,7 @@ const _defaultName = 'My';
 /// Base class for all new sub commands.
 /// {@endtemplate}
 abstract class ComponentCommand extends Command<int>
-    with Logging, TestableArgResults, PubspecRequired {
+    with Logging, OverridableArgResults, PubspecRequired {
   // TODO output dir getters should be part of this class componentcommand and not mixin
   /// {@macro component_command}
   ComponentCommand({

@@ -4,7 +4,7 @@ part of '../commands.dart';
 /// `scalable enable linux` command adds support for Linux to this project.
 /// {@endtemplate}
 class LinuxCommand extends PlatformCommand
-    with TestableArgResults, OrgNameGetters {
+    with OverridableArgResults, OrgNameGetters {
   LinuxCommand({
     Logger? logger,
     RootDir? root,

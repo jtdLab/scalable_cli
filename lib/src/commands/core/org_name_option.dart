@@ -1,12 +1,12 @@
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
-import 'package:scalable_cli/src/commands/core/testable_arg_results.dart';
+import 'package:scalable_cli/src/commands/core/overridable_arg_results.dart';
 
 const _defaultOrgName = 'com.example';
 
 final _orgNameRegExp = RegExp(r'^[a-zA-Z][\w-]*(\.[a-zA-Z][\w-]*)+$');
 
-// TODO doc
+/// Exception that occurs when org-name is invalid.
 class InvalidOrgName extends UsageException {
   InvalidOrgName(String name, String usage)
       : super(
@@ -20,7 +20,7 @@ class InvalidOrgName extends UsageException {
         );
 }
 
-// TODO doc
+/// Adds organization name option.
 extension OrgNameOption on ArgParser {
   /// Adds `--org-name`, `--org` option.
   void addOrgNameOption({required String help}) {
@@ -33,12 +33,17 @@ extension OrgNameOption on ArgParser {
   }
 }
 
-// TODO doc
-mixin OrgNameGetters on TestableArgResults {
-  /// Gets the organization name.
+/// Adds `orgName` getter.
+mixin OrgNameGetters on OverridableArgResults {
+  /// Gets the organization name specified by the user.
+  ///
+  /// Returns [_defaultOrgName] when no organization name specified.
   String get orgName =>
       _validateOrgName(argResults['org-name'] ?? _defaultOrgName);
 
+  /// Validates whether [name] is valid organization name.
+  ///
+  /// Returns [name] when valid.
   String _validateOrgName(String name) {
     final isValid = _isValidOrgName(name);
     if (!isValid) {
@@ -47,5 +52,6 @@ mixin OrgNameGetters on TestableArgResults {
     return name;
   }
 
+  /// Whether [name] is valid organization name.
   bool _isValidOrgName(String name) => _orgNameRegExp.hasMatch(name);
 }

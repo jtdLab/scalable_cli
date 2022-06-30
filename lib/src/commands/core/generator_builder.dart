@@ -1,4 +1,4 @@
 import 'package:mason/mason.dart';
 
-/// A method which returns a [Future<MasonGenerator>] given a [MasonBundle].
-typedef GeneratorBuilder = Future<MasonGenerator> Function(MasonBundle);
+/// Signature for method that returns a [MasonGenerator] binded to [bundle].
+typedef GeneratorBuilder = Future<MasonGenerator> Function(MasonBundle bundle);

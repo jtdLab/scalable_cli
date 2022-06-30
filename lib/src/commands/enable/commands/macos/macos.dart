@@ -4,7 +4,7 @@ part of '../commands.dart';
 /// `scalable enable macos` command adds support for macOS to this project.
 /// {@endtemplate}
 class MacosCommand extends PlatformCommand
-    with TestableArgResults, OrgNameGetters {
+    with OverridableArgResults, OrgNameGetters {
   MacosCommand({
     Logger? logger,
     RootDir? root,

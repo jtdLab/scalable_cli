@@ -4,7 +4,7 @@ import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
 import 'package:scalable_cli/src/cli/cli.dart';
 import 'package:scalable_cli/src/commands/commands.dart';
-import 'package:scalable_cli/src/commands/core/testable_arg_results.dart';
+import 'package:scalable_cli/src/commands/core/overridable_arg_results.dart';
 import 'package:universal_io/io.dart';
 
 // TODO impl scalable like  atm just copied from vgv
@@ -30,7 +30,7 @@ typedef FlutterTestCommand = Future<List<int>> Function({
 /// {@template test_command}
 /// `scalable test` command runs test in an existing scalable project.
 /// {@endtemplate}
-class TestCommand extends ScalableCommand with TestableArgResults {
+class TestCommand extends ScalableCommand with OverridableArgResults {
   /// {@macro test_command}
   TestCommand({
     Logger? logger,

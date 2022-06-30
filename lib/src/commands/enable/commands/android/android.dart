@@ -4,7 +4,7 @@ part of '../commands.dart';
 /// `scalable enable android` command adds support for Android to this project.
 /// {@endtemplate}
 class AndroidCommand extends PlatformCommand
-    with TestableArgResults, OrgNameGetters {
+    with OverridableArgResults, OrgNameGetters {
   AndroidCommand({
     Logger? logger,
     RootDir? root,
