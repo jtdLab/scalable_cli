@@ -1,12 +1,7 @@
 part of '../commands.dart';
 
-// TODO share with create
-class NoPlatformChosen extends UsageException {
-  NoPlatformChosen(String usage) : super('No platform chosen.', usage);
-}
-
 mixin PlatformGenerator on ComponentCommand, PlatformGetters {
-  // TODO mobile and desktop deosnt work yet is not location sensitive doest care what platforms are enabled
+  // TODO mobile and desktop doesnt work yet is not location sensitive doesnt care what platforms are enabled
 
   @override
   Future<int> run() => runWhenPubspecExists(() async {
@@ -26,7 +21,7 @@ mixin PlatformGenerator on ComponentCommand, PlatformGetters {
           windows = true;
         }
 
-        final name = _name;
+        final name = _name; // cleaner
 
         final runProgress = logger.progress(
           '''Generating ${lightYellow.wrap('$name${_component.name.pascalCase}')}''',

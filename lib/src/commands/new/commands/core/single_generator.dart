@@ -5,27 +5,29 @@ mixin SingleGenerator on ComponentCommand {
   @override
   Future<int> run() => runWhenPubspecExists(() async {
         final generateProgress = logger.progress(
-          'Generating ${lightYellow.wrap('$name${_component.name.pascalCase}')}',
+          'Generating ${lightYellow.wrap('$_name${_component.name.pascalCase}')}',
         );
         final generator = await _generator(_bundle);
         final files = await generator.generate(
           DirectoryGeneratorTarget(_root.directory),
           vars: {
-            'project_name': _projectName,
+            'project_name': _projectName, // TODO underscore
             'name': _name,
             ...vars,
           },
           logger: logger,
         );
         generateProgress.complete(
-          'Generated ${lightYellow.wrap('$name${_component.name.pascalCase}')}',
+          'Generated ${lightYellow.wrap('$_name${_component.name.pascalCase}')}',
         );
-        logger.info('');
 
-        for (final file in files) {
-          logger.success(p.relative(file.path, from: _root.path));
-        }
-        logger.info('');
+        // TODO keep or remove
+        // logger.info('');
+
+        // for (final file in files) {
+        //   logger.success(p.relative(file.path, from: _root.path));
+        // }
+        // logger.info('');
 
         return ExitCode.success.code;
       });

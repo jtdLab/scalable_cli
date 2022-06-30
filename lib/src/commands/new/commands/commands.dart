@@ -3,11 +3,11 @@ import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as p;
 import 'package:recase/recase.dart';
-import 'package:scalable_cli/src/commands/core/pubspec_required.dart';
 import 'package:scalable_cli/src/commands/core/generator_builder.dart';
 import 'package:scalable_cli/src/commands/core/is_enabled_in_project.dart';
 import 'package:scalable_cli/src/commands/core/logging.dart';
 import 'package:scalable_cli/src/commands/core/platform_flags.dart';
+import 'package:scalable_cli/src/commands/core/pubspec_required.dart';
 import 'package:scalable_cli/src/commands/core/testable_arg_results.dart';
 import 'package:scalable_cli/src/commands/new/commands/bloc/bloc_bundle.dart';
 import 'package:scalable_cli/src/commands/new/commands/cubit/cubit_bundle.dart';
@@ -114,7 +114,9 @@ abstract class ComponentCommand extends Command<int>
   String get _projectName => pubspec.name;
 
   /// Gets the output dir.
-  String get _outputDir => argResults['output-dir'];
+  String get _outputDir =>
+      argResults['output-dir'] ??
+      ''; // TODO correct location ? or to ouput dir gettrs mixin
 
   /// Gets the name of the component specified by the user.
   ///

@@ -27,8 +27,7 @@ class ValueObjectCommand extends ComponentCommand with SingleGenerator {
         'type',
         help: 'The type that gets wrapped by this value object.\n'
             'Generics get escaped via "#" e.g Tuple<#A, #B, String>.',
-        defaultsTo: _defaultType,
-      );
+      ); // TODO default values here?
   }
 
   @override
@@ -43,11 +42,12 @@ class ValueObjectCommand extends ComponentCommand with SingleGenerator {
 
   String get _path => p.join('domain', _outputDir);
 
-  String get _type => argResults['type'].replaceAll('#', ''); // TODO works ?
+  String get _type =>
+      argResults['type']?.replaceAll('#', '') ?? _defaultType; // TODO works ?
 
   String get _generics {
-    final raw =
-        argResults['type'] ?? _defaultType; // TODO why not take _type ??
+    final raw = argResults['type'] as String? ??
+        _defaultType; // TODO why not take _type ??
     StringBuffer buffer = StringBuffer();
     buffer.write('<');
 

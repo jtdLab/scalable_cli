@@ -155,7 +155,8 @@ void main() {
     late Logger logger;
     late Progress progress;
 
-    late FlutterInstalledCommand flutterInstalledCommand;
+    late FlutterInstalledCommand
+        flutterInstalledCommand; // TODO renam without comand
     late FlutterPubGetCommand flutterPubGetCommand;
     late FlutterConfigEnableAndroidCommand flutterConfigEnableAndroidCommand;
     late FlutterConfigEnableIosCommand flutterConfigEnableIosCommand;

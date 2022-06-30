@@ -25,7 +25,7 @@ class DtoCommand extends ComponentCommand with SingleGenerator {
       ..addSeparator('')
       ..addOption(
         'entity',
-        help: 'The entity this dto belongs to.',
+        help: 'The entity this data transfer object belongs to.',
         abbr: 'e',
       );
   }
@@ -41,8 +41,7 @@ class DtoCommand extends ComponentCommand with SingleGenerator {
 
   String get _path => p.join('infrastructure', _outputDir); // TODO
 
-  String get _entity =>
-      argResults['entity'] ?? _name; // TODO _name good if null?
+  String get _entity => argResults['entity'] ?? _name;
 }
 
 // TODO remove

@@ -2,6 +2,8 @@ part of '../commands.dart';
 
 // TODO use platform getters mixin here
 
+const _defaultWidgets = true; // TODO good
+
 /// {@template new_page_command}
 /// `scalable new page` command creates a new page + test.
 /// {@endtemplate}
@@ -39,7 +41,7 @@ class PageCommand extends ComponentCommand
       ..addFlag(
         'widgets',
         help: 'Generate separate widgets.dart file for the page.',
-        defaultsTo: true,
+        defaultsTo: _defaultWidgets,
       );
   }
 
@@ -54,7 +56,7 @@ class PageCommand extends ComponentCommand
         'widgets': _widgets,
       };
 
-  bool get _widgets => argResults['widgets'];
+  bool get _widgets => argResults['widgets'] ?? _defaultWidgets;
 }
 
 // TODO remove
