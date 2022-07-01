@@ -15,6 +15,7 @@ import 'package:scalable_cli/src/core/platform.dart';
 import 'package:universal_io/io.dart';
 
 const _defaultDescription = 'A Scalable app.';
+
 const _defaultExample = true;
 
 // A valid Dart identifier that can be used for a package, i.e. no
@@ -83,7 +84,7 @@ class CreateCommand extends ScalableCommand
       ..addSeparator('')
       ..addPlatformFlags(
         platformGroupHelp: (platformGroup) =>
-            'Wheter this new project supports the ${platformGroup.platforms.prettyEnumeration} platform.', // TODO why no plural?
+            'Wheter this new project supports the ${platformGroup.platforms.prettyEnumeration} platforms.',
         platformHelp: (platform) =>
             'Wheter this new project supports the ${platform.prettyName} platform.',
       );
@@ -231,23 +232,26 @@ class CreateCommand extends ScalableCommand
     return ExitCode.success.code;
   }
 
-  /// Gets the directory where the project will be generated in.
+  /// Gets the directory where the project will be generated in specified by the user.
   Directory get _outputDirectory =>
       _validateOutputDirectoryArg(argResults.rest);
 
-  /// Gets the project name.
+  /// Gets the project name specified by the user.
   ///
   /// Uses the current directory path name
   /// if the `--project-name` option is not explicitly specified.
   String get _projectName => _validateProjectName(argResults['project-name'] ??
       path.basename(path.normalize(_outputDirectory.absolute.path)));
 
-  /// Gets the description for the project.
+  /// Gets the description for the project specified by the user.
   String get _description => argResults['desc'] ?? _defaultDescription;
 
-  /// Wheter the project will contain example pages, blocs, services etc.
+  /// Whether the user specified that the project will contain example pages, blocs, services etc.
   bool get _example => argResults['example'] ?? _defaultExample;
 
+  /// Validates whether [name] is valid project name.
+  ///
+  /// Returns [name] when valid.
   String _validateProjectName(String name) {
     final isValid = _isValidPackageName(name);
     if (!isValid) {
@@ -260,11 +264,15 @@ class CreateCommand extends ScalableCommand
     return name;
   }
 
+  /// Whether [name] is valid project name.
   bool _isValidPackageName(String name) {
     final match = _identifierRegExp.matchAsPrefix(name);
     return match != null && match.end == name.length;
   }
 
+  /// Validates wheter [args] contains exactly one path to a directory.
+  ///
+  /// Returns the directory.
   Directory _validateOutputDirectoryArg(List<String> args) {
     if (args.isEmpty) {
       throw UsageException(
