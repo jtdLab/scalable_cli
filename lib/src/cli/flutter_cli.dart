@@ -90,6 +90,7 @@ class Flutter {
     }
   }
 
+  // TODO better params
   /// Install dart dependencies (`flutter pub get`).
   static Future<void> pubGet({
     String cwd = '.',
@@ -106,6 +107,7 @@ class Flutter {
     );
   }
 
+  // TODO better params
   /// Generate localizations (`flutter gen-l10n`)
   static Future<void> genl10n({
     String cwd = '.',
@@ -122,6 +124,7 @@ class Flutter {
     );
   }
 
+  // TODO better params
   /// Format code (`flutter format . --fix`)
   static Future<void> formatFix({
     String cwd = '.',
@@ -180,6 +183,7 @@ class Flutter {
     } catch (_) {}
   }
 
+  // TODO better params
   /// Run code generation (`flutter pub run build_runner build --delete-conflicting-outputs`).
   static Future<void> pubRunBuildRunnerBuildDeleteConflictingOutputs({
     String cwd = '.',

@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:scalable_cli/src/core/platform.dart';
 import 'package:universal_io/io.dart';

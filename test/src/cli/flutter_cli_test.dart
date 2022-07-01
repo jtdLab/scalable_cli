@@ -230,7 +230,9 @@ void main() {
 
   group('Flutter', () {
     group('.installed', () {
-      // TODO implement
+      test('returns true when dart is installed', () {
+        expectLater(Flutter.installed(), completion(isTrue));
+      });
     });
 
     group('.pubGet', () {
@@ -287,28 +289,41 @@ void main() {
       // TODO implement
     });
 
+    // TODO changes the flutter config in test env -> reset it or better test ?
     group('.configEnableAndroid', () {
-      // TODO implement
+      /* test('completes normally', () {
+        expectLater(Flutter.configEnableAndroid(), completes);
+      }); */
     });
 
     group('.configEnableIos', () {
-      // TODO implement
+      /* test('completes normally', () {
+        expectLater(Flutter.configEnableIos(), completes);
+      }); */
     });
 
     group('.configEnableWeb', () {
-      // TODO implement
+      /* test('completes normally', () {
+        expectLater(Flutter.configEnableWeb(), completes);
+      }); */
     });
 
     group('.configEnableLinux', () {
-      // TODO implement
+      /* test('completes normally', () {
+        expectLater(Flutter.configEnableLinux(), completes);
+      }); */
     });
 
     group('.configEnableMacos', () {
-      // TODO implement
+      /* test('completes normally', () {
+        expectLater(Flutter.configEnableMacos(), completes);
+      }); */
     });
 
     group('.configEnableWindows', () {
-      // TODO implement
+      /* test('completes normally', () {
+        expectLater(Flutter.configEnableWindows(), completes);
+      }); */
     });
 
     group('.pubRunBuildRunnerBuildDeleteConflictingOutputs', () {

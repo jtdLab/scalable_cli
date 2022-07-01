@@ -63,7 +63,6 @@ class _Cmd {
   }
 }
 
-// TODO doc
 const _ignoredDirectories = {
   'ios',
   'android',

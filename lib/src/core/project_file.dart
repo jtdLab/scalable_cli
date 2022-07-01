@@ -1,4 +1,3 @@
-// TODO
 import 'package:universal_io/io.dart';
 
 mixin AddCoverageIgnoreFile on ProjectFile {
@@ -7,7 +6,7 @@ mixin AddCoverageIgnoreFile on ProjectFile {
 
     final newLines = [
       '// coverage:ignore-file'
-          '',
+          '', // TODO no new line??
       ...lines
     ];
 
@@ -22,7 +21,7 @@ mixin AddCoverageIgnoreFile on ProjectFile {
 /// {@template project_file}
 /// Base class for a file in a Scalable project.
 /// {@endtemplate}
-class ProjectFile {
+abstract class ProjectFile {
   /// {@macro project_file}
   ProjectFile(this.path);
 
