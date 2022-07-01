@@ -1,7 +1,7 @@
 part of '../commands.dart';
 
 /// {@template generate_code_command}
-/// `scalable generate code` command (re-)generates the code of this project.
+/// `scalable generate code` command (re-)generates the code in an existing Scalable project.
 /// {@endtemplate}
 class CodeCommand extends TargetCommand {
   /// {@macro generate_code_command}

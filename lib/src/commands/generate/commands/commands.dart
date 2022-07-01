@@ -1,15 +1,13 @@
 import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
 import 'package:scalable_cli/src/cli/cli.dart';
-import 'package:scalable_cli/src/commands/core/pubspec_required.dart';
 import 'package:scalable_cli/src/commands/core/logging.dart';
+import 'package:scalable_cli/src/commands/core/pubspec_required.dart';
 import 'package:scalable_cli/src/core/assets_file.dart';
 import 'package:scalable_cli/src/core/injection_config_file.dart';
 import 'package:scalable_cli/src/core/project.dart';
 import 'package:scalable_cli/src/core/pubspec_file.dart';
 import 'package:scalable_cli/src/core/router_gr_file.dart';
-import 'package:path/path.dart' as p;
-import 'package:universal_io/io.dart';
 
 part 'assets/assets.dart';
 part 'code/code.dart';

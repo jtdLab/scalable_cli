@@ -1,7 +1,7 @@
 part of '../commands.dart';
 
 /// {@template generate_assets_command}
-/// `scalable generate assets` command (re-)generates the assets of this project.
+/// `scalable generate assets` command (re-)generates the assets in an existing Scalable project.
 /// {@endtemplate}
 class AssetsCommand extends TargetCommand {
   /// {@macro generate_assets_command}
