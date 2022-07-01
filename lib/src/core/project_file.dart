@@ -19,11 +19,16 @@ mixin AddCoverageIgnoreFile on ProjectFile {
   }
 }
 
-// TODO
+/// {@template project_file}
+/// Base class for a file in a Scalable project.
+/// {@endtemplate}
 class ProjectFile {
-  final String path;
-
+  /// {@macro project_file}
   ProjectFile(this.path);
 
+  /// The path of this.
+  final String path;
+
+  /// Gets the underlying file of this.
   File get file => File(path);
 }

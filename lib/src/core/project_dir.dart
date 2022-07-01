@@ -15,19 +15,12 @@ mixin ContainsPlatformDir on ProjectDir {
 /// Base class for a directory in a Scalable project.
 /// {@endtemplate}
 abstract class ProjectDir {
-  /// [Directory] which can be overridden for testing.
-  @visibleForTesting
-  Directory? cwdOverrides;
-
-  /// Gets the current working directory.
-  Directory get cwd => cwdOverrides ?? Directory.current;
-
   /// {@macro project_dir}
   ProjectDir([this.path = '']);
 
-  /// Gets the path of this.
+  /// The path of this.
   final String path;
 
-  /// Gets the directory of this.
-  Directory get directory => Directory(p.join(cwd.path, path));
+  /// Gets the underlying directory of this.
+  Directory get directory => Directory(path);
 }

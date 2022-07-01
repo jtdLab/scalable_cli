@@ -8,7 +8,7 @@ import 'package:scalable_cli/src/commands/core/pubspec_required.dart';
 import 'package:scalable_cli/src/core/project.dart';
 import 'package:scalable_cli/src/core/pubspec_file.dart';
 
-// TODO impl scalable like  atm just copied from vgv 
+// TODO impl scalable like  atm just copied from vgv
 // maybe its clean and we have to change other impls evaluate that
 
 /// Signature for the [Flutter.installed] method.
