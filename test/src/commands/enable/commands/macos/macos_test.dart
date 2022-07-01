@@ -245,7 +245,7 @@ void main() {
             ),
           ),
           vars: <String, dynamic>{
-            'projectName': 'my_app',
+            'project_name': 'my_app',
             'org_name': 'com.example',
           },
           logger: logger,
@@ -326,7 +326,7 @@ void main() {
             ),
           ),
           vars: <String, dynamic>{
-            'projectName': 'my_app',
+            'project_name': 'my_app',
             'org_name': 'com.example.app',
           },
           logger: logger,

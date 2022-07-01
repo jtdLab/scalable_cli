@@ -32,8 +32,7 @@ class ServiceCommand extends ComponentCommand with SingleGenerator {
         'infrastructure_path': _infrastructurePath,
       };
 
-  String get _domainPath => p.join('domain', _outputDir); // TODO
+  String get _domainPath => p.join('domain', _outputDir);
 
-  String get _infrastructurePath =>
-      p.join('infrastructure', _outputDir); // TODO
+  String get _infrastructurePath => p.join('infrastructure', _outputDir);
 }

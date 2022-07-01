@@ -31,5 +31,5 @@ class BlocCommand extends ComponentCommand with SingleGenerator {
         'path': _path,
       };
 
-  String get _path => p.join('application', _outputDir); // TODO
+  String get _path => p.join('application', _outputDir);
 }

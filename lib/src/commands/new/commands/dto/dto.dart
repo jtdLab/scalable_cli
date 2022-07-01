@@ -39,7 +39,7 @@ class DtoCommand extends ComponentCommand with SingleGenerator {
         'entity': _entity,
       };
 
-  String get _path => p.join('infrastructure', _outputDir); // TODO
+  String get _path => p.join('infrastructure', _outputDir);
 
   String get _entity => argResults['entity'] ?? _name;
 }

@@ -35,6 +35,5 @@ class WebCommand extends PlatformCommand {
   Map<String, dynamic> get vars => {'description': _description};
 
   /// Gets the description.
-  String? get _description => pubspec.description;
-  // TODO should this be nullable is mason output fine then when null?
+  String get _description => pubspec.description ?? '';
 }

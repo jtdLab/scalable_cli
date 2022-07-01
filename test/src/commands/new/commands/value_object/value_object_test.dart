@@ -21,6 +21,7 @@ const expectedUsage = [
       '\n'
       '    --type          The type that gets wrapped by this value object.\n'
       '                    Generics get escaped via "#" e.g Tuple<#A, #B, String>.\n'
+      '                    (defaults to "MyType")\n'
       '\n'
       'Run "scalable help" to see global options.'
 ];

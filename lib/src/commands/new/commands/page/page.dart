@@ -1,9 +1,7 @@
 part of '../commands.dart';
 
-// TODO use platform getters mixin here
-
-// TODO doc
-const _defaultWidgets = true; // TODO good
+/// The default value for support seperate `widgets.dart` file.
+const _defaultWidgets = true;
 
 /// {@template new_page_command}
 /// `scalable new page` command creates a new page + test.

@@ -14,7 +14,6 @@ class MinCoverageNotMet implements Exception {
   final double coverage;
 }
 
-// TODO doc
 class _CoverageMetrics {
   const _CoverageMetrics._({this.totalHits = 0, this.totalFound = 0});
 
@@ -60,32 +59,24 @@ typedef FlutterGenL10nCommand = Future<void> Function({String cwd});
 /// Signature for the [Flutter.formatFix] method.
 typedef FlutterFormatFixCommand = Future<void> Function({String cwd});
 
-/// Signature for the [Flutter.configEnableAndroid] method.
-typedef FlutterConfigEnableAndroidCommand = Future<void> Function();
-
-/// Signature for the [Flutter.configEnableIos] method.
-typedef FlutterConfigEnableIosCommand = Future<void> Function();
-
-/// Signature for the [Flutter.configEnableWeb] method.
-typedef FlutterConfigEnableWebCommand = Future<void> Function();
-
-/// Signature for the [Flutter.configEnableLinux] method.
-typedef FlutterConfigEnableLinuxCommand = Future<void> Function();
-
-/// Signature for the [Flutter.configEnableMacos] method.
-typedef FlutterConfigEnableMacosCommand = Future<void> Function();
-
-/// Signature for the [Flutter.configEnableWindows] method.
-typedef FlutterConfigEnableWindowsCommand = Future<void> Function();
-
-// TODO use this instead of other flutterconfigenable...command
+/// Signature for Flutter config enable platform methods.
+///
+/// [Flutter.configEnableAndroid]
+/// 
+/// [Flutter.configEnableIos]
+/// 
+/// [Flutter.configEnableWeb]
+/// 
+/// [Flutter.configEnableLinux]
+/// 
+/// [Flutter.configEnableMacos]
+/// 
+/// [Flutter.configEnableWindows]
 typedef FlutterConfigEnablePlatformCommand = Future<void> Function();
 
 /// Signature for the [Flutter.pubRunBuildRunnerBuildDeleteConflictingOutputs] method.
 typedef FlutterPubRunBuildRunnerBuildDeleteConflictingOutputsCommand
     = Future<void> Function({String cwd});
-
-// TODO update signaturs of Flutter.methods and relating typedefs
 
 /// Flutter CLI
 class Flutter {

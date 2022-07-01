@@ -1,9 +1,9 @@
 part of '../commands.dart';
 
-// TODO doc
+/// The default output directory
 const _defaultOutputDir = '';
 
-// TODO doc
+/// Adds output directory option.
 extension OutputDirOption on ArgParser {
   void addOutputDirOption({required String help}) {
     addOption(

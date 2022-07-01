@@ -85,8 +85,7 @@ abstract class PlatformCommand extends Command<int>
   String get name => _platform.name;
 
   @override
-  String get invocation =>
-      'scalable enable $name'; // TODO needed or is the framwork doing it itselfe
+  String get invocation => 'scalable enable $name';
 
   @override
   Future<int> run() => runWhenPubspecExists(() async {
@@ -108,7 +107,7 @@ abstract class PlatformCommand extends Command<int>
         await generator.generate(
           DirectoryGeneratorTarget(_root.directory),
           vars: {
-            'projectName': _projectName, // TODO with underscore
+            'project_name': _projectName,
             ...vars,
           },
           logger: logger,

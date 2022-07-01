@@ -14,10 +14,10 @@ import 'package:scalable_cli/src/commands/create/scalable_core_bundle.dart';
 import 'package:scalable_cli/src/core/platform.dart';
 import 'package:universal_io/io.dart';
 
-// TODO doc
+/// The default description.
 const _defaultDescription = 'A Scalable app.';
 
-// TODO doc
+/// The default value for support of example pages, blocs and services.
 const _defaultExample = true;
 
 // A valid Dart identifier that can be used for a package, i.e. no
@@ -35,12 +35,12 @@ class CreateCommand extends ScalableCommand
     Logger? logger,
     FlutterInstalledCommand? flutterInstalledCommand,
     FlutterPubGetCommand? flutterPubGetCommand,
-    FlutterConfigEnableAndroidCommand? flutterConfigEnableAndroidCommand,
-    FlutterConfigEnableIosCommand? flutterConfigEnableIosCommand,
-    FlutterConfigEnableWebCommand? flutterConfigEnableWebCommand,
-    FlutterConfigEnableLinuxCommand? flutterConfigEnableLinuxCommand,
-    FlutterConfigEnableMacosCommand? flutterConfigEnableMacosCommand,
-    FlutterConfigEnableWindowsCommand? flutterConfigEnableWindowsCommand,
+    FlutterConfigEnablePlatformCommand? flutterConfigEnableAndroidCommand,
+    FlutterConfigEnablePlatformCommand? flutterConfigEnableIosCommand,
+    FlutterConfigEnablePlatformCommand? flutterConfigEnableWebCommand,
+    FlutterConfigEnablePlatformCommand? flutterConfigEnableLinuxCommand,
+    FlutterConfigEnablePlatformCommand? flutterConfigEnableMacosCommand,
+    FlutterConfigEnablePlatformCommand? flutterConfigEnableWindowsCommand,
     FlutterGenL10nCommand? flutterGenL10nCommand,
     FlutterFormatFixCommand? flutterFormatFixCommand,
     GeneratorBuilder? generator,
@@ -94,12 +94,12 @@ class CreateCommand extends ScalableCommand
 
   final FlutterInstalledCommand _flutterInstalledCommand;
   final FlutterPubGetCommand _flutterPubGetCommand;
-  final FlutterConfigEnableAndroidCommand _flutterConfigEnableAndroidCommand;
-  final FlutterConfigEnableIosCommand _flutterConfigEnableIosCommand;
-  final FlutterConfigEnableWebCommand _flutterConfigEnableWebCommand;
-  final FlutterConfigEnableLinuxCommand _flutterConfigEnableLinuxCommand;
-  final FlutterConfigEnableMacosCommand _flutterConfigEnableMacosCommand;
-  final FlutterConfigEnableWindowsCommand _flutterConfigEnableWindowsCommand;
+  final FlutterConfigEnablePlatformCommand _flutterConfigEnableAndroidCommand;
+  final FlutterConfigEnablePlatformCommand _flutterConfigEnableIosCommand;
+  final FlutterConfigEnablePlatformCommand _flutterConfigEnableWebCommand;
+  final FlutterConfigEnablePlatformCommand _flutterConfigEnableLinuxCommand;
+  final FlutterConfigEnablePlatformCommand _flutterConfigEnableMacosCommand;
+  final FlutterConfigEnablePlatformCommand _flutterConfigEnableWindowsCommand;
   final FlutterGenL10nCommand _flutterGenL10nCommand;
   final FlutterFormatFixCommand _flutterFormatFixCommand;
   final GeneratorBuilder _generator;

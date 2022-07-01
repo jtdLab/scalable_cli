@@ -34,7 +34,7 @@ part 'page/page.dart';
 part 'service/service.dart';
 part 'value_object/value_object.dart';
 
-// TODO doc
+/// Subcommands of `scalable new`.
 enum Component {
   bloc,
   cubit,
@@ -45,7 +45,7 @@ enum Component {
   service,
   valueObject;
 
-  // TODO doc
+  /// Gets the pretty name of this.
   String get prettyName {
     switch (this) {
       case Component.bloc:
@@ -116,9 +116,8 @@ abstract class ComponentCommand extends Command<int>
   String get _projectName => pubspec.name;
 
   /// Gets the output dir.
-  String get _outputDir =>
-      argResults['output-dir'] ??
-      ''; // TODO correct location ? or to ouput dir gettrs mixin
+  String get _outputDir => argResults['output-dir'] ?? '';
+  // TODO correct location ? or to ouput dir getters mixin
 
   /// Gets the name of the component specified by the user.
   ///

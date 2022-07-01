@@ -1,6 +1,6 @@
 part of '../commands.dart';
 
-// TODO doc
+/// The default type.
 const _defaultType = 'MyType';
 
 /// {@template new_value_object_command}
@@ -28,7 +28,8 @@ class ValueObjectCommand extends ComponentCommand with SingleGenerator {
         'type',
         help: 'The type that gets wrapped by this value object.\n'
             'Generics get escaped via "#" e.g Tuple<#A, #B, String>.',
-      ); // TODO default values here?
+        defaultsTo: _defaultType,
+      );
   }
 
   @override
@@ -47,8 +48,8 @@ class ValueObjectCommand extends ComponentCommand with SingleGenerator {
       argResults['type']?.replaceAll('#', '') ?? _defaultType; // TODO works ?
 
   String get _generics {
-    final raw = argResults['type'] as String? ??
-        _defaultType; // TODO why not take _type ??
+    // TODO why not take _type ??
+    final raw = argResults['type'] as String? ?? _defaultType;
     StringBuffer buffer = StringBuffer();
     buffer.write('<');
 

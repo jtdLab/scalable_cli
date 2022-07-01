@@ -31,5 +31,5 @@ class EntityCommand extends ComponentCommand with SingleGenerator {
         'path': _path,
       };
 
-  String get _path => p.join('domain', _outputDir); // TODO
+  String get _path => p.join('domain', _outputDir);
 }
