@@ -2,8 +2,10 @@ import 'package:args/args.dart';
 import 'package:scalable_cli/src/commands/core/overridable_arg_results.dart';
 import 'package:scalable_cli/src/core/platform.dart';
 
+// TODO doc
 const _defaultPlatformGroup = false;
 
+// TODO doc
 const _defaultPlatform = false;
 
 /// Signature for method that returns a help string depending on [platformGroup].

@@ -1,7 +1,7 @@
 @Tags(['e2e'])
 import 'package:mason/mason.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as p;
 import 'package:scalable_cli/src/command_runner.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';

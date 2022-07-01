@@ -14,6 +14,7 @@ class MinCoverageNotMet implements Exception {
   final double coverage;
 }
 
+// TODO doc
 class _CoverageMetrics {
   const _CoverageMetrics._({this.totalHits = 0, this.totalFound = 0});
 

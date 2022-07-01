@@ -6,9 +6,9 @@ import 'package:recase/recase.dart';
 import 'package:scalable_cli/src/commands/core/generator_builder.dart';
 import 'package:scalable_cli/src/commands/core/is_enabled_in_project.dart';
 import 'package:scalable_cli/src/commands/core/logging.dart';
+import 'package:scalable_cli/src/commands/core/overridable_arg_results.dart';
 import 'package:scalable_cli/src/commands/core/platform_flags.dart';
 import 'package:scalable_cli/src/commands/core/pubspec_required.dart';
-import 'package:scalable_cli/src/commands/core/overridable_arg_results.dart';
 import 'package:scalable_cli/src/commands/new/commands/bloc/bloc_bundle.dart';
 import 'package:scalable_cli/src/commands/new/commands/cubit/cubit_bundle.dart';
 import 'package:scalable_cli/src/commands/new/commands/dto/dto_bundle.dart';
@@ -34,6 +34,7 @@ part 'page/page.dart';
 part 'service/service.dart';
 part 'value_object/value_object.dart';
 
+// TODO doc
 enum Component {
   bloc,
   cubit,
@@ -44,6 +45,7 @@ enum Component {
   service,
   valueObject;
 
+  // TODO doc
   String get prettyName {
     switch (this) {
       case Component.bloc:

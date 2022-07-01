@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:args/command_runner.dart' show UsageException;
 import 'package:mason/mason.dart';
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as p;
 import 'package:scalable_cli/src/cli/cli.dart';
 import 'package:scalable_cli/src/commands/commands.dart';
 import 'package:scalable_cli/src/commands/core/dependency_versions.dart';
@@ -14,8 +14,10 @@ import 'package:scalable_cli/src/commands/create/scalable_core_bundle.dart';
 import 'package:scalable_cli/src/core/platform.dart';
 import 'package:universal_io/io.dart';
 
+// TODO doc
 const _defaultDescription = 'A Scalable app.';
 
+// TODO doc
 const _defaultExample = true;
 
 // A valid Dart identifier that can be used for a package, i.e. no
@@ -241,7 +243,7 @@ class CreateCommand extends ScalableCommand
   /// Uses the current directory path name
   /// if the `--project-name` option is not explicitly specified.
   String get _projectName => _validateProjectName(argResults['project-name'] ??
-      path.basename(path.normalize(_outputDirectory.absolute.path)));
+      p.basename(p.normalize(_outputDirectory.absolute.path)));
 
   /// Gets the description for the project specified by the user.
   String get _description => argResults['desc'] ?? _defaultDescription;

@@ -1,5 +1,6 @@
 part of '../commands.dart';
 
+// TODO doc
 mixin PlatformGenerator on ComponentCommand, PlatformGetters {
   // TODO mobile and desktop doesnt work yet is not location sensitive doesnt care what platforms are enabled
 

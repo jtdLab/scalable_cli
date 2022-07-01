@@ -13,6 +13,9 @@ part 'assets/assets.dart';
 part 'code/code.dart';
 part 'localization/localization.dart';
 
+// TODO naming target seems not right
+
+// TODO doc
 enum Target { assets, code, localization }
 
 /// {@template target_command}

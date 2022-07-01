@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:mason/mason.dart';
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as p;
 import 'package:scalable_cli/src/cli/cli.dart';
 import 'package:scalable_cli/src/commands/commands.dart';
 import 'package:scalable_cli/src/commands/core/overridable_arg_results.dart';
@@ -105,8 +105,8 @@ class TestCommand extends ScalableCommand with OverridableArgResults {
 
   @override
   Future<int> run() async {
-    final targetPath = path.normalize(Directory.current.absolute.path);
-    final pubspec = File(path.join(targetPath, 'pubspec.yaml'));
+    final targetPath = p.normalize(Directory.current.absolute.path);
+    final pubspec = File(p.join(targetPath, 'pubspec.yaml'));
 
     if (!pubspec.existsSync()) {
       logger.err(

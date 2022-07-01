@@ -8,6 +8,7 @@ export 'enable/enable.dart';
 export 'generate/generate.dart';
 export 'new/new.dart';
 
+// TODO doc
 enum Command {
   create,
   enable,

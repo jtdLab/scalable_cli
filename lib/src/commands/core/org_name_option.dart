@@ -2,8 +2,10 @@ import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:scalable_cli/src/commands/core/overridable_arg_results.dart';
 
+// TODO doc
 const _defaultOrgName = 'com.example';
 
+// TODO doc
 final _orgNameRegExp = RegExp(r'^[a-zA-Z][\w-]*(\.[a-zA-Z][\w-]*)+$');
 
 /// Exception that occurs when org-name is invalid.
