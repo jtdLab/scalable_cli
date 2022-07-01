@@ -1,6 +1,8 @@
 part of '../commands.dart';
 
-// TODO name + doc
+/// Adds functionality that generates a component into a single location.
+///
+/// Relevant components are bloc, cubit, dto, entity, service and valueObject.
 mixin SingleGenerator on ComponentCommand {
   @override
   Future<int> run() => runWhenPubspecExists(() async {
@@ -11,7 +13,7 @@ mixin SingleGenerator on ComponentCommand {
         final files = await generator.generate(
           DirectoryGeneratorTarget(_root.directory),
           vars: {
-            'project_name': _projectName, // TODO underscore
+            'project_name': _projectName,
             'name': _name,
             ...vars,
           },

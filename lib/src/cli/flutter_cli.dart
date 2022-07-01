@@ -62,15 +62,15 @@ typedef FlutterFormatFixCommand = Future<void> Function({String cwd});
 /// Signature for Flutter config enable platform methods.
 ///
 /// [Flutter.configEnableAndroid]
-/// 
+///
 /// [Flutter.configEnableIos]
-/// 
+///
 /// [Flutter.configEnableWeb]
-/// 
+///
 /// [Flutter.configEnableLinux]
-/// 
+///
 /// [Flutter.configEnableMacos]
-/// 
+///
 /// [Flutter.configEnableWindows]
 typedef FlutterConfigEnablePlatformCommand = Future<void> Function();
 

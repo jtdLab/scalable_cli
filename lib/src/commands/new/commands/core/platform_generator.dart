@@ -1,9 +1,12 @@
 part of '../commands.dart';
 
-// TODO doc
+/// Adds functionality that generates components into multiple platform dependent locations.
+///
+/// The platform dependent component will be generated for platforms that are enabled
+/// in the Scalable project and enabled by the user.
+///
+/// Relevant components are flow and page.
 mixin PlatformGenerator on ComponentCommand, PlatformGetters {
-  // TODO mobile and desktop doesnt work yet is not location sensitive doesnt care what platforms are enabled
-
   @override
   Future<int> run() => runWhenPubspecExists(() async {
         // TODO cleaner
@@ -22,7 +25,7 @@ mixin PlatformGenerator on ComponentCommand, PlatformGetters {
           windows = true;
         }
 
-        final name = _name; // cleaner
+        final name = _name; // TODO cleaner
 
         final runProgress = logger.progress(
           '''Generating ${lightYellow.wrap('$name${_component.name.pascalCase}')}''',
@@ -50,11 +53,13 @@ mixin PlatformGenerator on ComponentCommand, PlatformGetters {
 
   IsEnabledInProject get _isEnabledInProject;
 
+  /// The path the component will be generated in
   String _path(Platform platform) => p.join(platform.name, _outputDir);
 
   /// Gets the vars of the [bundle].
   Map<String, dynamic> vars(Platform platform) => {};
 
+  /// Generates the the component for given [platform] if it is [requestedByUser].
   Future<List<GeneratedFile>?> _generate(
     Platform platform,
     bool requestedByUser,
@@ -76,6 +81,7 @@ mixin PlatformGenerator on ComponentCommand, PlatformGetters {
     );
   }
 
+  /// Logs useful messages if [files] were generated for [platform].
   void _logGenerateResults(
     List<GeneratedFile>? files,
     String title,

@@ -10,7 +10,7 @@ import 'package:scalable_cli/src/core/root_dir.dart';
 import 'package:scalable_cli/src/core/router_gr_file.dart';
 
 // TODO static final is wrong should be getter that returns fresh instance each call
-// but could alsp work because cli runes from fresh every call
+// wrong ? already works becuas file or dir getter returns fresh insatnce
 
 /// Abstraction of a Scalable project.
 class Project {
