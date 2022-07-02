@@ -5,13 +5,13 @@ mixin AddCoverageIgnoreFile on ProjectFile {
     final lines = file.readAsLinesSync();
 
     final newLines = [
-      '// coverage:ignore-file'
-          '', // TODO no new line??
-      ...lines
+      '// coverage:ignore-file',
+      '',
+      ...lines,
     ];
 
     file.writeAsStringSync(
-      newLines.join('/n'),
+      newLines.join('\n'),
       mode: FileMode.write,
       flush: true,
     );
