@@ -267,9 +267,8 @@ void main() {
     });
 
     group('type', () {
-      // TODO needs more complex tests
-
-      test('completes successfully with correct output w/ custom type',
+      test(
+          'completes successfully with correct output w/ custom type w/o generics',
           () async {
         final tempDir = Directory.systemTemp.createTempSync();
         Directory.current = tempDir.path;
@@ -313,6 +312,112 @@ void main() {
               'path': 'domain',
               'type': 'Custom',
               'generics': '',
+            },
+            logger: logger,
+          ),
+        ).called(1);
+        expect(progressLogs, ['Generated MyValueObject']);
+        expect(result, ExitCode.success.code);
+      });
+
+      test(
+          'completes successfully with correct output w/ custom type w/ generics',
+          () async {
+        final tempDir = Directory.systemTemp.createTempSync();
+        Directory.current = tempDir.path;
+        final argResults = MockArgResults();
+        final root = MockRootDir();
+        final pubspec = MockPubspecFile();
+        final generator = MockMasonGenerator();
+        final command = ValueObjectCommand(
+          logger: logger,
+          root: root,
+          pubspec: pubspec,
+          generator: (_) async => generator,
+        )..argResultOverrides = argResults;
+        when(() => argResults['type']).thenReturn('#A');
+        when(() => root.directory).thenReturn(tempDir);
+        when(() => pubspec.exists).thenReturn(true);
+        when(() => pubspec.name).thenReturn('my_app');
+        when(() => generator.id).thenReturn('generator_id');
+        when(() => generator.description).thenReturn('generator description');
+        when(
+          () => generator.generate(
+            any(),
+            vars: any(named: 'vars'),
+            logger: any(named: 'logger'),
+          ),
+        ).thenAnswer((_) async => generatedFiles);
+        final result = await command.run();
+        verify(() => logger.progress('Generating MyValueObject')).called(1);
+        verify(
+          () => generator.generate(
+            any(
+              that: isA<DirectoryGeneratorTarget>().having(
+                (g) => g.dir.path,
+                'dir',
+                tempDir.path,
+              ),
+            ),
+            vars: <String, dynamic>{
+              'project_name': 'my_app',
+              'name': 'My',
+              'path': 'domain',
+              'type': 'A',
+              'generics': '<A>',
+            },
+            logger: logger,
+          ),
+        ).called(1);
+        expect(progressLogs, ['Generated MyValueObject']);
+        expect(result, ExitCode.success.code);
+      });
+
+      test(
+          'completes successfully with correct output w/ custom type w/ nested generics',
+          () async {
+        final tempDir = Directory.systemTemp.createTempSync();
+        Directory.current = tempDir.path;
+        final argResults = MockArgResults();
+        final root = MockRootDir();
+        final pubspec = MockPubspecFile();
+        final generator = MockMasonGenerator();
+        final command = ValueObjectCommand(
+          logger: logger,
+          root: root,
+          pubspec: pubspec,
+          generator: (_) async => generator,
+        )..argResultOverrides = argResults;
+        when(() => argResults['type']).thenReturn('Pair<Pair<#A, String>, #B>');
+        when(() => root.directory).thenReturn(tempDir);
+        when(() => pubspec.exists).thenReturn(true);
+        when(() => pubspec.name).thenReturn('my_app');
+        when(() => generator.id).thenReturn('generator_id');
+        when(() => generator.description).thenReturn('generator description');
+        when(
+          () => generator.generate(
+            any(),
+            vars: any(named: 'vars'),
+            logger: any(named: 'logger'),
+          ),
+        ).thenAnswer((_) async => generatedFiles);
+        final result = await command.run();
+        verify(() => logger.progress('Generating MyValueObject')).called(1);
+        verify(
+          () => generator.generate(
+            any(
+              that: isA<DirectoryGeneratorTarget>().having(
+                (g) => g.dir.path,
+                'dir',
+                tempDir.path,
+              ),
+            ),
+            vars: <String, dynamic>{
+              'project_name': 'my_app',
+              'name': 'My',
+              'path': 'domain',
+              'type': 'Pair<Pair<A, String>, B>',
+              'generics': '<A, B>',
             },
             logger: logger,
           ),

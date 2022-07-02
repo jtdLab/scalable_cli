@@ -4,8 +4,6 @@ import 'package:test/test.dart';
 
 import '../../../helpers/helpers.dart';
 
-// TODO move subcommand test into this file
-
 const expectedUsage = [
   // ignore: no_adjacent_strings_in_list
   '(Re-)Generates code and files in an existing Scalable project.\n'

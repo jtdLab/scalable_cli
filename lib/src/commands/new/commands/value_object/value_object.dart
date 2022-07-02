@@ -44,16 +44,15 @@ class ValueObjectCommand extends ComponentCommand with SingleGenerator {
 
   String get _path => p.join('domain', _outputDir);
 
-  String get _type =>
-      argResults['type']?.replaceAll('#', '') ?? _defaultType; // TODO works ?
+  String get _type => argResults['type']?.replaceAll('#', '') ?? _defaultType;
 
   String get _generics {
-    // TODO why not take _type ??
     final raw = argResults['type'] as String? ?? _defaultType;
     StringBuffer buffer = StringBuffer();
     buffer.write('<');
 
     final generics = raw
+        .replaceAll(' ', '')
         .split(RegExp('[,<>]'))
         .where((element) => element.startsWith('#'))
         .map((element) => element.replaceAll('#', ''))
@@ -62,7 +61,7 @@ class ValueObjectCommand extends ComponentCommand with SingleGenerator {
     for (int i = 0; i < generics.length; i++) {
       buffer.write(generics[i]);
       if (i != generics.length - 1) {
-        buffer.write(',');
+        buffer.write(', ');
       }
     }
 

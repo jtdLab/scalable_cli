@@ -149,6 +149,8 @@ class MockFlutterGenL10nCommand extends Mock implements FlutterGenL10nCommand {}
 class MockFlutterFormatFixCommand extends Mock
     implements FlutterFormatFixCommand {}
 
+// TODO use temp dir in system temp not .tmp in cwd
+
 void main() {
   group('create', () {
     late List<String> progressLogs;
