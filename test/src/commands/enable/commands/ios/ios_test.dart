@@ -171,6 +171,8 @@ void main() {
     );
 
     test('completes successfully with correct output', () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
       final argResults = MockArgResults();
       final root = MockRootDir();
       final pubspec = MockPubspecFile();
@@ -194,8 +196,8 @@ void main() {
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['org-name']).thenReturn(null);
-      when(() => root.directory).thenReturn(Directory('.tmp'));
-      when(() => root.path).thenReturn('.tmp');
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
       when(() => pubspec.exists).thenReturn(true);
       when(() => pubspec.name).thenReturn('my_app');
       when(() => main1.addPlatform(Platform.ios)).thenReturn(null);
@@ -221,14 +223,14 @@ void main() {
       verify(
         () => pubspec.addDependency('cupertino_icons', cupertinoIconsVersion),
       ).called(1);
-      verify(() => flutterPubGet(cwd: '.tmp')).called(1);
+      verify(() => flutterPubGet(cwd: tempDir.path)).called(1);
       verify(
         () => generator.generate(
           any(
             that: isA<DirectoryGeneratorTarget>().having(
               (g) => g.dir.path,
               'dir',
-              '.tmp',
+              tempDir.path,
             ),
           ),
           vars: <String, dynamic>{
@@ -249,6 +251,8 @@ void main() {
 
     test('completes successfully with correct output w/ custom org-name',
         () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
       final argResults = MockArgResults();
       final root = MockRootDir();
       final pubspec = MockPubspecFile();
@@ -272,8 +276,8 @@ void main() {
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['org-name']).thenReturn('com.example.app');
-      when(() => root.directory).thenReturn(Directory('.tmp'));
-      when(() => root.path).thenReturn('.tmp');
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
       when(() => pubspec.exists).thenReturn(true);
       when(() => pubspec.name).thenReturn('my_app');
       when(() => main1.addPlatform(Platform.ios)).thenReturn(null);
@@ -299,14 +303,14 @@ void main() {
       verify(
         () => pubspec.addDependency('cupertino_icons', cupertinoIconsVersion),
       ).called(1);
-      verify(() => flutterPubGet(cwd: '.tmp')).called(1);
+      verify(() => flutterPubGet(cwd: tempDir.path)).called(1);
       verify(
         () => generator.generate(
           any(
             that: isA<DirectoryGeneratorTarget>().having(
               (g) => g.dir.path,
               'dir',
-              '.tmp',
+              tempDir.path,
             ),
           ),
           vars: <String, dynamic>{

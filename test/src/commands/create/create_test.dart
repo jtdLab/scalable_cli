@@ -1355,6 +1355,7 @@ void main() {
               );
               expect(result, equals(ExitCode.success.code));
               tempDir.deleteSync(recursive: true);
+              // TODO remove or should all tests with temp dir have that call
             },
           ),
           timeout: const Timeout(Duration(seconds: 60)),

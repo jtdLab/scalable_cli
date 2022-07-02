@@ -107,6 +107,8 @@ void main() {
     );
 
     test('completes successfully with correct output', () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
       final argResults = MockArgResults();
       final root = MockRootDir();
       final pubspec = MockPubspecFile();
@@ -117,7 +119,7 @@ void main() {
         pubspec: pubspec,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
-      when(() => root.directory).thenReturn(Directory('.tmp'));
+      when(() => root.directory).thenReturn(tempDir);
       when(() => pubspec.exists).thenReturn(true);
       when(() => pubspec.name).thenReturn('my_app');
       when(() => generator.id).thenReturn('generator_id');
@@ -137,7 +139,7 @@ void main() {
             that: isA<DirectoryGeneratorTarget>().having(
               (g) => g.dir.path,
               'dir',
-              '.tmp',
+              tempDir.path,
             ),
           ),
           vars: <String, dynamic>{
@@ -154,6 +156,8 @@ void main() {
     });
 
     test('completes successfully with correct output w/ custom name', () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
       final argResults = MockArgResults();
       final root = MockRootDir();
       final pubspec = MockPubspecFile();
@@ -165,7 +169,7 @@ void main() {
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults.arguments).thenReturn(['Custom']);
-      when(() => root.directory).thenReturn(Directory('.tmp'));
+      when(() => root.directory).thenReturn(tempDir);
       when(() => pubspec.exists).thenReturn(true);
       when(() => pubspec.name).thenReturn('my_app');
       when(() => generator.id).thenReturn('generator_id');
@@ -185,7 +189,7 @@ void main() {
             that: isA<DirectoryGeneratorTarget>().having(
               (g) => g.dir.path,
               'dir',
-              '.tmp',
+              tempDir.path,
             ),
           ),
           vars: <String, dynamic>{
@@ -203,6 +207,8 @@ void main() {
 
     test('completes successfully with correct output w/ custom output-dir',
         () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
       final argResults = MockArgResults();
       final root = MockRootDir();
       final pubspec = MockPubspecFile();
@@ -214,7 +220,7 @@ void main() {
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['output-dir']).thenReturn('custom/dir');
-      when(() => root.directory).thenReturn(Directory('.tmp'));
+      when(() => root.directory).thenReturn(tempDir);
       when(() => pubspec.exists).thenReturn(true);
       when(() => pubspec.name).thenReturn('my_app');
       when(() => generator.id).thenReturn('generator_id');
@@ -234,7 +240,7 @@ void main() {
             that: isA<DirectoryGeneratorTarget>().having(
               (g) => g.dir.path,
               'dir',
-              '.tmp',
+              tempDir.path,
             ),
           ),
           vars: <String, dynamic>{

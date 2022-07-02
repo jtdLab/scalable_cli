@@ -66,10 +66,9 @@ void main() {
 
     late IsEnabledInProject isEnabledInProject;
 
-    final generatedFiles = List.filled(
-      1,
-      const GeneratedFile.created(path: '.tmp/generated/file'),
-    );
+    List<GeneratedFile> generatedFiles(String rootPath) => [
+          GeneratedFile.created(path: '$rootPath/generated/file'),
+        ];
 
     setUpAll(() {
       registerFallbackValue(Platform.ios);
@@ -135,6 +134,8 @@ void main() {
     );
 
     test('completes successfully with correct output', () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
       final argResults = MockArgResults();
       final root = MockRootDir();
       final pubspec = MockPubspecFile();
@@ -146,8 +147,8 @@ void main() {
         isEnabledInProject: isEnabledInProject,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
-      when(() => root.directory).thenReturn(Directory('.tmp'));
-      when(() => root.path).thenReturn('.tmp');
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
       when(() => pubspec.exists).thenReturn(true);
       when(() => pubspec.name).thenReturn('my_app');
       when(() => generator.id).thenReturn('generator_id');
@@ -158,7 +159,7 @@ void main() {
           vars: any(named: 'vars'),
           logger: any(named: 'logger'),
         ),
-      ).thenAnswer((_) async => generatedFiles);
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
       final result = await command.run();
       verify(() => logger.progress('Generating MyPage')).called(1);
       verify(() => isEnabledInProject(Platform.android)).called(1);
@@ -174,7 +175,7 @@ void main() {
             that: isA<DirectoryGeneratorTarget>().having(
               (g) => g.dir.path,
               'dir',
-              '.tmp',
+              tempDir.path,
             ),
           ),
           vars: <String, dynamic>{
@@ -191,7 +192,7 @@ void main() {
             that: isA<DirectoryGeneratorTarget>().having(
               (g) => g.dir.path,
               'dir',
-              '.tmp',
+              tempDir.path,
             ),
           ),
           vars: <String, dynamic>{
@@ -208,7 +209,7 @@ void main() {
             that: isA<DirectoryGeneratorTarget>().having(
               (g) => g.dir.path,
               'dir',
-              '.tmp',
+              tempDir.path,
             ),
           ),
           vars: <String, dynamic>{
@@ -225,7 +226,7 @@ void main() {
             that: isA<DirectoryGeneratorTarget>().having(
               (g) => g.dir.path,
               'dir',
-              '.tmp',
+              tempDir.path,
             ),
           ),
           vars: <String, dynamic>{
@@ -242,7 +243,7 @@ void main() {
             that: isA<DirectoryGeneratorTarget>().having(
               (g) => g.dir.path,
               'dir',
-              '.tmp',
+              tempDir.path,
             ),
           ),
           vars: <String, dynamic>{
@@ -259,7 +260,7 @@ void main() {
             that: isA<DirectoryGeneratorTarget>().having(
               (g) => g.dir.path,
               'dir',
-              '.tmp',
+              tempDir.path,
             ),
           ),
           vars: <String, dynamic>{

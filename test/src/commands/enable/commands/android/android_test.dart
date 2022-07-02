@@ -144,8 +144,8 @@ void main() {
       'throws pubspec not found exception '
       'when no pubspec.yaml exists',
       withRunner((commandRunner, logger, printLogs) async {
-        final directory = Directory.systemTemp.createTempSync();
-        Directory.current = directory.path;
+        final tempDir = Directory.systemTemp.createTempSync();
+        Directory.current = tempDir.path;
         final result = await commandRunner.run(['enable', 'android']);
         expect(result, equals(ExitCode.noInput.code));
         verify(() {
@@ -154,8 +154,9 @@ void main() {
       }),
     );
 
-    // TODO generates .tmp dir
     test('completes successfully with correct output', () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
       final argResults = MockArgResults();
       final root = MockRootDir();
       final pubspec = MockPubspecFile();
@@ -178,7 +179,7 @@ void main() {
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['org-name']).thenReturn(null);
-      when(() => root.directory).thenReturn(Directory('.tmp'));
+      when(() => root.directory).thenReturn(tempDir);
       when(() => pubspec.exists).thenReturn(true);
       when(() => pubspec.name).thenReturn('my_app');
       when(() => main1.addPlatform(Platform.android)).thenReturn(null);
@@ -208,7 +209,7 @@ void main() {
             that: isA<DirectoryGeneratorTarget>().having(
               (g) => g.dir.path,
               'dir',
-              '.tmp',
+              tempDir.path,
             ),
           ),
           vars: <String, dynamic>{
@@ -229,6 +230,8 @@ void main() {
 
     test('completes successfully with correct output w/ custom org-name',
         () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
       final argResults = MockArgResults();
       final root = MockRootDir();
       final pubspec = MockPubspecFile();
@@ -251,7 +254,7 @@ void main() {
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['org-name']).thenReturn('com.example.app');
-      when(() => root.directory).thenReturn(Directory('.tmp'));
+      when(() => root.directory).thenReturn(tempDir);
       when(() => pubspec.exists).thenReturn(true);
       when(() => pubspec.name).thenReturn('my_app');
       when(() => main1.addPlatform(Platform.android)).thenReturn(null);
@@ -281,7 +284,7 @@ void main() {
             that: isA<DirectoryGeneratorTarget>().having(
               (g) => g.dir.path,
               'dir',
-              '.tmp',
+              tempDir.path,
             ),
           ),
           vars: <String, dynamic>{

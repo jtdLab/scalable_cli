@@ -145,6 +145,8 @@ void main() {
     );
 
     test('completes successfully with correct output', () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
       final root = MockRootDir();
       final pubspec = MockPubspecFile();
       final main1 = MockMainFile();
@@ -165,8 +167,8 @@ void main() {
         flutterFormatFix: flutterFormatFix,
         generator: (_) async => generator,
       );
-      when(() => root.directory).thenReturn(Directory('.tmp'));
-      when(() => root.path).thenReturn('.tmp');
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
       when(() => pubspec.exists).thenReturn(true);
       when(() => pubspec.name).thenReturn('my_app');
       when(() => pubspec.description).thenReturn('some description');
@@ -196,7 +198,7 @@ void main() {
             that: isA<DirectoryGeneratorTarget>().having(
               (g) => g.dir.path,
               'dir',
-              '.tmp',
+              tempDir.path,
             ),
           ),
           vars: <String, dynamic>{
