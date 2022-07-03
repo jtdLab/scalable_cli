@@ -10,10 +10,233 @@ import 'package:scalable_cli/src/core/pubspec_file.dart';
 import 'package:scalable_cli/src/core/root_dir.dart';
 import 'package:scalable_cli/src/core/router_gr_file.dart';
 import 'package:test/test.dart';
+import 'package:universal_io/io.dart';
 
 void main() {
   group('Project', () {
-    group('.isEnabled', () {});
+    final cwd = Directory.current;
+
+    setUp(() {
+      Directory.current = cwd;
+    });
+
+    group('.isEnabled', () {
+      group('android', () {
+        test(
+            'returns true when root directory and presentation directory contain android folder',
+            () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('android').createSync(recursive: true);
+          Directory('lib/presentation/android').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.android);
+          expect(isEnabled, true);
+        });
+
+        test('returns false when root directory contains no android folder',
+            () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('lib/presentation/android').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.android);
+          expect(isEnabled, false);
+        });
+
+        test(
+            'returns false when presentation directory contains no android folder',
+            () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('android').createSync(recursive: true);
+          // TODO this might be removed when a potential bug in project file/ dir is fixed
+          Directory('lib/presentation').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.android);
+          expect(isEnabled, false);
+        });
+      });
+
+      group('ios', () {
+        test(
+            'returns true when root directory and presentation directory contain ios folder',
+            () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('ios').createSync(recursive: true);
+          Directory('lib/presentation/ios').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.ios);
+          expect(isEnabled, true);
+        });
+
+        test('returns false when root directory contains no ios folder', () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('lib/presentation/ios').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.ios);
+          expect(isEnabled, false);
+        });
+
+        test('returns false when presentation directory contains no ios folder',
+            () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('ios').createSync(recursive: true);
+          // TODO this might be removed when a potential bug in project file/ dir is fixed
+          Directory('lib/presentation').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.ios);
+          expect(isEnabled, false);
+        });
+      });
+
+      group('web', () {
+        test(
+            'returns true when root directory and presentation directory contain web folder',
+            () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('web').createSync(recursive: true);
+          Directory('lib/presentation/web').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.web);
+          expect(isEnabled, true);
+        });
+
+        test('returns false when root directory contains no web folder', () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('lib/presentation/web').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.web);
+          expect(isEnabled, false);
+        });
+
+        test('returns false when presentation directory contains no web folder',
+            () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('web').createSync(recursive: true);
+          // TODO this might be removed when a potential bug in project file/ dir is fixed
+          Directory('lib/presentation').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.web);
+          expect(isEnabled, false);
+        });
+      });
+
+      group('linux', () {
+        test(
+            'returns true when root directory and presentation directory contain linux folder',
+            () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('linux').createSync(recursive: true);
+          Directory('lib/presentation/linux').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.linux);
+          expect(isEnabled, true);
+        });
+
+        test('returns false when root directory contains no linux folder', () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('lib/presentation/linux').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.linux);
+          expect(isEnabled, false);
+        });
+
+        test(
+            'returns false when presentation directory contains no linux folder',
+            () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('linux').createSync(recursive: true);
+          // TODO this might be removed when a potential bug in project file/ dir is fixed
+          Directory('lib/presentation').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.linux);
+          expect(isEnabled, false);
+        });
+      });
+
+      group('macos', () {
+        test(
+            'returns true when root directory and presentation directory contain macos folder',
+            () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('macos').createSync(recursive: true);
+          Directory('lib/presentation/macos').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.macos);
+          expect(isEnabled, true);
+        });
+
+        test('returns false when root directory contains no macos folder', () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('lib/presentation/macos').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.macos);
+          expect(isEnabled, false);
+        });
+
+        test(
+            'returns false when presentation directory contains no macos folder',
+            () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('macos').createSync(recursive: true);
+          // TODO this might be removed when a potential bug in project file/ dir is fixed
+          Directory('lib/presentation').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.macos);
+          expect(isEnabled, false);
+        });
+      });
+
+      group('windows', () {
+        test(
+            'returns true when root directory and presentation directory contain windows folder',
+            () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('windows').createSync(recursive: true);
+          Directory('lib/presentation/windows').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.windows);
+          expect(isEnabled, true);
+        });
+
+        test('returns false when root directory contains no windows folder',
+            () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('lib/presentation/windows').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.windows);
+          expect(isEnabled, false);
+        });
+
+        test(
+            'returns false when presentation directory contains no windows folder',
+            () {
+          final tempDir = Directory.systemTemp.createTempSync();
+          Directory.current = tempDir.path;
+          Directory('windows').createSync(recursive: true);
+          // TODO this might be removed when a potential bug in project file/ dir is fixed
+          Directory('lib/presentation').createSync(recursive: true);
+
+          final isEnabled = Project.isEnabled(Platform.windows);
+          expect(isEnabled, false);
+        });
+      });
+    });
 
     group('.rootDir', () {
       test('returns instance of RootDir', () {
