@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:args/args.dart';
 import 'package:mason/mason.dart';
 import 'package:scalable_cli/src/cli/cli.dart';
 import 'package:scalable_cli/src/commands/commands.dart';
@@ -8,8 +9,19 @@ import 'package:scalable_cli/src/commands/core/pubspec_required.dart';
 import 'package:scalable_cli/src/core/project.dart';
 import 'package:scalable_cli/src/core/pubspec_file.dart';
 
-// TODO impl scalable like  atm just copied from vgv
-// maybe its clean and we have to change other impls evaluate that
+/// Gets params from [ArgResults] specified by the user.
+extension ParamsFromArgResults on ArgResults {
+  bool get coverage => this['coverage'];
+  bool get recursive => this['recursive'];
+  bool get optimization => this['optimization'];
+  String get concurrency => this['concurrency'];
+  String? get tags => this['tags'];
+  String? get excludeCoverage => this['exclude-coverage'];
+  String? get excludeTags => this['exclude-tags'];
+  String? get minCoverage => this['min-coverage'];
+  String? get testRandomizeOrderingSeed => this['test-randomize-ordering-seed'];
+  bool get updateGoldens => this['update-goldens'];
+}
 
 /// Signature for the [Flutter.installed] method.
 typedef FlutterInstalledCommand = Future<bool> Function();
@@ -113,23 +125,20 @@ class TestCommand extends ScalableCommand
 
   @override
   Future<int> run() => runWhenPubspecExists(() async {
-        final concurrency = argResults['concurrency'] as String;
-        final recursive = argResults['recursive'] as bool;
-        final collectCoverage = argResults['coverage'] as bool;
-        final minCoverage = double.tryParse(
-          argResults['min-coverage'] as String? ?? '',
-        );
-        final excludeTags = argResults['exclude-tags'] as String?;
-        final tags = argResults['tags'] as String?;
+        final concurrency = argResults.concurrency;
+        final recursive = argResults.recursive;
+        final collectCoverage = argResults.coverage;
+        final minCoverage = double.tryParse(argResults.minCoverage ?? '');
+        final excludeTags = argResults.excludeTags;
+        final tags = argResults.tags;
         final isFlutterInstalled = await _flutterInstalled();
-        final excludeFromCoverage = argResults['exclude-coverage'] as String?;
-        final randomOrderingSeed =
-            argResults['test-randomize-ordering-seed'] as String?;
+        final excludeFromCoverage = argResults.excludeCoverage;
+        final randomOrderingSeed = argResults.testRandomizeOrderingSeed;
         final randomSeed = randomOrderingSeed == 'random'
             ? Random().nextInt(4294967295).toString()
             : randomOrderingSeed;
-        final optimizePerformance = argResults['optimization'] as bool;
-        final updateGoldens = argResults['update-goldens'] as bool;
+        final optimizePerformance = argResults.optimization;
+        final updateGoldens = argResults.updateGoldens;
 
         if (isFlutterInstalled) {
           try {
