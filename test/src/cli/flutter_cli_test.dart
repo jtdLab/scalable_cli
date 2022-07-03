@@ -219,6 +219,31 @@ dev_dependencies:
   flutter_test:
     sdk: flutter''';
 
+const pubspecBuildRunner = '''
+name: example
+environment:
+  sdk: ">=2.13.0 <3.0.0"
+
+dev_dependencies:
+  build_runner: any''';
+
+const pubspecLocalization = '''
+name: example
+environment:
+  sdk: ">=2.13.0 <3.0.0"
+
+dependencies:
+  flutter_localizations:
+    sdk: flutter
+    
+flutter:
+  generate: true''';
+
+const l10nYaml = '''
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart''';
+
 const invalidPubspec = 'name: example';
 
 class MockLogger extends Mock implements Logger {}
@@ -226,12 +251,12 @@ class MockLogger extends Mock implements Logger {}
 class MockProgress extends Mock implements Progress {}
 
 void main() {
-  final cwd = Directory.current;
-
   group('Flutter', () {
+    final cwd = Directory.current;
+
     group('.installed', () {
       test('returns true when dart is installed', () {
-        expectLater(Flutter.installed(), completion(isTrue));
+        expectLater(Flutter.installed(), completion(true));
       });
     });
 
@@ -262,52 +287,117 @@ void main() {
     });
 
     group('.genl10n', () {
-      // TODO implement
+      test('throws when there is no pubspec.yaml', () {
+        expectLater(
+          Flutter.genl10n(cwd: Directory.systemTemp.path),
+          throwsException,
+        );
+      });
+
+      test('completes when there is a pubspec.yaml', () async {
+        final tempDir = Directory.systemTemp.createTempSync();
+        File(p.join(tempDir.path, 'lib/l10n/app_en.arb'))
+          ..createSync(recursive: true)
+          ..writeAsStringSync('{}');
+        File(p.join(tempDir.path, 'pubspec.yaml'))
+            .writeAsStringSync(pubspecLocalization);
+        File(p.join(tempDir.path, 'l10n.yaml')).writeAsStringSync(l10nYaml);
+        expectLater(Flutter.genl10n(cwd: tempDir.path), completes);
+      });
     });
 
     group('.formatFix', () {
-      // TODO implement
+      test('throws when there is no pubspec.yaml', () {
+        expectLater(
+          Flutter.formatFix(cwd: Directory.systemTemp.path),
+          throwsException,
+        );
+      });
+
+      test('completes when there is a pubspec.yaml', () async {
+        final tempDir = Directory.systemTemp.createTempSync();
+        File(p.join(tempDir.path, 'pubspec.yaml')).writeAsStringSync(pubspec);
+        expectLater(Flutter.formatFix(cwd: tempDir.path), completes);
+      });
     });
 
-    // TODO changes the flutter config in test env -> reset it or better test ?
     group('.configEnableAndroid', () {
-      /* test('completes normally', () {
+      test('completes normally', () async {
         expectLater(Flutter.configEnableAndroid(), completes);
-      }); */
+      });
     });
 
     group('.configEnableIos', () {
-      /* test('completes normally', () {
+      test('completes normally', () {
         expectLater(Flutter.configEnableIos(), completes);
-      }); */
+      });
     });
 
     group('.configEnableWeb', () {
-      /* test('completes normally', () {
+      test('completes normally', () {
         expectLater(Flutter.configEnableWeb(), completes);
-      }); */
+      });
     });
 
     group('.configEnableLinux', () {
-      /* test('completes normally', () {
+      test('completes normally', () {
         expectLater(Flutter.configEnableLinux(), completes);
-      }); */
+      });
     });
 
     group('.configEnableMacos', () {
-      /* test('completes normally', () {
+      test('completes normally', () {
         expectLater(Flutter.configEnableMacos(), completes);
-      }); */
+      });
     });
 
     group('.configEnableWindows', () {
-      /* test('completes normally', () {
+      test('completes normally', () {
         expectLater(Flutter.configEnableWindows(), completes);
-      }); */
+      });
     });
 
     group('.pubRunBuildRunnerBuildDeleteConflictingOutputs', () {
-      // TODO implement
+      test('throws when there is no pubspec.yaml', () {
+        expectLater(
+          Flutter.pubRunBuildRunnerBuildDeleteConflictingOutputs(
+            cwd: Directory.systemTemp.path,
+          ),
+          throwsException,
+        );
+      });
+
+      test('throws when process fails', () {
+        final tempDir = Directory.systemTemp.createTempSync();
+        File(p.join(tempDir.path, 'pubspec.yaml'))
+            .writeAsStringSync(invalidPubspec);
+
+        expectLater(
+          Flutter.pubRunBuildRunnerBuildDeleteConflictingOutputs(
+            cwd: tempDir.path,
+          ),
+          throwsException,
+        );
+      });
+
+      test('completes when there is a pubspec.yaml w/ build_runner dependency',
+          () async {
+        final tempDir = Directory.systemTemp.createTempSync();
+        File(p.join(tempDir.path, 'pubspec.yaml'))
+            .writeAsStringSync(pubspecBuildRunner);
+        await Process.run(
+          'flutter',
+          ['pub', 'get'],
+          workingDirectory: tempDir.path,
+          runInShell: true,
+        );
+        await expectLater(
+          Flutter.pubRunBuildRunnerBuildDeleteConflictingOutputs(
+            cwd: tempDir.path,
+          ),
+          completes,
+        );
+      });
     });
 
     group('.test', () {
@@ -776,6 +866,7 @@ void main() {
           Flutter.test(
             cwd: tempDir.path,
             optimizePerformance: true,
+            logger: logger,
             stdout: logger.write,
             stderr: logger.err,
           ),
@@ -812,6 +903,7 @@ void main() {
           Flutter.test(
             cwd: tempDir.path,
             optimizePerformance: true,
+            logger: logger,
             stdout: logger.write,
             stderr: logger.err,
           ),
@@ -856,6 +948,7 @@ void main() {
           Flutter.test(
             cwd: tempDir.path,
             optimizePerformance: true,
+            logger: logger,
             stdout: logger.write,
             stderr: logger.err,
           ),
