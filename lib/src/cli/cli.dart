@@ -9,7 +9,6 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:universal_io/io.dart';
 import 'package:very_good_test_runner/very_good_test_runner.dart';
 
-part 'dart_cli.dart';
 part 'flutter_cli.dart';
 
 /// Abstraction for running commands via command-line.
