@@ -125,6 +125,7 @@ class CreateCommand extends ScalableCommand
 
     final outputDirectory = _outputDirectory;
 
+    // TODO cleaner
     bool android = super.android;
     bool ios = super.ios;
     bool web = super.web;

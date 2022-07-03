@@ -124,7 +124,7 @@ abstract class PlatformCommand extends Command<int>
         runProgress.complete(
           'Enabled ${lightYellow.wrap(_platform.prettyName)}',
         );
-        // TODO remove ??
+        // TODO keep or remove
         // logger.info('');
         // logger.info('Register here:');
         // logger.info('');
