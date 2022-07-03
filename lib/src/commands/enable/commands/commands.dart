@@ -1,21 +1,21 @@
 import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
 import 'package:scalable_cli/src/cli/cli.dart';
-import 'package:scalable_cli/src/commands/core/pubspec_required.dart';
 import 'package:scalable_cli/src/commands/core/dependency_versions.dart';
 import 'package:scalable_cli/src/commands/core/generator_builder.dart';
 import 'package:scalable_cli/src/commands/core/is_enabled_in_project.dart';
 import 'package:scalable_cli/src/commands/core/logging.dart';
 import 'package:scalable_cli/src/commands/core/org_name_option.dart';
 import 'package:scalable_cli/src/commands/core/overridable_arg_results.dart';
+import 'package:scalable_cli/src/commands/core/pubspec_required.dart';
 import 'package:scalable_cli/src/commands/enable/commands/android/android_bundle.dart';
 import 'package:scalable_cli/src/commands/enable/commands/ios/ios_bundle.dart';
 import 'package:scalable_cli/src/commands/enable/commands/linux/linux_bundle.dart';
 import 'package:scalable_cli/src/commands/enable/commands/macos/macos_bundle.dart';
 import 'package:scalable_cli/src/commands/enable/commands/web/web_bundle.dart';
 import 'package:scalable_cli/src/commands/enable/commands/windows/windows_bundle.dart';
-import 'package:scalable_cli/src/core/injection_test_file.dart';
 import 'package:scalable_cli/src/core/injection_config_file.dart';
+import 'package:scalable_cli/src/core/injection_test_file.dart';
 import 'package:scalable_cli/src/core/main_file.dart';
 import 'package:scalable_cli/src/core/platform.dart';
 import 'package:scalable_cli/src/core/project.dart';
@@ -44,7 +44,7 @@ abstract class PlatformCommand extends Command<int>
     required InjectionTestFile injectableTest,
     required IsEnabledInProject isEnabledInProject,
     required FlutterConfigEnablePlatformCommand flutterConfigEnablePlatform,
-    required FlutterFormatFixCommand flutterFormatFixCommand,
+    required FlutterFormatFixCommand flutterFormatFix,
     required Platform platform,
     required MasonBundle bundle,
     required GeneratorBuilder generator,
@@ -54,7 +54,7 @@ abstract class PlatformCommand extends Command<int>
         _injectableTest = injectableTest,
         _isEnabledInProject = isEnabledInProject,
         _flutterConfigEnablePlatform = flutterConfigEnablePlatform,
-        _flutterFormatFixCommand = flutterFormatFixCommand,
+        _flutterFormatFix = flutterFormatFix,
         _platform = platform,
         _bundle = bundle,
         _generator = generator;
@@ -69,7 +69,7 @@ abstract class PlatformCommand extends Command<int>
   final InjectionTestFile _injectableTest;
   final IsEnabledInProject _isEnabledInProject;
   final FlutterConfigEnablePlatformCommand _flutterConfigEnablePlatform;
-  final FlutterFormatFixCommand _flutterFormatFixCommand;
+  final FlutterFormatFixCommand _flutterFormatFix;
   final Platform _platform;
   final MasonBundle _bundle;
   final GeneratorBuilder _generator;
@@ -119,7 +119,7 @@ abstract class PlatformCommand extends Command<int>
         _injectionConfig.addRouter(_platform);
         _injectableTest.addRouterTest(_platform);
 
-        await _flutterFormatFixCommand();
+        await _flutterFormatFix();
 
         runProgress.complete(
           'Enabled ${lightYellow.wrap(_platform.prettyName)}',

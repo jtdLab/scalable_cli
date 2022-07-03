@@ -290,16 +290,16 @@ void main() {
       final generator = MockMasonGenerator();
       final command = CreateCommand(
         logger: logger,
-        flutterInstalledCommand: flutterInstalled,
-        flutterPubGetCommand: flutterPubGet,
-        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroid,
-        flutterConfigEnableIosCommand: flutterConfigEnableIos,
-        flutterConfigEnableWebCommand: flutterConfigEnableWeb,
-        flutterConfigEnableLinuxCommand: flutterConfigEnableLinux,
-        flutterConfigEnableMacosCommand: flutterConfigEnableMacos,
-        flutterConfigEnableWindowsCommand: flutterConfigEnableWindows,
-        flutterGenL10nCommand: flutterGenL10n,
-        flutterFormatFixCommand: flutterFormatFix,
+        flutterInstalled: flutterInstalled,
+        flutterPubGet: flutterPubGet,
+        flutterConfigEnableAndroid: flutterConfigEnableAndroid,
+        flutterConfigEnableIos: flutterConfigEnableIos,
+        flutterConfigEnableWeb: flutterConfigEnableWeb,
+        flutterConfigEnableLinux: flutterConfigEnableLinux,
+        flutterConfigEnableMacos: flutterConfigEnableMacos,
+        flutterConfigEnableWindows: flutterConfigEnableWindows,
+        flutterGenL10n: flutterGenL10n,
+        flutterFormatFix: flutterFormatFix,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['project-name']).thenReturn('my_app');
@@ -384,7 +384,7 @@ void main() {
     test('exits with 69 when flutter is not installed', () async {
       final command = CreateCommand(
         logger: logger,
-        flutterInstalledCommand: flutterInstalled,
+        flutterInstalled: flutterInstalled,
       );
       when(() => logger.err(any())).thenReturn(null);
       when(() => flutterInstalled()).thenAnswer((_) async => false);
@@ -400,16 +400,16 @@ void main() {
       final generator = MockMasonGenerator();
       final command = CreateCommand(
         logger: logger,
-        flutterInstalledCommand: flutterInstalled,
-        flutterPubGetCommand: flutterPubGet,
-        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroid,
-        flutterConfigEnableIosCommand: flutterConfigEnableIos,
-        flutterConfigEnableWebCommand: flutterConfigEnableWeb,
-        flutterConfigEnableLinuxCommand: flutterConfigEnableLinux,
-        flutterConfigEnableMacosCommand: flutterConfigEnableMacos,
-        flutterConfigEnableWindowsCommand: flutterConfigEnableWindows,
-        flutterGenL10nCommand: flutterGenL10n,
-        flutterFormatFixCommand: flutterFormatFix,
+        flutterInstalled: flutterInstalled,
+        flutterPubGet: flutterPubGet,
+        flutterConfigEnableAndroid: flutterConfigEnableAndroid,
+        flutterConfigEnableIos: flutterConfigEnableIos,
+        flutterConfigEnableWeb: flutterConfigEnableWeb,
+        flutterConfigEnableLinux: flutterConfigEnableLinux,
+        flutterConfigEnableMacos: flutterConfigEnableMacos,
+        flutterConfigEnableWindows: flutterConfigEnableWindows,
+        flutterGenL10n: flutterGenL10n,
+        flutterFormatFix: flutterFormatFix,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['project-name']).thenReturn('my_app');
@@ -500,16 +500,16 @@ void main() {
       final generator = MockMasonGenerator();
       final command = CreateCommand(
         logger: logger,
-        flutterInstalledCommand: flutterInstalled,
-        flutterPubGetCommand: flutterPubGet,
-        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroid,
-        flutterConfigEnableIosCommand: flutterConfigEnableIos,
-        flutterConfigEnableWebCommand: flutterConfigEnableWeb,
-        flutterConfigEnableLinuxCommand: flutterConfigEnableLinux,
-        flutterConfigEnableMacosCommand: flutterConfigEnableMacos,
-        flutterConfigEnableWindowsCommand: flutterConfigEnableWindows,
-        flutterGenL10nCommand: flutterGenL10n,
-        flutterFormatFixCommand: flutterFormatFix,
+        flutterInstalled: flutterInstalled,
+        flutterPubGet: flutterPubGet,
+        flutterConfigEnableAndroid: flutterConfigEnableAndroid,
+        flutterConfigEnableIos: flutterConfigEnableIos,
+        flutterConfigEnableWeb: flutterConfigEnableWeb,
+        flutterConfigEnableLinux: flutterConfigEnableLinux,
+        flutterConfigEnableMacos: flutterConfigEnableMacos,
+        flutterConfigEnableWindows: flutterConfigEnableWindows,
+        flutterGenL10n: flutterGenL10n,
+        flutterFormatFix: flutterFormatFix,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['project-name']).thenReturn('my_app');
@@ -599,16 +599,16 @@ void main() {
       final generator = MockMasonGenerator();
       final command = CreateCommand(
         logger: logger,
-        flutterInstalledCommand: flutterInstalled,
-        flutterPubGetCommand: flutterPubGet,
-        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroid,
-        flutterConfigEnableIosCommand: flutterConfigEnableIos,
-        flutterConfigEnableWebCommand: flutterConfigEnableWeb,
-        flutterConfigEnableLinuxCommand: flutterConfigEnableLinux,
-        flutterConfigEnableMacosCommand: flutterConfigEnableMacos,
-        flutterConfigEnableWindowsCommand: flutterConfigEnableWindows,
-        flutterGenL10nCommand: flutterGenL10n,
-        flutterFormatFixCommand: flutterFormatFix,
+        flutterInstalled: flutterInstalled,
+        flutterPubGet: flutterPubGet,
+        flutterConfigEnableAndroid: flutterConfigEnableAndroid,
+        flutterConfigEnableIos: flutterConfigEnableIos,
+        flutterConfigEnableWeb: flutterConfigEnableWeb,
+        flutterConfigEnableLinux: flutterConfigEnableLinux,
+        flutterConfigEnableMacos: flutterConfigEnableMacos,
+        flutterConfigEnableWindows: flutterConfigEnableWindows,
+        flutterGenL10n: flutterGenL10n,
+        flutterFormatFix: flutterFormatFix,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['project-name']).thenReturn('my_app');
@@ -698,16 +698,16 @@ void main() {
       final generator = MockMasonGenerator();
       final command = CreateCommand(
         logger: logger,
-        flutterInstalledCommand: flutterInstalled,
-        flutterPubGetCommand: flutterPubGet,
-        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroid,
-        flutterConfigEnableIosCommand: flutterConfigEnableIos,
-        flutterConfigEnableWebCommand: flutterConfigEnableWeb,
-        flutterConfigEnableLinuxCommand: flutterConfigEnableLinux,
-        flutterConfigEnableMacosCommand: flutterConfigEnableMacos,
-        flutterConfigEnableWindowsCommand: flutterConfigEnableWindows,
-        flutterGenL10nCommand: flutterGenL10n,
-        flutterFormatFixCommand: flutterFormatFix,
+        flutterInstalled: flutterInstalled,
+        flutterPubGet: flutterPubGet,
+        flutterConfigEnableAndroid: flutterConfigEnableAndroid,
+        flutterConfigEnableIos: flutterConfigEnableIos,
+        flutterConfigEnableWeb: flutterConfigEnableWeb,
+        flutterConfigEnableLinux: flutterConfigEnableLinux,
+        flutterConfigEnableMacos: flutterConfigEnableMacos,
+        flutterConfigEnableWindows: flutterConfigEnableWindows,
+        flutterGenL10n: flutterGenL10n,
+        flutterFormatFix: flutterFormatFix,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['project-name']).thenReturn('my_app');
@@ -796,16 +796,16 @@ void main() {
       final generator = MockMasonGenerator();
       final command = CreateCommand(
         logger: logger,
-        flutterInstalledCommand: flutterInstalled,
-        flutterPubGetCommand: flutterPubGet,
-        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroid,
-        flutterConfigEnableIosCommand: flutterConfigEnableIos,
-        flutterConfigEnableWebCommand: flutterConfigEnableWeb,
-        flutterConfigEnableLinuxCommand: flutterConfigEnableLinux,
-        flutterConfigEnableMacosCommand: flutterConfigEnableMacos,
-        flutterConfigEnableWindowsCommand: flutterConfigEnableWindows,
-        flutterGenL10nCommand: flutterGenL10n,
-        flutterFormatFixCommand: flutterFormatFix,
+        flutterInstalled: flutterInstalled,
+        flutterPubGet: flutterPubGet,
+        flutterConfigEnableAndroid: flutterConfigEnableAndroid,
+        flutterConfigEnableIos: flutterConfigEnableIos,
+        flutterConfigEnableWeb: flutterConfigEnableWeb,
+        flutterConfigEnableLinux: flutterConfigEnableLinux,
+        flutterConfigEnableMacos: flutterConfigEnableMacos,
+        flutterConfigEnableWindows: flutterConfigEnableWindows,
+        flutterGenL10n: flutterGenL10n,
+        flutterFormatFix: flutterFormatFix,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['project-name']).thenReturn('my_app');
@@ -894,16 +894,16 @@ void main() {
       final generator = MockMasonGenerator();
       final command = CreateCommand(
         logger: logger,
-        flutterInstalledCommand: flutterInstalled,
-        flutterPubGetCommand: flutterPubGet,
-        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroid,
-        flutterConfigEnableIosCommand: flutterConfigEnableIos,
-        flutterConfigEnableWebCommand: flutterConfigEnableWeb,
-        flutterConfigEnableLinuxCommand: flutterConfigEnableLinux,
-        flutterConfigEnableMacosCommand: flutterConfigEnableMacos,
-        flutterConfigEnableWindowsCommand: flutterConfigEnableWindows,
-        flutterGenL10nCommand: flutterGenL10n,
-        flutterFormatFixCommand: flutterFormatFix,
+        flutterInstalled: flutterInstalled,
+        flutterPubGet: flutterPubGet,
+        flutterConfigEnableAndroid: flutterConfigEnableAndroid,
+        flutterConfigEnableIos: flutterConfigEnableIos,
+        flutterConfigEnableWeb: flutterConfigEnableWeb,
+        flutterConfigEnableLinux: flutterConfigEnableLinux,
+        flutterConfigEnableMacos: flutterConfigEnableMacos,
+        flutterConfigEnableWindows: flutterConfigEnableWindows,
+        flutterGenL10n: flutterGenL10n,
+        flutterFormatFix: flutterFormatFix,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['project-name']).thenReturn('my_app');
@@ -992,16 +992,16 @@ void main() {
       final generator = MockMasonGenerator();
       final command = CreateCommand(
         logger: logger,
-        flutterInstalledCommand: flutterInstalled,
-        flutterPubGetCommand: flutterPubGet,
-        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroid,
-        flutterConfigEnableIosCommand: flutterConfigEnableIos,
-        flutterConfigEnableWebCommand: flutterConfigEnableWeb,
-        flutterConfigEnableLinuxCommand: flutterConfigEnableLinux,
-        flutterConfigEnableMacosCommand: flutterConfigEnableMacos,
-        flutterConfigEnableWindowsCommand: flutterConfigEnableWindows,
-        flutterGenL10nCommand: flutterGenL10n,
-        flutterFormatFixCommand: flutterFormatFix,
+        flutterInstalled: flutterInstalled,
+        flutterPubGet: flutterPubGet,
+        flutterConfigEnableAndroid: flutterConfigEnableAndroid,
+        flutterConfigEnableIos: flutterConfigEnableIos,
+        flutterConfigEnableWeb: flutterConfigEnableWeb,
+        flutterConfigEnableLinux: flutterConfigEnableLinux,
+        flutterConfigEnableMacos: flutterConfigEnableMacos,
+        flutterConfigEnableWindows: flutterConfigEnableWindows,
+        flutterGenL10n: flutterGenL10n,
+        flutterFormatFix: flutterFormatFix,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['project-name']).thenReturn('my_app');
@@ -1090,16 +1090,16 @@ void main() {
       final generator = MockMasonGenerator();
       final command = CreateCommand(
         logger: logger,
-        flutterInstalledCommand: flutterInstalled,
-        flutterPubGetCommand: flutterPubGet,
-        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroid,
-        flutterConfigEnableIosCommand: flutterConfigEnableIos,
-        flutterConfigEnableWebCommand: flutterConfigEnableWeb,
-        flutterConfigEnableLinuxCommand: flutterConfigEnableLinux,
-        flutterConfigEnableMacosCommand: flutterConfigEnableMacos,
-        flutterConfigEnableWindowsCommand: flutterConfigEnableWindows,
-        flutterGenL10nCommand: flutterGenL10n,
-        flutterFormatFixCommand: flutterFormatFix,
+        flutterInstalled: flutterInstalled,
+        flutterPubGet: flutterPubGet,
+        flutterConfigEnableAndroid: flutterConfigEnableAndroid,
+        flutterConfigEnableIos: flutterConfigEnableIos,
+        flutterConfigEnableWeb: flutterConfigEnableWeb,
+        flutterConfigEnableLinux: flutterConfigEnableLinux,
+        flutterConfigEnableMacos: flutterConfigEnableMacos,
+        flutterConfigEnableWindows: flutterConfigEnableWindows,
+        flutterGenL10n: flutterGenL10n,
+        flutterFormatFix: flutterFormatFix,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['project-name']).thenReturn('my_app');
@@ -1189,16 +1189,16 @@ void main() {
       final generator = MockMasonGenerator();
       final command = CreateCommand(
         logger: logger,
-        flutterInstalledCommand: flutterInstalled,
-        flutterPubGetCommand: flutterPubGet,
-        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroid,
-        flutterConfigEnableIosCommand: flutterConfigEnableIos,
-        flutterConfigEnableWebCommand: flutterConfigEnableWeb,
-        flutterConfigEnableLinuxCommand: flutterConfigEnableLinux,
-        flutterConfigEnableMacosCommand: flutterConfigEnableMacos,
-        flutterConfigEnableWindowsCommand: flutterConfigEnableWindows,
-        flutterGenL10nCommand: flutterGenL10n,
-        flutterFormatFixCommand: flutterFormatFix,
+        flutterInstalled: flutterInstalled,
+        flutterPubGet: flutterPubGet,
+        flutterConfigEnableAndroid: flutterConfigEnableAndroid,
+        flutterConfigEnableIos: flutterConfigEnableIos,
+        flutterConfigEnableWeb: flutterConfigEnableWeb,
+        flutterConfigEnableLinux: flutterConfigEnableLinux,
+        flutterConfigEnableMacos: flutterConfigEnableMacos,
+        flutterConfigEnableWindows: flutterConfigEnableWindows,
+        flutterGenL10n: flutterGenL10n,
+        flutterFormatFix: flutterFormatFix,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['project-name']).thenReturn('my_app');
@@ -1286,16 +1286,16 @@ void main() {
       final generator = MockMasonGenerator();
       final command = CreateCommand(
         logger: logger,
-        flutterInstalledCommand: flutterInstalled,
-        flutterPubGetCommand: flutterPubGet,
-        flutterConfigEnableAndroidCommand: flutterConfigEnableAndroid,
-        flutterConfigEnableIosCommand: flutterConfigEnableIos,
-        flutterConfigEnableWebCommand: flutterConfigEnableWeb,
-        flutterConfigEnableLinuxCommand: flutterConfigEnableLinux,
-        flutterConfigEnableMacosCommand: flutterConfigEnableMacos,
-        flutterConfigEnableWindowsCommand: flutterConfigEnableWindows,
-        flutterGenL10nCommand: flutterGenL10n,
-        flutterFormatFixCommand: flutterFormatFix,
+        flutterInstalled: flutterInstalled,
+        flutterPubGet: flutterPubGet,
+        flutterConfigEnableAndroid: flutterConfigEnableAndroid,
+        flutterConfigEnableIos: flutterConfigEnableIos,
+        flutterConfigEnableWeb: flutterConfigEnableWeb,
+        flutterConfigEnableLinux: flutterConfigEnableLinux,
+        flutterConfigEnableMacos: flutterConfigEnableMacos,
+        flutterConfigEnableWindows: flutterConfigEnableWindows,
+        flutterGenL10n: flutterGenL10n,
+        flutterFormatFix: flutterFormatFix,
         generator: (_) async => generator,
       )..argResultOverrides = argResults;
       when(() => argResults['project-name']).thenReturn('my_app');
@@ -1455,18 +1455,18 @@ void main() {
           final generator = MockMasonGenerator();
           final command = CreateCommand(
             logger: logger,
-            flutterInstalledCommand: flutterInstalledCommand,
-            flutterPubGetCommand: flutterPubGetCommand,
-            flutterConfigEnableAndroidCommand:
+            flutterInstalled: flutterInstalledCommand,
+            flutterPubGet: flutterPubGetCommand,
+            flutterConfigEnableAndroid:
                 flutterConfigEnableAndroidCommand,
-            flutterConfigEnableIosCommand: flutterConfigEnableIosCommand,
-            flutterConfigEnableWebCommand: flutterConfigEnableWebCommand,
-            flutterConfigEnableLinuxCommand: flutterConfigEnableLinuxCommand,
-            flutterConfigEnableMacosCommand: flutterConfigEnableMacosCommand,
-            flutterConfigEnableWindowsCommand:
+            flutterConfigEnableIos: flutterConfigEnableIosCommand,
+            flutterConfigEnableWeb: flutterConfigEnableWebCommand,
+            flutterConfigEnableLinux: flutterConfigEnableLinuxCommand,
+            flutterConfigEnableMacos: flutterConfigEnableMacosCommand,
+            flutterConfigEnableWindows:
                 flutterConfigEnableWindowsCommand,
-            flutterGenL10nCommand: flutterGenL10nCommand,
-            flutterFormatFixCommand: flutterFormatFixCommand,
+            flutterGenL10n: flutterGenL10nCommand,
+            flutterFormatFix: flutterFormatFixCommand,
             generator: (_) async => generator,
           )..argResultOverrides = argResults;
           when(

@@ -33,33 +33,33 @@ class CreateCommand extends ScalableCommand
   /// {@macro create_command}
   CreateCommand({
     Logger? logger,
-    FlutterInstalledCommand? flutterInstalledCommand,
-    FlutterPubGetCommand? flutterPubGetCommand,
-    FlutterConfigEnablePlatformCommand? flutterConfigEnableAndroidCommand,
-    FlutterConfigEnablePlatformCommand? flutterConfigEnableIosCommand,
-    FlutterConfigEnablePlatformCommand? flutterConfigEnableWebCommand,
-    FlutterConfigEnablePlatformCommand? flutterConfigEnableLinuxCommand,
-    FlutterConfigEnablePlatformCommand? flutterConfigEnableMacosCommand,
-    FlutterConfigEnablePlatformCommand? flutterConfigEnableWindowsCommand,
-    FlutterGenL10nCommand? flutterGenL10nCommand,
-    FlutterFormatFixCommand? flutterFormatFixCommand,
+    FlutterInstalledCommand? flutterInstalled,
+    FlutterPubGetCommand? flutterPubGet,
+    FlutterConfigEnablePlatformCommand? flutterConfigEnableAndroid,
+    FlutterConfigEnablePlatformCommand? flutterConfigEnableIos,
+    FlutterConfigEnablePlatformCommand? flutterConfigEnableWeb,
+    FlutterConfigEnablePlatformCommand? flutterConfigEnableLinux,
+    FlutterConfigEnablePlatformCommand? flutterConfigEnableMacos,
+    FlutterConfigEnablePlatformCommand? flutterConfigEnableWindows,
+    FlutterGenL10nCommand? flutterGenL10n,
+    FlutterFormatFixCommand? flutterFormatFix,
     GeneratorBuilder? generator,
-  })  : _flutterInstalledCommand = flutterInstalledCommand ?? Flutter.installed,
-        _flutterPubGetCommand = flutterPubGetCommand ?? Flutter.pubGet,
-        _flutterConfigEnableAndroidCommand =
-            flutterConfigEnableAndroidCommand ?? Flutter.configEnableAndroid,
-        _flutterConfigEnableIosCommand =
-            flutterConfigEnableIosCommand ?? Flutter.configEnableIos,
-        _flutterConfigEnableWebCommand =
-            flutterConfigEnableWebCommand ?? Flutter.configEnableWeb,
-        _flutterConfigEnableLinuxCommand =
-            flutterConfigEnableLinuxCommand ?? Flutter.configEnableLinux,
-        _flutterConfigEnableMacosCommand =
-            flutterConfigEnableMacosCommand ?? Flutter.configEnableMacos,
-        _flutterConfigEnableWindowsCommand =
-            flutterConfigEnableWindowsCommand ?? Flutter.configEnableWindows,
-        _flutterGenL10nCommand = flutterGenL10nCommand ?? Flutter.genl10n,
-        _flutterFormatFixCommand = flutterFormatFixCommand ?? Flutter.formatFix,
+  })  : _flutterInstalled = flutterInstalled ?? Flutter.installed,
+        _flutterPubGet = flutterPubGet ?? Flutter.pubGet,
+        _flutterConfigEnableAndroid =
+            flutterConfigEnableAndroid ?? Flutter.configEnableAndroid,
+        _flutterConfigEnableIos =
+            flutterConfigEnableIos ?? Flutter.configEnableIos,
+        _flutterConfigEnableWeb =
+            flutterConfigEnableWeb ?? Flutter.configEnableWeb,
+        _flutterConfigEnableLinux =
+            flutterConfigEnableLinux ?? Flutter.configEnableLinux,
+        _flutterConfigEnableMacos =
+            flutterConfigEnableMacos ?? Flutter.configEnableMacos,
+        _flutterConfigEnableWindows =
+            flutterConfigEnableWindows ?? Flutter.configEnableWindows,
+        _flutterGenL10n = flutterGenL10n ?? Flutter.genl10n,
+        _flutterFormatFix = flutterFormatFix ?? Flutter.formatFix,
         _generator = generator ?? MasonGenerator.fromBundle,
         super(
           logger: logger ?? Logger(),
@@ -92,16 +92,16 @@ class CreateCommand extends ScalableCommand
       );
   }
 
-  final FlutterInstalledCommand _flutterInstalledCommand;
-  final FlutterPubGetCommand _flutterPubGetCommand;
-  final FlutterConfigEnablePlatformCommand _flutterConfigEnableAndroidCommand;
-  final FlutterConfigEnablePlatformCommand _flutterConfigEnableIosCommand;
-  final FlutterConfigEnablePlatformCommand _flutterConfigEnableWebCommand;
-  final FlutterConfigEnablePlatformCommand _flutterConfigEnableLinuxCommand;
-  final FlutterConfigEnablePlatformCommand _flutterConfigEnableMacosCommand;
-  final FlutterConfigEnablePlatformCommand _flutterConfigEnableWindowsCommand;
-  final FlutterGenL10nCommand _flutterGenL10nCommand;
-  final FlutterFormatFixCommand _flutterFormatFixCommand;
+  final FlutterInstalledCommand _flutterInstalled;
+  final FlutterPubGetCommand _flutterPubGet;
+  final FlutterConfigEnablePlatformCommand _flutterConfigEnableAndroid;
+  final FlutterConfigEnablePlatformCommand _flutterConfigEnableIos;
+  final FlutterConfigEnablePlatformCommand _flutterConfigEnableWeb;
+  final FlutterConfigEnablePlatformCommand _flutterConfigEnableLinux;
+  final FlutterConfigEnablePlatformCommand _flutterConfigEnableMacos;
+  final FlutterConfigEnablePlatformCommand _flutterConfigEnableWindows;
+  final FlutterGenL10nCommand _flutterGenL10n;
+  final FlutterFormatFixCommand _flutterFormatFix;
   final GeneratorBuilder _generator;
 
   @override
@@ -116,7 +116,7 @@ class CreateCommand extends ScalableCommand
 
   @override
   Future<int> run() async {
-    final isFlutterInstalled = await _flutterInstalledCommand();
+    final isFlutterInstalled = await _flutterInstalled();
     if (!isFlutterInstalled) {
       logger.err('Flutter not installed.');
 
@@ -145,42 +145,42 @@ class CreateCommand extends ScalableCommand
       final enableAndroidProgress = logger.progress(
         'Running "flutter config --enable-android"',
       );
-      await _flutterConfigEnableAndroidCommand();
+      await _flutterConfigEnableAndroid();
       enableAndroidProgress.complete();
     }
     if (ios) {
       final enableIosProgress = logger.progress(
         'Running "flutter config --enable-ios"',
       );
-      await _flutterConfigEnableIosCommand();
+      await _flutterConfigEnableIos();
       enableIosProgress.complete();
     }
     if (web) {
       final enableWebProgress = logger.progress(
         'Running "flutter config --enable-web"',
       );
-      await _flutterConfigEnableWebCommand();
+      await _flutterConfigEnableWeb();
       enableWebProgress.complete();
     }
     if (linux) {
       final enableLinuxProgress = logger.progress(
         'Running "flutter config --enable-linux-desktop"',
       );
-      await _flutterConfigEnableLinuxCommand();
+      await _flutterConfigEnableLinux();
       enableLinuxProgress.complete();
     }
     if (macos) {
       final enableMacosProgress = logger.progress(
         'Running "flutter config --enable-macos-desktop"',
       );
-      await _flutterConfigEnableMacosCommand();
+      await _flutterConfigEnableMacos();
       enableMacosProgress.complete();
     }
     if (windows) {
       final enableWindowsProgress = logger.progress(
         'Running "flutter config --enable-windows-desktop"',
       );
-      await _flutterConfigEnableWindowsCommand();
+      await _flutterConfigEnableWindows();
       enableWindowsProgress.complete();
     }
 
@@ -212,19 +212,19 @@ class CreateCommand extends ScalableCommand
     final installDependenciesProgress = logger.progress(
       'Running "flutter pub get" in ${outputDirectory.path}',
     );
-    await _flutterPubGetCommand(cwd: outputDirectory.path);
+    await _flutterPubGet(cwd: outputDirectory.path);
     installDependenciesProgress.complete();
 
     final generateLocalizationsProgress = logger.progress(
       'Running "flutter gen-l10n" in ${outputDirectory.path}',
     );
-    await _flutterGenL10nCommand(cwd: outputDirectory.path);
+    await _flutterGenL10n(cwd: outputDirectory.path);
     generateLocalizationsProgress.complete();
 
     final formatProgress = logger.progress(
       'Running "flutter format . --fix" in ${outputDirectory.path}',
     );
-    await _flutterFormatFixCommand(cwd: outputDirectory.path);
+    await _flutterFormatFix(cwd: outputDirectory.path);
     formatProgress.complete();
 
     logger

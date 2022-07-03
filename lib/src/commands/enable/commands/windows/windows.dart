@@ -28,7 +28,7 @@ class WindowsCommand extends PlatformCommand
           isEnabledInProject: isEnabledInProject ?? Project.isEnabled,
           flutterConfigEnablePlatform:
               flutterConfigEnableWindows ?? Flutter.configEnableWindows,
-          flutterFormatFixCommand: flutterFormatFix ?? Flutter.formatFix,
+          flutterFormatFix: flutterFormatFix ?? Flutter.formatFix,
           platform: Platform.windows,
           bundle: windowsBundle,
           generator: generator ?? MasonGenerator.fromBundle,

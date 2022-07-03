@@ -28,7 +28,7 @@ class LinuxCommand extends PlatformCommand
           isEnabledInProject: isEnabledInProject ?? Project.isEnabled,
           flutterConfigEnablePlatform:
               flutterConfigEnableLinux ?? Flutter.configEnableLinux,
-          flutterFormatFixCommand: flutterFormatFix ?? Flutter.formatFix,
+          flutterFormatFix: flutterFormatFix ?? Flutter.formatFix,
           platform: Platform.linux,
           bundle: linuxBundle,
           generator: generator ?? MasonGenerator.fromBundle,

@@ -25,7 +25,7 @@ class WebCommand extends PlatformCommand {
           isEnabledInProject: isEnabledInProject ?? Project.isEnabled,
           flutterConfigEnablePlatform:
               flutterConfigEnableWeb ?? Flutter.configEnableWeb,
-          flutterFormatFixCommand: flutterFormatFix ?? Flutter.formatFix,
+          flutterFormatFix: flutterFormatFix ?? Flutter.formatFix,
           platform: Platform.web,
           bundle: webBundle,
           generator: generator ?? MasonGenerator.fromBundle,

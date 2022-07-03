@@ -26,7 +26,7 @@ class AndroidCommand extends PlatformCommand
           isEnabledInProject: isEnabledInProject ?? Project.isEnabled,
           flutterConfigEnablePlatform:
               flutterConfigEnableAndroid ?? Flutter.configEnableAndroid,
-          flutterFormatFixCommand: flutterFormatFix ?? Flutter.formatFix,
+          flutterFormatFix: flutterFormatFix ?? Flutter.formatFix,
           platform: Platform.android,
           bundle: androidBundle,
           generator: generator ?? MasonGenerator.fromBundle,

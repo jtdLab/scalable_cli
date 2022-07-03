@@ -28,7 +28,7 @@ class MacosCommand extends PlatformCommand
           isEnabledInProject: isEnabledInProject ?? Project.isEnabled,
           flutterConfigEnablePlatform:
               flutterConfigEnableMacos ?? Flutter.configEnableMacos,
-          flutterFormatFixCommand: flutterFormatFix ?? Flutter.formatFix,
+          flutterFormatFix: flutterFormatFix ?? Flutter.formatFix,
           platform: Platform.macos,
           bundle: macosBundle,
           generator: generator ?? MasonGenerator.fromBundle,

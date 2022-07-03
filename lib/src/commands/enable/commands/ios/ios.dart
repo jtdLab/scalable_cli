@@ -28,7 +28,7 @@ class IosCommand extends PlatformCommand
           isEnabledInProject: isEnabledInProject ?? Project.isEnabled,
           flutterConfigEnablePlatform:
               flutterConfigEnableIos ?? Flutter.configEnableIos,
-          flutterFormatFixCommand: flutterFormatFix ?? Flutter.formatFix,
+          flutterFormatFix: flutterFormatFix ?? Flutter.formatFix,
           platform: Platform.ios,
           bundle: iosBundle,
           generator: generator ?? MasonGenerator.fromBundle,
