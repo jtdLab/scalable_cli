@@ -394,7 +394,7 @@ void main() {
     });
 
     test(
-        'completes successfully with correct output when --mobile, --desktop and --web is selected.',
+        'completes successfully with correct output when --mobile, --desktop and --web is selected',
         () async {
       final argResults = MockArgResults();
       final generator = MockMasonGenerator();
@@ -494,8 +494,7 @@ void main() {
       expect(result, equals(ExitCode.success.code));
     });
 
-    test(
-        'completes successfully with correct output when --mobile is selected.',
+    test('completes successfully with correct output when --mobile is selected',
         () async {
       final argResults = MockArgResults();
       final generator = MockMasonGenerator();
@@ -594,7 +593,7 @@ void main() {
     });
 
     test(
-        'completes successfully with correct output when --desktop is selected.',
+        'completes successfully with correct output when --desktop is selected',
         () async {
       final argResults = MockArgResults();
       final generator = MockMasonGenerator();
@@ -693,7 +692,7 @@ void main() {
     });
 
     test(
-        'completes successfully with correct output when --android is selected.',
+        'completes successfully with correct output when --android is selected',
         () async {
       final argResults = MockArgResults();
       final generator = MockMasonGenerator();
@@ -791,7 +790,7 @@ void main() {
       expect(result, equals(ExitCode.success.code));
     });
 
-    test('completes successfully with correct output when --ios is selected.',
+    test('completes successfully with correct output when --ios is selected',
         () async {
       final argResults = MockArgResults();
       final generator = MockMasonGenerator();
@@ -889,7 +888,7 @@ void main() {
       expect(result, equals(ExitCode.success.code));
     });
 
-    test('completes successfully with correct output when --web is selected.',
+    test('completes successfully with correct output when --web is selected',
         () async {
       final argResults = MockArgResults();
       final generator = MockMasonGenerator();
@@ -987,7 +986,7 @@ void main() {
       expect(result, equals(ExitCode.success.code));
     });
 
-    test('completes successfully with correct output when --linux is selected.',
+    test('completes successfully with correct output when --linux is selected',
         () async {
       final argResults = MockArgResults();
       final generator = MockMasonGenerator();
@@ -1085,7 +1084,7 @@ void main() {
       expect(result, equals(ExitCode.success.code));
     });
 
-    test('completes successfully with correct output when --macos is selected.',
+    test('completes successfully with correct output when --macos is selected',
         () async {
       final argResults = MockArgResults();
       final generator = MockMasonGenerator();
@@ -1184,7 +1183,7 @@ void main() {
     });
 
     test(
-        'completes successfully with correct output when --windows is selected.',
+        'completes successfully with correct output when --windows is selected',
         () async {
       final argResults = MockArgResults();
       final generator = MockMasonGenerator();

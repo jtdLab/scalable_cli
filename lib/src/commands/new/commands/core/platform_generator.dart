@@ -36,6 +36,19 @@ mixin PlatformGenerator on ComponentCommand, PlatformGetters {
         final linuxFiles = await _generate(Platform.linux, linux);
         final macosFiles = await _generate(Platform.macos, macos);
         final windowsFiles = await _generate(Platform.windows, windows);
+
+        if (androidFiles == null &&
+            iosFiles == null &&
+            webFiles == null &&
+            linuxFiles == null &&
+            macosFiles == null &&
+            windowsFiles == null) {
+          runProgress.cancel(); // TODO cleaner?
+          logger.err('No platform enabled.'); // TODO cleaner?
+          logger.info(''); // TODO cleaner?
+          return ExitCode.unavailable.code;
+        }
+
         runProgress.complete(
           '''Generated ${lightYellow.wrap('$name${_component.name.pascalCase}')}''',
         );
@@ -73,6 +86,8 @@ mixin PlatformGenerator on ComponentCommand, PlatformGetters {
     return await generator.generate(
       DirectoryGeneratorTarget(_root.directory),
       vars: <String, dynamic>{
+        'project_name': _projectName,
+        'name': _name,
         'path': _path(platform),
         platform.name: true,
         ...vars(platform),

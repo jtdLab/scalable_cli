@@ -76,7 +76,6 @@ const _defaultName = 'My';
 /// {@endtemplate}
 abstract class ComponentCommand extends Command<int>
     with Logging, OverridableArgResults, PubspecRequired {
-  // TODO output dir getters should be part of this class componentcommand and not mixin
   /// {@macro component_command}
   ComponentCommand({
     required this.logger,
@@ -112,12 +111,11 @@ abstract class ComponentCommand extends Command<int>
   @override
   String get invocation => 'scalable new $name';
 
-  /// Gets the project name
+  /// Gets the project name.
   String get _projectName => pubspec.name;
 
   /// Gets the output dir.
   String get _outputDir => argResults['output-dir'] ?? '';
-  // TODO correct location ? or to ouput dir getters mixin
 
   /// Gets the name of the component specified by the user.
   ///

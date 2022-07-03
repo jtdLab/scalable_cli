@@ -168,7 +168,6 @@ void main() {
       verify(() => isEnabledInProject(Platform.linux)).called(1);
       verify(() => isEnabledInProject(Platform.macos)).called(1);
       verify(() => isEnabledInProject(Platform.windows)).called(1);
-      // TODO use seperate method
       verify(
         () => generator.generate(
           any(
@@ -179,6 +178,8 @@ void main() {
             ),
           ),
           vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
             'path': 'android',
             'android': true,
             'widgets': true,
@@ -196,6 +197,8 @@ void main() {
             ),
           ),
           vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
             'path': 'ios',
             'ios': true,
             'widgets': true,
@@ -213,6 +216,8 @@ void main() {
             ),
           ),
           vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
             'path': 'web',
             'web': true,
             'widgets': true,
@@ -230,6 +235,8 @@ void main() {
             ),
           ),
           vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
             'path': 'linux',
             'linux': true,
             'widgets': true,
@@ -247,6 +254,8 @@ void main() {
             ),
           ),
           vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
             'path': 'macos',
             'macos': true,
             'widgets': true,
@@ -264,6 +273,8 @@ void main() {
             ),
           ),
           vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
             'path': 'windows',
             'windows': true,
             'widgets': true,
@@ -313,6 +324,1407 @@ void main() {
       expect(result, ExitCode.success.code);
     });
 
-    // TODO more granular tests for params and some edge cases
+    test(
+        'completes successfully with correct output when no platforms are enabled',
+        () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
+      final argResults = MockArgResults();
+      final root = MockRootDir();
+      final pubspec = MockPubspecFile();
+      final generator = MockMasonGenerator();
+      final command = PageCommand(
+        logger: logger,
+        root: root,
+        pubspec: pubspec,
+        isEnabledInProject: isEnabledInProject,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => isEnabledInProject(any())).thenReturn(false);
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.name).thenReturn('my_app');
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
+      final result = await command.run();
+      verify(() => logger.progress('Generating MyPage'))
+          .called(1); // TODO clean?
+      verify(() => isEnabledInProject(Platform.android)).called(1);
+      verify(() => isEnabledInProject(Platform.ios)).called(1);
+      verify(() => isEnabledInProject(Platform.web)).called(1);
+      verify(() => isEnabledInProject(Platform.linux)).called(1);
+      verify(() => isEnabledInProject(Platform.macos)).called(1);
+      verify(() => isEnabledInProject(Platform.windows)).called(1);
+      verify(() => progress.cancel()).called(1); // TODO clean?
+      verify(() => logger.err('No platform enabled.')).called(1); // TODO clean?
+      verify(() => logger.info('')).called(1); // TODO clean?
+      expect(result, ExitCode.unavailable.code);
+    });
+
+    test('completes successfully with correct output w/ custom name', () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
+      final argResults = MockArgResults();
+      final root = MockRootDir();
+      final pubspec = MockPubspecFile();
+      final generator = MockMasonGenerator();
+      final command = PageCommand(
+        logger: logger,
+        root: root,
+        pubspec: pubspec,
+        isEnabledInProject: isEnabledInProject,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults.arguments).thenReturn(['Custom']);
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.name).thenReturn('my_app');
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
+      final result = await command.run();
+      verify(() => logger.progress('Generating CustomPage')).called(1);
+      verify(() => isEnabledInProject(Platform.android)).called(1);
+      verify(() => isEnabledInProject(Platform.ios)).called(1);
+      verify(() => isEnabledInProject(Platform.web)).called(1);
+      verify(() => isEnabledInProject(Platform.linux)).called(1);
+      verify(() => isEnabledInProject(Platform.macos)).called(1);
+      verify(() => isEnabledInProject(Platform.windows)).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'Custom',
+            'path': 'android',
+            'android': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'Custom',
+            'path': 'ios',
+            'ios': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'Custom',
+            'path': 'web',
+            'web': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'Custom',
+            'path': 'linux',
+            'linux': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'Custom',
+            'path': 'macos',
+            'macos': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'Custom',
+            'path': 'windows',
+            'windows': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(progressLogs, ['Generated CustomPage']);
+      verify(() => logger.info('Android:')).called(1);
+      verify(() => logger.info('iOS:')).called(1);
+      verify(() => logger.info('Web:')).called(1);
+      verify(() => logger.info('Linux:')).called(1);
+      verify(() => logger.info('macOS:')).called(1);
+      verify(() => logger.info('Windows:')).called(1);
+      verify(() => logger.success('generated/file')).called(6);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/android/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/ios/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/web/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/linux/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/macos/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/windows/core/router.dart',
+        ),
+      ).called(1);
+      verify(() => logger.info('')).called(13);
+      expect(result, ExitCode.success.code);
+    });
+
+    test('completes successfully with correct output w/ custom output-dir',
+        () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
+      final argResults = MockArgResults();
+      final root = MockRootDir();
+      final pubspec = MockPubspecFile();
+      final generator = MockMasonGenerator();
+      final command = PageCommand(
+        logger: logger,
+        root: root,
+        pubspec: pubspec,
+        isEnabledInProject: isEnabledInProject,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['output-dir']).thenReturn('custom/dir');
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.name).thenReturn('my_app');
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
+      final result = await command.run();
+      verify(() => logger.progress('Generating MyPage')).called(1);
+      verify(() => isEnabledInProject(Platform.android)).called(1);
+      verify(() => isEnabledInProject(Platform.ios)).called(1);
+      verify(() => isEnabledInProject(Platform.web)).called(1);
+      verify(() => isEnabledInProject(Platform.linux)).called(1);
+      verify(() => isEnabledInProject(Platform.macos)).called(1);
+      verify(() => isEnabledInProject(Platform.windows)).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'android/custom/dir',
+            'android': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'ios/custom/dir',
+            'ios': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'web/custom/dir',
+            'web': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'linux/custom/dir',
+            'linux': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'macos/custom/dir',
+            'macos': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'windows/custom/dir',
+            'windows': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(progressLogs, ['Generated MyPage']);
+      verify(() => logger.info('Android:')).called(1);
+      verify(() => logger.info('iOS:')).called(1);
+      verify(() => logger.info('Web:')).called(1);
+      verify(() => logger.info('Linux:')).called(1);
+      verify(() => logger.info('macOS:')).called(1);
+      verify(() => logger.info('Windows:')).called(1);
+      verify(() => logger.success('generated/file')).called(6);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/android/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/ios/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/web/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/linux/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/macos/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/windows/core/router.dart',
+        ),
+      ).called(1);
+      verify(() => logger.info('')).called(13);
+      expect(result, ExitCode.success.code);
+    });
+
+    test(
+        'completes successfully with correct output when --mobile, --desktop and --web is selected',
+        () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
+      final argResults = MockArgResults();
+      final root = MockRootDir();
+      final pubspec = MockPubspecFile();
+      final generator = MockMasonGenerator();
+      final command = PageCommand(
+        logger: logger,
+        root: root,
+        pubspec: pubspec,
+        isEnabledInProject: isEnabledInProject,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['mobile']).thenReturn(true);
+      when(() => argResults['desktop']).thenReturn(true);
+      when(() => argResults['web']).thenReturn(true);
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.name).thenReturn('my_app');
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
+      final result = await command.run();
+      verify(() => logger.progress('Generating MyPage')).called(1);
+      verify(() => isEnabledInProject(Platform.android)).called(1);
+      verify(() => isEnabledInProject(Platform.ios)).called(1);
+      verify(() => isEnabledInProject(Platform.web)).called(1);
+      verify(() => isEnabledInProject(Platform.linux)).called(1);
+      verify(() => isEnabledInProject(Platform.macos)).called(1);
+      verify(() => isEnabledInProject(Platform.windows)).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'android',
+            'android': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'ios',
+            'ios': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'web',
+            'web': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'linux',
+            'linux': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'macos',
+            'macos': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'windows',
+            'windows': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(progressLogs, ['Generated MyPage']);
+      verify(() => logger.info('Android:')).called(1);
+      verify(() => logger.info('iOS:')).called(1);
+      verify(() => logger.info('Web:')).called(1);
+      verify(() => logger.info('Linux:')).called(1);
+      verify(() => logger.info('macOS:')).called(1);
+      verify(() => logger.info('Windows:')).called(1);
+      verify(() => logger.success('generated/file')).called(6);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/android/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/ios/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/web/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/linux/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/macos/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/windows/core/router.dart',
+        ),
+      ).called(1);
+      verify(() => logger.info('')).called(13);
+      expect(result, ExitCode.success.code);
+    });
+
+    test('completes successfully with correct output when --mobile is selected',
+        () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
+      final argResults = MockArgResults();
+      final root = MockRootDir();
+      final pubspec = MockPubspecFile();
+      final generator = MockMasonGenerator();
+      final command = PageCommand(
+        logger: logger,
+        root: root,
+        pubspec: pubspec,
+        isEnabledInProject: isEnabledInProject,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['mobile']).thenReturn(true);
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.name).thenReturn('my_app');
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
+      final result = await command.run();
+      verify(() => logger.progress('Generating MyPage')).called(1);
+      verify(() => isEnabledInProject(Platform.android)).called(1);
+      verify(() => isEnabledInProject(Platform.ios)).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'android',
+            'android': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'ios',
+            'ios': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(progressLogs, ['Generated MyPage']);
+      verify(() => logger.info('Android:')).called(1);
+      verify(() => logger.info('iOS:')).called(1);
+      verify(() => logger.success('generated/file')).called(2);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/android/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/ios/core/router.dart',
+        ),
+      ).called(1);
+      verify(() => logger.info('')).called(5);
+      expect(result, ExitCode.success.code);
+    });
+
+    test(
+        'completes successfully with correct output when --desktop is selected',
+        () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
+      final argResults = MockArgResults();
+      final root = MockRootDir();
+      final pubspec = MockPubspecFile();
+      final generator = MockMasonGenerator();
+      final command = PageCommand(
+        logger: logger,
+        root: root,
+        pubspec: pubspec,
+        isEnabledInProject: isEnabledInProject,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['desktop']).thenReturn(true);
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.name).thenReturn('my_app');
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
+      final result = await command.run();
+      verify(() => logger.progress('Generating MyPage')).called(1);
+      verify(() => isEnabledInProject(Platform.linux)).called(1);
+      verify(() => isEnabledInProject(Platform.macos)).called(1);
+      verify(() => isEnabledInProject(Platform.windows)).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'linux',
+            'linux': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'macos',
+            'macos': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'windows',
+            'windows': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(progressLogs, ['Generated MyPage']);
+      verify(() => logger.info('Linux:')).called(1);
+      verify(() => logger.info('macOS:')).called(1);
+      verify(() => logger.info('Windows:')).called(1);
+      verify(() => logger.success('generated/file')).called(3);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/linux/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/macos/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/windows/core/router.dart',
+        ),
+      ).called(1);
+      verify(() => logger.info('')).called(7);
+      expect(result, ExitCode.success.code);
+    });
+
+    test(
+        'completes successfully with correct output when --android is selected',
+        () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
+      final argResults = MockArgResults();
+      final root = MockRootDir();
+      final pubspec = MockPubspecFile();
+      final generator = MockMasonGenerator();
+      final command = PageCommand(
+        logger: logger,
+        root: root,
+        pubspec: pubspec,
+        isEnabledInProject: isEnabledInProject,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['android']).thenReturn(true);
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.name).thenReturn('my_app');
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
+      final result = await command.run();
+      verify(() => logger.progress('Generating MyPage')).called(1);
+      verify(() => isEnabledInProject(Platform.android)).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'android',
+            'android': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(progressLogs, ['Generated MyPage']);
+      verify(() => logger.info('Android:')).called(1);
+      verify(() => logger.success('generated/file')).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/android/core/router.dart',
+        ),
+      ).called(1);
+      verify(() => logger.info('')).called(3);
+      expect(result, ExitCode.success.code);
+    });
+
+    test('completes successfully with correct output when --ios is selected',
+        () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
+      final argResults = MockArgResults();
+      final root = MockRootDir();
+      final pubspec = MockPubspecFile();
+      final generator = MockMasonGenerator();
+      final command = PageCommand(
+        logger: logger,
+        root: root,
+        pubspec: pubspec,
+        isEnabledInProject: isEnabledInProject,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['ios']).thenReturn(true);
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.name).thenReturn('my_app');
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
+      final result = await command.run();
+      verify(() => logger.progress('Generating MyPage')).called(1);
+      verify(() => isEnabledInProject(Platform.ios)).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'ios',
+            'ios': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(progressLogs, ['Generated MyPage']);
+      verify(() => logger.info('iOS:')).called(1);
+      verify(() => logger.success('generated/file')).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/ios/core/router.dart',
+        ),
+      ).called(1);
+      verify(() => logger.info('')).called(3);
+      expect(result, ExitCode.success.code);
+    });
+
+    test('completes successfully with correct output when --web is selected',
+        () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
+      final argResults = MockArgResults();
+      final root = MockRootDir();
+      final pubspec = MockPubspecFile();
+      final generator = MockMasonGenerator();
+      final command = PageCommand(
+        logger: logger,
+        root: root,
+        pubspec: pubspec,
+        isEnabledInProject: isEnabledInProject,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['web']).thenReturn(true);
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.name).thenReturn('my_app');
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
+      final result = await command.run();
+      verify(() => logger.progress('Generating MyPage')).called(1);
+      verify(() => isEnabledInProject(Platform.web)).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'web',
+            'web': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(progressLogs, ['Generated MyPage']);
+      verify(() => logger.info('Web:')).called(1);
+      verify(() => logger.success('generated/file')).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/web/core/router.dart',
+        ),
+      ).called(1);
+      verify(() => logger.info('')).called(3);
+      expect(result, ExitCode.success.code);
+    });
+
+    test('completes successfully with correct output when --linux is selected',
+        () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
+      final argResults = MockArgResults();
+      final root = MockRootDir();
+      final pubspec = MockPubspecFile();
+      final generator = MockMasonGenerator();
+      final command = PageCommand(
+        logger: logger,
+        root: root,
+        pubspec: pubspec,
+        isEnabledInProject: isEnabledInProject,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['linux']).thenReturn(true);
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.name).thenReturn('my_app');
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
+      final result = await command.run();
+      verify(() => logger.progress('Generating MyPage')).called(1);
+      verify(() => isEnabledInProject(Platform.linux)).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'linux',
+            'linux': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(progressLogs, ['Generated MyPage']);
+      verify(() => logger.info('Linux:')).called(1);
+      verify(() => logger.success('generated/file')).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/linux/core/router.dart',
+        ),
+      ).called(1);
+      verify(() => logger.info('')).called(3);
+      expect(result, ExitCode.success.code);
+    });
+
+    test('completes successfully with correct output when --macos is selected',
+        () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
+      final argResults = MockArgResults();
+      final root = MockRootDir();
+      final pubspec = MockPubspecFile();
+      final generator = MockMasonGenerator();
+      final command = PageCommand(
+        logger: logger,
+        root: root,
+        pubspec: pubspec,
+        isEnabledInProject: isEnabledInProject,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['macos']).thenReturn(true);
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.name).thenReturn('my_app');
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
+      final result = await command.run();
+      verify(() => logger.progress('Generating MyPage')).called(1);
+      verify(() => isEnabledInProject(Platform.macos)).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'macos',
+            'macos': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(progressLogs, ['Generated MyPage']);
+      verify(() => logger.info('macOS:')).called(1);
+      verify(() => logger.success('generated/file')).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/macos/core/router.dart',
+        ),
+      ).called(1);
+      verify(() => logger.info('')).called(3);
+      expect(result, ExitCode.success.code);
+    });
+
+    test(
+        'completes successfully with correct output when --windows is selected',
+        () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
+      final argResults = MockArgResults();
+      final root = MockRootDir();
+      final pubspec = MockPubspecFile();
+      final generator = MockMasonGenerator();
+      final command = PageCommand(
+        logger: logger,
+        root: root,
+        pubspec: pubspec,
+        isEnabledInProject: isEnabledInProject,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['windows']).thenReturn(true);
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.name).thenReturn('my_app');
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
+      final result = await command.run();
+      verify(() => logger.progress('Generating MyPage')).called(1);
+      verify(() => isEnabledInProject(Platform.windows)).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'windows',
+            'windows': true,
+            'widgets': true,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(progressLogs, ['Generated MyPage']);
+      verify(() => logger.info('Windows:')).called(1);
+      verify(() => logger.success('generated/file')).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/windows/core/router.dart',
+        ),
+      ).called(1);
+      verify(() => logger.info('')).called(3);
+      expect(result, ExitCode.success.code);
+    });
+
+    test('completes successfully with correct output w/ no-widgets', () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
+      final argResults = MockArgResults();
+      final root = MockRootDir();
+      final pubspec = MockPubspecFile();
+      final generator = MockMasonGenerator();
+      final command = PageCommand(
+        logger: logger,
+        root: root,
+        pubspec: pubspec,
+        isEnabledInProject: isEnabledInProject,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => argResults['widgets']).thenReturn(false);
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.name).thenReturn('my_app');
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
+      final result = await command.run();
+      verify(() => logger.progress('Generating MyPage')).called(1);
+      verify(() => isEnabledInProject(Platform.android)).called(1);
+      verify(() => isEnabledInProject(Platform.ios)).called(1);
+      verify(() => isEnabledInProject(Platform.web)).called(1);
+      verify(() => isEnabledInProject(Platform.linux)).called(1);
+      verify(() => isEnabledInProject(Platform.macos)).called(1);
+      verify(() => isEnabledInProject(Platform.windows)).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'android',
+            'android': true,
+            'widgets': false,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'ios',
+            'ios': true,
+            'widgets': false,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'web',
+            'web': true,
+            'widgets': false,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'linux',
+            'linux': true,
+            'widgets': false,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'macos',
+            'macos': true,
+            'widgets': false,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      verify(
+        () => generator.generate(
+          any(
+            that: isA<DirectoryGeneratorTarget>().having(
+              (g) => g.dir.path,
+              'dir',
+              tempDir.path,
+            ),
+          ),
+          vars: <String, dynamic>{
+            'project_name': 'my_app',
+            'name': 'My',
+            'path': 'windows',
+            'windows': true,
+            'widgets': false,
+          },
+          logger: logger,
+        ),
+      ).called(1);
+      expect(progressLogs, ['Generated MyPage']);
+      verify(() => logger.info('Android:')).called(1);
+      verify(() => logger.info('iOS:')).called(1);
+      verify(() => logger.info('Web:')).called(1);
+      verify(() => logger.info('Linux:')).called(1);
+      verify(() => logger.info('macOS:')).called(1);
+      verify(() => logger.info('Windows:')).called(1);
+      verify(() => logger.success('generated/file')).called(6);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/android/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/ios/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/web/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/linux/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/macos/core/router.dart',
+        ),
+      ).called(1);
+      verify(
+        () => logger.info(
+          'Register here: lib/presentation/windows/core/router.dart',
+        ),
+      ).called(1);
+      verify(() => logger.info('')).called(13);
+      expect(result, ExitCode.success.code);
+    });
   });
 }
