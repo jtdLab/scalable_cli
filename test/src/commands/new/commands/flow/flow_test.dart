@@ -314,6 +314,8 @@ void main() {
       expect(result, ExitCode.success.code);
     });
 
+    // TODO add test when no platforms are enabled
+
     test('completes successfully with correct output w/ custom name', () async {
       final tempDir = Directory.systemTemp.createTempSync();
       Directory.current = tempDir.path;

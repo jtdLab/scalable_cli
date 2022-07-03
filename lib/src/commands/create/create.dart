@@ -125,14 +125,14 @@ class CreateCommand extends ScalableCommand
 
     final outputDirectory = _outputDirectory;
 
-    // TODO cleaner
     bool android = super.android;
     bool ios = super.ios;
     bool web = super.web;
     bool linux = super.linux;
     bool macos = super.macos;
     bool windows = super.windows;
-    if (!(android || ios || web || linux || macos || windows)) {
+    final any = android || ios || web || linux || macos || windows;
+    if (!any) {
       android = true;
       ios = true;
       web = true;
