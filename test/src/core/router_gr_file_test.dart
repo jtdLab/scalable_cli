@@ -129,8 +129,8 @@ ghi
 ''';
 
       test('adds coverage:ignore-file directive on top of the file.', () {
-        final directory = Directory.systemTemp.createTempSync();
-        Directory.current = directory.path;
+        final tempDir = Directory.systemTemp.createTempSync();
+        Directory.current = tempDir.path;
         final file = File('lib/presentation/android/core/router.gr.dart');
         file.createSync(recursive: true);
         file.writeAsStringSync(content);

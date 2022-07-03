@@ -71,8 +71,8 @@ void main() {
       'throws pubspec not found exception '
       'when no pubspec.yaml exists',
       withRunner((commandRunner, logger, printLogs) async {
-        final directory = Directory.systemTemp.createTempSync();
-        Directory.current = directory.path;
+        final tempDir = Directory.systemTemp.createTempSync();
+        Directory.current = tempDir.path;
         final result = await commandRunner.run(['generate', 'assets']);
         expect(result, equals(ExitCode.noInput.code));
         verify(() {
