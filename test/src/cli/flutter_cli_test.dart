@@ -259,26 +259,6 @@ void main() {
         File(p.join(directory.path, 'pubspec.yaml')).writeAsStringSync(pubspec);
         expectLater(Flutter.pubGet(cwd: directory.path), completes);
       });
-
-      test('throws when there is no pubspec.yaml (recursive)', () {
-        final directory = Directory.systemTemp.createTempSync();
-        expectLater(
-          Flutter.pubGet(cwd: directory.path, recursive: true),
-          throwsException,
-        );
-      });
-
-      test('completes when there is a pubspec.yaml (recursive)', () {
-        final directory = Directory.systemTemp.createTempSync();
-        final nestedDirectory = Directory(p.join(directory.path, 'test'))
-          ..createSync();
-        File(p.join(nestedDirectory.path, 'pubspec.yaml'))
-            .writeAsStringSync(pubspec);
-        expectLater(
-          Flutter.pubGet(cwd: directory.path, recursive: true),
-          completes,
-        );
-      });
     });
 
     group('.genl10n', () {

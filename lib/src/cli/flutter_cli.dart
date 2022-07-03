@@ -90,11 +90,9 @@ class Flutter {
     }
   }
 
-  // TODO better params
   /// Install dart dependencies (`flutter pub get`).
   static Future<void> pubGet({
     String cwd = '.',
-    bool recursive = false,
   }) async {
     await _runCommand(
       cmd: (cwd) => _Cmd.run(
@@ -103,7 +101,7 @@ class Flutter {
         workingDirectory: cwd,
       ),
       cwd: cwd,
-      recursive: recursive,
+      recursive: false,
     );
   }
 
