@@ -1,5 +1,7 @@
 part of '../commands.dart';
 
+// TODO cleaner implementation
+
 /// Adds functionality that generates components into multiple platform dependent locations.
 ///
 /// The platform dependent component will be generated for platforms that are enabled
@@ -25,7 +27,7 @@ mixin PlatformGenerator on NewSubCommand, PlatformGetters {
           windows = true;
         }
 
-        final name = _name; // TODO cleaner
+        final name = _name;
 
         final runProgress = logger.progress(
           '''Generating ${lightYellow.wrap('$name${_component.name.pascalCase}')}''',
@@ -37,16 +39,17 @@ mixin PlatformGenerator on NewSubCommand, PlatformGetters {
         final macosFiles = await _generate(Platform.macos, macos);
         final windowsFiles = await _generate(Platform.windows, windows);
 
-        if (androidFiles == null &&
+        final noFilesGenerated = androidFiles == null &&
             iosFiles == null &&
             webFiles == null &&
             linuxFiles == null &&
             macosFiles == null &&
-            windowsFiles == null) {
-          runProgress.cancel(); // TODO cleaner?
-          logger.err('No platform enabled.'); // TODO cleaner?
-          logger.info(''); // TODO cleaner?
-          return ExitCode.unavailable.code;
+            windowsFiles == null;
+        if (noFilesGenerated) {
+          runProgress.cancel();
+          logger.err('No platform enabled.');
+          logger.info('');
+          return ExitCode.config.code;
         }
 
         runProgress.complete(

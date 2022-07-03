@@ -314,7 +314,47 @@ void main() {
       expect(result, ExitCode.success.code);
     });
 
-    // TODO add test when no platforms are enabled
+    test('exits with 78 when no platforms are enabled', () async {
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir.path;
+      final argResults = MockArgResults();
+      final root = MockRootDir();
+      final pubspec = MockPubspecFile();
+      final generator = MockMasonGenerator();
+      final command = FlowCommand(
+        logger: logger,
+        root: root,
+        pubspec: pubspec,
+        isEnabledInProject: isEnabledInProject,
+        generator: (_) async => generator,
+      )..argResultOverrides = argResults;
+      when(() => isEnabledInProject(any())).thenReturn(false);
+      when(() => root.directory).thenReturn(tempDir);
+      when(() => root.path).thenReturn(tempDir.path);
+      when(() => pubspec.exists).thenReturn(true);
+      when(() => pubspec.name).thenReturn('my_app');
+      when(() => generator.id).thenReturn('generator_id');
+      when(() => generator.description).thenReturn('generator description');
+      when(
+        () => generator.generate(
+          any(),
+          vars: any(named: 'vars'),
+          logger: any(named: 'logger'),
+        ),
+      ).thenAnswer((_) async => generatedFiles(tempDir.path));
+      final result = await command.run();
+      verify(() => logger.progress('Generating MyFlow')).called(1);
+      verify(() => isEnabledInProject(Platform.android)).called(1);
+      verify(() => isEnabledInProject(Platform.ios)).called(1);
+      verify(() => isEnabledInProject(Platform.web)).called(1);
+      verify(() => isEnabledInProject(Platform.linux)).called(1);
+      verify(() => isEnabledInProject(Platform.macos)).called(1);
+      verify(() => isEnabledInProject(Platform.windows)).called(1);
+      verify(() => progress.cancel()).called(1);
+      verify(() => logger.err('No platform enabled.')).called(1);
+      verify(() => logger.info('')).called(1);
+      expect(result, ExitCode.config.code);
+    });
 
     test('completes successfully with correct output w/ custom name', () async {
       final tempDir = Directory.systemTemp.createTempSync();

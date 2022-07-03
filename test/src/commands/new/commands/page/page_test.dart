@@ -324,9 +324,7 @@ void main() {
       expect(result, ExitCode.success.code);
     });
 
-    test(
-        'completes successfully with correct output when no platforms are enabled',
-        () async {
+    test('exits with 78 when no platforms are enabled', () async {
       final tempDir = Directory.systemTemp.createTempSync();
       Directory.current = tempDir.path;
       final argResults = MockArgResults();
@@ -355,18 +353,17 @@ void main() {
         ),
       ).thenAnswer((_) async => generatedFiles(tempDir.path));
       final result = await command.run();
-      verify(() => logger.progress('Generating MyPage'))
-          .called(1); // TODO clean?
+      verify(() => logger.progress('Generating MyPage')).called(1);
       verify(() => isEnabledInProject(Platform.android)).called(1);
       verify(() => isEnabledInProject(Platform.ios)).called(1);
       verify(() => isEnabledInProject(Platform.web)).called(1);
       verify(() => isEnabledInProject(Platform.linux)).called(1);
       verify(() => isEnabledInProject(Platform.macos)).called(1);
       verify(() => isEnabledInProject(Platform.windows)).called(1);
-      verify(() => progress.cancel()).called(1); // TODO clean?
-      verify(() => logger.err('No platform enabled.')).called(1); // TODO clean?
-      verify(() => logger.info('')).called(1); // TODO clean?
-      expect(result, ExitCode.unavailable.code);
+      verify(() => progress.cancel()).called(1);
+      verify(() => logger.err('No platform enabled.')).called(1);
+      verify(() => logger.info('')).called(1);
+      expect(result, ExitCode.config.code);
     });
 
     test('completes successfully with correct output w/ custom name', () async {
