@@ -3,7 +3,7 @@ part of '../commands.dart';
 /// {@template new_dto_command}
 /// `scalable create` command creates a new dto + test.
 /// {@endtemplate}
-class DtoCommand extends ComponentCommand with SingleGenerator {
+class DtoCommand extends NewSubCommand with SingleGenerator {
   /// {@macro new_dto_command}
   DtoCommand({
     Logger? logger,

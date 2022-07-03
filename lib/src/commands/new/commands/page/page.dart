@@ -6,7 +6,7 @@ const _defaultWidgets = true;
 /// {@template new_page_command}
 /// `scalable new page` command creates a new page + test.
 /// {@endtemplate}
-class PageCommand extends ComponentCommand
+class PageCommand extends NewSubCommand
     with PlatformGetters, PlatformGenerator {
   /// {@macro new_page_command}
   PageCommand({

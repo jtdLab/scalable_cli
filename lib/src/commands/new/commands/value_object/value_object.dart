@@ -6,7 +6,7 @@ const _defaultType = 'MyType';
 /// {@template new_value_object_command}
 /// `scalable create` command creates a new value object + test.
 /// {@endtemplate}
-class ValueObjectCommand extends ComponentCommand with SingleGenerator {
+class ValueObjectCommand extends NewSubCommand with SingleGenerator {
   /// {@macro new_value_object_command}
   ValueObjectCommand({
     Logger? logger,

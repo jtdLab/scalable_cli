@@ -34,7 +34,6 @@ part 'page/page.dart';
 part 'service/service.dart';
 part 'value_object/value_object.dart';
 
-/// Subcommands of `scalable new`.
 enum Component {
   bloc,
   cubit,
@@ -71,13 +70,13 @@ enum Component {
 /// The default name of a component that is used if the user did not specify a name.
 const _defaultName = 'My';
 
-/// {@template component_command}
+/// {@template new_sub_command}
 /// Base class for all new sub commands.
 /// {@endtemplate}
-abstract class ComponentCommand extends Command<int>
+abstract class NewSubCommand extends Command<int>
     with Logging, OverridableArgResults, PubspecRequired {
-  /// {@macro component_command}
-  ComponentCommand({
+  /// {@macro new_sub_command}
+  NewSubCommand({
     required this.logger,
     required RootDir root,
     required this.pubspec,

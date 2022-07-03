@@ -3,7 +3,7 @@ part of '../commands.dart';
 /// {@template enable_macos_command}
 /// `scalable enable macos` command adds support for macOS to an existing Scalable project.
 /// {@endtemplate}
-class MacosCommand extends PlatformCommand
+class MacosCommand extends EnableSubCommand
     with OverridableArgResults, OrgNameGetters {
   MacosCommand({
     Logger? logger,

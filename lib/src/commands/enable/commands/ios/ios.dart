@@ -3,7 +3,7 @@ part of '../commands.dart';
 /// {@template enable_ios_command}
 /// `scalable enable ios` command adds support for iOS to an existing Scalable project.
 /// {@endtemplate}
-class IosCommand extends PlatformCommand
+class IosCommand extends EnableSubCommand
     with OverridableArgResults, OrgNameGetters {
   IosCommand({
     Logger? logger,

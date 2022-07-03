@@ -3,7 +3,7 @@ part of '../commands.dart';
 /// Adds functionality that generates a component into a single location.
 ///
 /// Relevant components are bloc, cubit, dto, entity, service and valueObject.
-mixin SingleGenerator on ComponentCommand {
+mixin SingleGenerator on NewSubCommand {
   @override
   Future<int> run() => runWhenPubspecExists(() async {
         final generateProgress = logger.progress(

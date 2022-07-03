@@ -6,7 +6,7 @@ part of '../commands.dart';
 /// in the Scalable project and enabled by the user.
 ///
 /// Relevant components are flow and page.
-mixin PlatformGenerator on ComponentCommand, PlatformGetters {
+mixin PlatformGenerator on NewSubCommand, PlatformGetters {
   @override
   Future<int> run() => runWhenPubspecExists(() async {
         // TODO cleaner

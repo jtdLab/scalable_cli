@@ -3,7 +3,7 @@ part of '../commands.dart';
 /// {@template new_service_command}
 /// `scalable create` command creates a new service + fake impl + test.
 /// {@endtemplate}
-class ServiceCommand extends ComponentCommand with SingleGenerator {
+class ServiceCommand extends NewSubCommand with SingleGenerator {
   /// {@macro new_service_command}
   ServiceCommand({
     Logger? logger,

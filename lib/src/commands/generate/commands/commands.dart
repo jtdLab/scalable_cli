@@ -13,16 +13,15 @@ part 'assets/assets.dart';
 part 'code/code.dart';
 part 'localization/localization.dart';
 
-/// The generate target.
 enum Target { assets, code, localization }
 
-/// {@template target_command}
+/// {@template generate_sub_command}
 /// Base class for all generate sub commands.
 /// {@endtemplate}
-abstract class TargetCommand extends Command<int>
+abstract class GenerateSubCommand extends Command<int>
     with Logging, PubspecRequired {
-  /// {@macro target_command}
-  TargetCommand({
+  /// {@macro generate_sub_command}
+  GenerateSubCommand({
     required this.logger,
     required this.target,
   });

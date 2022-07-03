@@ -3,7 +3,7 @@ part of '../commands.dart';
 /// {@template new_bloc_command}
 /// `scalable create` command creates bloc + test.
 /// {@endtemplate}
-class BlocCommand extends ComponentCommand with SingleGenerator {
+class BlocCommand extends NewSubCommand with SingleGenerator {
   /// {@macro new_bloc_command}
   BlocCommand({
     Logger? logger,

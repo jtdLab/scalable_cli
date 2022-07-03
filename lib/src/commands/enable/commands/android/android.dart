@@ -3,7 +3,7 @@ part of '../commands.dart';
 /// {@template enable_macos_command}
 /// `scalable enable android` command adds support for Android to an existing Scalable project.
 /// {@endtemplate}
-class AndroidCommand extends PlatformCommand
+class AndroidCommand extends EnableSubCommand
     with OverridableArgResults, OrgNameGetters {
   AndroidCommand({
     Logger? logger,

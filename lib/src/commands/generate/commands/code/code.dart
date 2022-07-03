@@ -3,7 +3,7 @@ part of '../commands.dart';
 /// {@template generate_code_command}
 /// `scalable generate code` command (re-)generates the code in an existing Scalable project.
 /// {@endtemplate}
-class CodeCommand extends TargetCommand {
+class CodeCommand extends GenerateSubCommand {
   /// {@macro generate_code_command}
   CodeCommand({
     Logger? logger,
@@ -35,14 +35,16 @@ class CodeCommand extends TargetCommand {
 
   @override
   Future<int> run() => runWhenPubspecExists(() async {
-        final runProgress =
-            logger.progress('Generating ${lightYellow.wrap('code')}');
+        final runProgress = logger.progress(
+          'Generating ${lightYellow.wrap('code')}',
+        );
         await _flutterPubRunBuildRunnerBuildDeleteConflictingOutputs();
-
         _injectionConfig.addCoverageIgnoreFile();
+
         for (final routerGr in _routerGrs) {
           routerGr.addCoverageIgnoreFile();
         }
+
         runProgress.complete('Generated ${lightYellow.wrap('code')}');
 
         return ExitCode.success.code;

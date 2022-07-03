@@ -3,7 +3,7 @@ part of '../commands.dart';
 /// {@template new_entity_command}
 /// `scalable create` command creates a new entity + test.
 /// {@endtemplate}
-class EntityCommand extends ComponentCommand with SingleGenerator {
+class EntityCommand extends NewSubCommand with SingleGenerator {
   /// {@macro new_entity_command}
   EntityCommand({
     Logger? logger,

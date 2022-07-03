@@ -1457,14 +1457,12 @@ void main() {
             logger: logger,
             flutterInstalled: flutterInstalledCommand,
             flutterPubGet: flutterPubGetCommand,
-            flutterConfigEnableAndroid:
-                flutterConfigEnableAndroidCommand,
+            flutterConfigEnableAndroid: flutterConfigEnableAndroidCommand,
             flutterConfigEnableIos: flutterConfigEnableIosCommand,
             flutterConfigEnableWeb: flutterConfigEnableWebCommand,
             flutterConfigEnableLinux: flutterConfigEnableLinuxCommand,
             flutterConfigEnableMacos: flutterConfigEnableMacosCommand,
-            flutterConfigEnableWindows:
-                flutterConfigEnableWindowsCommand,
+            flutterConfigEnableWindows: flutterConfigEnableWindowsCommand,
             flutterGenL10n: flutterGenL10nCommand,
             flutterFormatFix: flutterFormatFixCommand,
             generator: (_) async => generator,

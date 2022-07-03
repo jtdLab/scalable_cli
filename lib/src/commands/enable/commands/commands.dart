@@ -29,13 +29,13 @@ part 'macos/macos.dart';
 part 'web/web.dart';
 part 'windows/windows.dart';
 
-/// {@template platform_command}
+/// {@template enable_sub_command}
 /// Base class for all enable sub commands.
 /// {@endtemplate}
-abstract class PlatformCommand extends Command<int>
+abstract class EnableSubCommand extends Command<int>
     with Logging, PubspecRequired {
-  /// {@macro platform_command}
-  PlatformCommand({
+  /// {@macro enable_sub_command}
+  EnableSubCommand({
     required this.logger,
     required RootDir root,
     required this.pubspec,
@@ -89,20 +89,18 @@ abstract class PlatformCommand extends Command<int>
 
   @override
   Future<int> run() => runWhenPubspecExists(() async {
-        if (_isEnabledInProject(_platform)) {
+        final platformIsEnabled = _isEnabledInProject(_platform);
+        if (platformIsEnabled) {
           logger.err('${_platform.prettyName} already enabled.');
 
           return ExitCode.config.code;
         }
 
         await _flutterConfigEnablePlatform();
-
         final runProgress = logger.progress(
           'Enabling ${lightYellow.wrap(_platform.prettyName)}',
         );
-
         await preGenerateHook();
-
         final generator = await _generator(_bundle);
         await generator.generate(
           DirectoryGeneratorTarget(_root.directory),
@@ -118,12 +116,11 @@ abstract class PlatformCommand extends Command<int>
         }
         _injectionConfig.addRouter(_platform);
         _injectableTest.addRouterTest(_platform);
-
         await _flutterFormatFix();
-
         runProgress.complete(
           'Enabled ${lightYellow.wrap(_platform.prettyName)}',
         );
+
         // TODO keep or remove
         // logger.info('');
         // logger.info('Register here:');

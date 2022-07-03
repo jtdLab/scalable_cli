@@ -3,7 +3,7 @@ part of '../commands.dart';
 /// {@template new_flow_command}
 /// `scalable new flow` command creates a new flow + test.
 /// {@endtemplate}
-class FlowCommand extends ComponentCommand
+class FlowCommand extends NewSubCommand
     with PlatformGetters, PlatformGenerator {
   /// {@macro new_flow_command}
   FlowCommand({

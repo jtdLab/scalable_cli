@@ -3,7 +3,7 @@ part of '../commands.dart';
 /// {@template new_cubit_command}
 /// `scalable create` command creates a cubit + test.
 /// {@endtemplate}
-class CubitCommand extends ComponentCommand with SingleGenerator {
+class CubitCommand extends NewSubCommand with SingleGenerator {
   /// {@macro new_cubit_command}
   CubitCommand({
     Logger? logger,

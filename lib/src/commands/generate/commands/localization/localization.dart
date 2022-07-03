@@ -3,7 +3,7 @@ part of '../commands.dart';
 /// {@template generate_localization_command}
 /// `scalable generate localization` command (re-)generates the localizations in an existing Scalable project.
 /// {@endtemplate}
-class LocalizationCommand extends TargetCommand {
+class LocalizationCommand extends GenerateSubCommand {
   /// {@macro generate_localization_command}
   LocalizationCommand({
     Logger? logger,

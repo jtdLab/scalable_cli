@@ -3,7 +3,7 @@ part of '../commands.dart';
 /// {@template enable_web_command}
 /// `scalable enable web` command adds support for Web to an existing Scalable project.
 /// {@endtemplate}
-class WebCommand extends PlatformCommand {
+class WebCommand extends EnableSubCommand {
   WebCommand({
     Logger? logger,
     RootDir? root,
