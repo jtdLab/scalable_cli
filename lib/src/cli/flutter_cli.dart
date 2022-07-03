@@ -105,11 +105,9 @@ class Flutter {
     );
   }
 
-  // TODO better params
   /// Generate localizations (`flutter gen-l10n`)
   static Future<void> genl10n({
     String cwd = '.',
-    bool recursive = false,
   }) async {
     await _runCommand(
       cmd: (cwd) => _Cmd.run(
@@ -118,15 +116,13 @@ class Flutter {
         workingDirectory: cwd,
       ),
       cwd: cwd,
-      recursive: recursive,
+      recursive: false,
     );
   }
 
-  // TODO better params
   /// Format code (`flutter format . --fix`)
   static Future<void> formatFix({
     String cwd = '.',
-    bool recursive = false,
   }) async {
     await _runCommand(
       cmd: (cwd) => _Cmd.run(
@@ -135,7 +131,7 @@ class Flutter {
         workingDirectory: cwd,
       ),
       cwd: cwd,
-      recursive: recursive,
+      recursive: false,
     );
   }
 
@@ -181,11 +177,9 @@ class Flutter {
     } catch (_) {}
   }
 
-  // TODO better params
   /// Run code generation (`flutter pub run build_runner build --delete-conflicting-outputs`).
   static Future<void> pubRunBuildRunnerBuildDeleteConflictingOutputs({
     String cwd = '.',
-    bool recursive = false,
   }) async {
     await _runCommand(
       cmd: (cwd) async {
@@ -202,7 +196,7 @@ class Flutter {
         );
       },
       cwd: cwd,
-      recursive: recursive,
+      recursive: false,
     );
   }
 
