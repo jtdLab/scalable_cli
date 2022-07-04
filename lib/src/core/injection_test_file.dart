@@ -10,7 +10,7 @@ class InjectionTestFile extends ProjectFile {
 
   /// Adds a test case which tests wheter the router of [platform] is registerd inside getIt.
   void addRouterTest(Platform platform) {
-    // TODO: implement
+    // TODO implement
     throw UnimplementedError();
   }
 }

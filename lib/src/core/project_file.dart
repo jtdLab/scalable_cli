@@ -1,6 +1,8 @@
 import 'package:universal_io/io.dart';
 
+/// Provides [addCoverageIgnoreFile] method.
 mixin AddCoverageIgnoreFile on ProjectFile {
+  /// Adds coverage ignore file header to the start of this file.
   void addCoverageIgnoreFile() {
     final lines = file.readAsLinesSync();
 

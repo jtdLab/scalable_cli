@@ -8,7 +8,7 @@ class InjectionConfigFile extends ProjectFile with AddCoverageIgnoreFile {
   /// {@macro injection_config_file}
   InjectionConfigFile() : super('lib/core/injection.config.dart');
 
-  // TODO: doc
+  /// TODO doc
   void addRouter(Platform platform) {
     // TODO: impl cleaner
     // 1. Find next alias call it ALIAS
@@ -42,7 +42,7 @@ class InjectionConfigFile extends ProjectFile with AddCoverageIgnoreFile {
     file.writeAsStringSync(lines.join('\n'));
   }
 
-  // TODO: doc
+  /// TODO doc
   void replaceGetItAndInjectableImportsWithScalabeCore() {
     // Removes implicit imports to getIt and Injectable
     // Then take one of their aliases and import scalable core as it.

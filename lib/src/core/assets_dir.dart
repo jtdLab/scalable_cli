@@ -11,7 +11,7 @@ extension GetFiles on Directory {
 
 /// Provides [isEmptyOrContainsOnlyReadMe] method.
 extension IsEmptyOrContainsOnlyReadMe on Iterable<File> {
-  /// Wheter this contains 1+ `README.md`files or no files at all.
+  /// Wheter this contains 1+ `README.md` files or no files at all.
   bool isEmptyOrContainsOnlyReadMe() =>
       isEmpty ||
       (length == 1 && p.basenameWithoutExtension(first.path) == 'README');
@@ -57,11 +57,13 @@ class AssetsDir extends ProjectDir {
         .toList();
   }
 
+  /// TODO doc
   List<FileSystemEntity> assets() {
     // TODO implement
     throw UnimplementedError();
   }
 
+  /// TODO doc
   // should parse file tree to a usable objects that will be consumed by pubspec generate assets/fonts methods
   List<dynamic> readAsAssetDirs() {
     // TODO implement
