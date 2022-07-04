@@ -417,6 +417,7 @@ void main() {
         );
       });
 
+      // TODO fails when run on cli
       test('exits with code 69 when process fails (with cleanup)', () async {
         final tempDir = Directory.systemTemp.createTempSync();
         final testDirectory = Directory(p.join(tempDir.path, 'test'))
@@ -852,6 +853,7 @@ void main() {
         ).called(1);
       });
 
+      // TODO fails when run from cli
       test(
           'completes when there is a test directory w/optimizations Dart (passing)',
           () async {
@@ -887,6 +889,7 @@ void main() {
         ).called(1);
       });
 
+      // TODO fails when run from cli
       test(
           'completes when there is a test directory w/optimizations Flutter (passing)',
           () async {
@@ -924,6 +927,7 @@ void main() {
         ).called(1);
       });
 
+      // TODO fails when run from cli
       test(
           'completes when there is a nested golden test w/optimizations Flutter (passing)',
           () async {
