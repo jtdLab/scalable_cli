@@ -4,11 +4,16 @@ import 'package:universal_io/io.dart';
 
 /// Provides [containsPlatformDir] method.
 mixin ContainsPlatformDir on ProjectDir {
-  // TODO return false if this dir does not exist this will trigger some changes in test impls that use project files
   /// Returns wheter this contains a sub directory that belongs to [platform].
-  bool containsPlatformDir(Platform platform) => directory
-      .listSync()
-      .any((e) => e is Directory && p.basename(e.path) == platform.name);
+  bool containsPlatformDir(Platform platform) {
+    if (directory.existsSync()) {
+      return directory
+          .listSync()
+          .any((e) => e is Directory && p.basename(e.path) == platform.name);
+    }
+
+    return false;
+  }
 }
 
 /// {@template project_dir}
@@ -16,7 +21,7 @@ mixin ContainsPlatformDir on ProjectDir {
 /// {@endtemplate}
 abstract class ProjectDir {
   /// {@macro project_dir}
-  ProjectDir([this.path = '']);
+  ProjectDir([this.path = '.']);
 
   /// The path of this.
   final String path;

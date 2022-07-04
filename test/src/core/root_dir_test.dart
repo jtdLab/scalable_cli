@@ -12,16 +12,16 @@ void main() {
     });
 
     group('path', () {
-      test('is ""', () {
+      test('is "."', () {
         final rootDir = RootDir();
-        expect(rootDir.path, '');
+        expect(rootDir.path, '.');
       });
     });
 
     group('directory', () {
-      test('has path ""', () {
+      test('has path "."', () {
         final rootDir = RootDir();
-        expect(rootDir.path, '');
+        expect(rootDir.path, '.');
       });
     });
 

@@ -50,8 +50,6 @@ void main() {
           final tempDir = Directory.systemTemp.createTempSync();
           Directory.current = tempDir.path;
           Directory('android').createSync(recursive: true);
-          // TODO this might be removed when a potential bug in project file/ dir is fixed
-          Directory('lib/presentation').createSync(recursive: true);
 
           final isEnabled = Project.isEnabled(Platform.android);
           expect(isEnabled, false);
@@ -85,8 +83,6 @@ void main() {
           final tempDir = Directory.systemTemp.createTempSync();
           Directory.current = tempDir.path;
           Directory('ios').createSync(recursive: true);
-          // TODO this might be removed when a potential bug in project file/ dir is fixed
-          Directory('lib/presentation').createSync(recursive: true);
 
           final isEnabled = Project.isEnabled(Platform.ios);
           expect(isEnabled, false);
@@ -120,8 +116,6 @@ void main() {
           final tempDir = Directory.systemTemp.createTempSync();
           Directory.current = tempDir.path;
           Directory('web').createSync(recursive: true);
-          // TODO this might be removed when a potential bug in project file/ dir is fixed
-          Directory('lib/presentation').createSync(recursive: true);
 
           final isEnabled = Project.isEnabled(Platform.web);
           expect(isEnabled, false);
@@ -156,8 +150,6 @@ void main() {
           final tempDir = Directory.systemTemp.createTempSync();
           Directory.current = tempDir.path;
           Directory('linux').createSync(recursive: true);
-          // TODO this might be removed when a potential bug in project file/ dir is fixed
-          Directory('lib/presentation').createSync(recursive: true);
 
           final isEnabled = Project.isEnabled(Platform.linux);
           expect(isEnabled, false);
@@ -192,8 +184,6 @@ void main() {
           final tempDir = Directory.systemTemp.createTempSync();
           Directory.current = tempDir.path;
           Directory('macos').createSync(recursive: true);
-          // TODO this might be removed when a potential bug in project file/ dir is fixed
-          Directory('lib/presentation').createSync(recursive: true);
 
           final isEnabled = Project.isEnabled(Platform.macos);
           expect(isEnabled, false);
@@ -229,8 +219,6 @@ void main() {
           final tempDir = Directory.systemTemp.createTempSync();
           Directory.current = tempDir.path;
           Directory('windows').createSync(recursive: true);
-          // TODO this might be removed when a potential bug in project file/ dir is fixed
-          Directory('lib/presentation').createSync(recursive: true);
 
           final isEnabled = Project.isEnabled(Platform.windows);
           expect(isEnabled, false);
