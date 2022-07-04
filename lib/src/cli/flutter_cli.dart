@@ -47,6 +47,15 @@ class _CoverageMetrics {
   double get percentage => totalFound < 1 ? 0 : (totalHits / totalFound * 100);
 }
 
+/// Type definition for the [flutterTest] command
+/// from 'package:very_good_test_runner`.
+typedef FlutterTestRunner = Stream<TestEvent> Function({
+  List<String>? arguments,
+  String? workingDirectory,
+  Map<String, String>? environment,
+  bool runInShell,
+});
+
 /// Signature for the [Flutter.installed] method.
 typedef FlutterInstalledCommand = Future<bool> Function();
 
@@ -214,6 +223,8 @@ class Flutter {
     Logger? logger,
     void Function(String)? stdout,
     void Function(String)? stderr,
+    FlutterTestRunner testRunner = flutterTest,
+    GeneratorBuilder buildGenerator = MasonGenerator.fromBundle,
   }) async {
     final lcovPath = p.join(cwd, 'coverage', 'lcov.info');
     final lcovFile = File(lcovPath);
@@ -248,7 +259,7 @@ class Flutter {
         if (optimizePerformance) {
           final optimizationProgress = logger?.progress('Optimizing tests');
           try {
-            final generator = await MasonGenerator.fromBundle(testRunnerBundle);
+            final generator = await buildGenerator(testRunnerBundle);
             var vars = <String, dynamic>{'package-root': workingDirectory};
             await generator.hooks.preGen(
               vars: vars,
@@ -268,6 +279,7 @@ class Flutter {
         return _flutterTest(
           cwd: cwd,
           collectCoverage: collectCoverage,
+          testRunner: testRunner,
           arguments: [
             ...?arguments,
             if (randomSeed != null) ...[
@@ -336,6 +348,7 @@ Future<int> _flutterTest({
   String cwd = '.',
   bool collectCoverage = false,
   List<String>? arguments,
+  FlutterTestRunner testRunner = flutterTest,
   required void Function(String) stdout,
   required void Function(String) stderr,
 }) {
@@ -369,7 +382,7 @@ Future<int> _flutterTest({
   );
 
   late final StreamSubscription<TestEvent> subscription;
-  subscription = flutterTest(
+  subscription = testRunner(
     workingDirectory: cwd,
     arguments: [
       if (collectCoverage) '--coverage',
