@@ -37,7 +37,7 @@ abstract class ProjectFile {
 /* /// {@template project_file}
 /// Base class for a file in a Scalable project.
 /// {@endtemplate}
-class ProjectFile2 implements File {
+abstract class ProjectFile2 implements File {
   /// The underlying file.
   final File _file;
 
