@@ -23,6 +23,8 @@ class RegularFileMissing implements Exception {
       'You did not provide a <YourFont>-Regular.ttf for your font.';
 }
 
+
+
 /// {@template pubspec_file}
 /// Abstraction of the `pubspec.yaml` file in a Scalable project.
 /// {@endtemplate}

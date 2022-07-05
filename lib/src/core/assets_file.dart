@@ -13,3 +13,4 @@ class AssetsFile extends ProjectFile {
     throw UnimplementedError();
   }
 }
+
