@@ -14,4 +14,3 @@ class InjectionTestFile extends ProjectFile {
     throw UnimplementedError();
   }
 }
-

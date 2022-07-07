@@ -51,4 +51,3 @@ class InjectionConfigFile extends ProjectFile with AddCoverageIgnoreFile {
     throw UnimplementedError();
   }
 }
-

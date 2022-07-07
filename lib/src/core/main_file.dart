@@ -92,4 +92,3 @@ class MainFile extends ProjectFile {
     file.writeAsStringSync('$import${pre}return PlatformWidget$post');
   }
 }
-
