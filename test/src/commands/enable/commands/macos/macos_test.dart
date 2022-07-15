@@ -33,7 +33,7 @@ const cupertinoIconsVersion = '^1.0.5';
 /// The current version of macos ui.
 ///
 /// Visit https://pub.dev/packages/macos_ui
-const macosUiVersion = '^1.5.1';
+const macosUiVersion = '^1.7.0';
 
 // ignore: one_member_abstracts
 abstract class IsEnabledInProject {
