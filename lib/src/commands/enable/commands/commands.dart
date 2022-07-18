@@ -112,6 +112,7 @@ abstract class EnableSubCommand extends Command<int>
         );
 
         for (final main in _mains) {
+          // TODO catch errors and print pretty information to user about corrput main file and what its is expected to look like
           main.addPlatform(_platform);
         }
         _injectionConfig.addRouter(_platform);

@@ -1,8 +1,13 @@
+import 'package:dart_style/dart_style.dart';
 import 'package:scalable_cli/src/core/platform.dart';
+import 'package:scalable_cli/src/core/project.dart';
 import 'package:scalable_cli/src/core/project_file.dart';
+import 'package:scalable_cli/src/core/pubspec_file.dart';
+
+// TODO impl is tested and works but doc and file should be cleaned up
 
 // TODO impl
-class MustContainOnePlatformWidget implements Exception {}
+class InvalidMainFile implements Exception {}
 
 // TODO impl
 class PlatformAlreadyRegistered implements Exception {}
@@ -30,10 +35,17 @@ enum Flavour {
 /// Abstraction of `lib/main_<flavour>.dart` file in a Scalable project.
 /// {@endtemplate}
 class MainFile extends ProjectFile {
+  //final String projectName;
   final Flavour flavour;
 
+  final PubspecFile _pubspec;
+
   /// {@macro main_file}
-  MainFile(this.flavour) : super('lib/main_${flavour.name}.dart');
+  MainFile(
+    this.flavour, {
+    PubspecFile? pubspec,
+  })  : _pubspec = pubspec ?? Project.pubspec,
+        super('lib/main_${flavour.name}.dart');
 
   /// Adds [platform] to this.
   void addPlatform(Platform platform) {
@@ -42,12 +54,26 @@ class MainFile extends ProjectFile {
 
     if ('return PlatformWidget'.allMatches(data).length != 1) {
       // data must contain exactly 1 return PlatformWidget statment
-      throw MustContainOnePlatformWidget();
+      throw InvalidMainFile();
     }
 
     // 2. Find "return PlatformWidget"
     final splitted = data.split('return PlatformWidget');
-    final pre = splitted.first;
+    var pre = splitted.first;
+
+    // ?.
+    final imports = pre
+        .split('\n')
+        .where((element) => element.startsWith('import'))
+        .toList();
+    // TODO platform name is hard coded to example
+    imports.add(
+      'import \'package:${_pubspec.name}/presentation/${platform.name}/app.dart\' as ${platform.name};',
+    );
+    imports.sort();
+    pre = pre.replaceAll(RegExp('import \'.*;\n'), '');
+    pre = '${imports.join('\n')}\n$pre';
+
     var post = splitted.last;
 
     // 3. Find OPENING as the first "(" after 2.
@@ -67,13 +93,8 @@ class MainFile extends ProjectFile {
 
     if (platforms.contains('${platform.name}:')) {
       // already registered
-      throw PlatformAlreadyRegistered();
+      return;
     }
-
-    // TODO platform name is hard coded to kek
-    // Add app import
-    final import =
-        'import \'package:kek/presentation/${platform.name}/app.dart\' as ${platform.name};\n';
 
     // 8. Add new section of the enabled platform to the end of PLATFORMS
     // TODO format
@@ -89,6 +110,8 @@ class MainFile extends ProjectFile {
         post.substring(closingBraceIndex);
 
     // Write to disc
-    file.writeAsStringSync('$import${pre}return PlatformWidget$post');
+    final newContent = '${pre}return PlatformWidget$post';
+    final formatter = DartFormatter();
+    file.writeAsStringSync(formatter.format(newContent));
   }
 }
